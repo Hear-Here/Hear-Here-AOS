@@ -23,7 +23,7 @@ abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
 
-        _binding = DataBindingUtil.setContentView(this@BaseActivity, layoutRes)
+        _binding = DataBindingUtil.setContentView(this, layoutRes)
         binding.lifecycleOwner = this@BaseActivity
 
         observeViewModel()

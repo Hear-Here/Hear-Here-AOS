@@ -2,6 +2,7 @@
 /.idea/libraries
 /captures
 .externalNativeBuild
+.google-services.json
 
 ###android###
 # Built application files
