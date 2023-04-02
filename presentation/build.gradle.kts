@@ -62,5 +62,8 @@ dependencies {
 
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")
 
+    implementation(project(path = ":presentation:common"))
+
+
 
 }

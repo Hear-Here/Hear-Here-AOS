@@ -13,6 +13,7 @@ android {
 
     buildFeatures{
         dataBinding = true
+        viewBinding = true
     }
 
     defaultConfig {
@@ -50,6 +51,7 @@ dependencies {
     implementation(project(path = ":presentation"))
     implementation(project(path = ":data"))
     implementation (project(path = ":domain"))
+
 
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
