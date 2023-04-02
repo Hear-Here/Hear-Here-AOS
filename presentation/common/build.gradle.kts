@@ -10,6 +10,10 @@ android {
     namespace = "com.hearhere.presentation.common"
     compileSdk = App.targetSdk
 
+    buildFeatures{
+        dataBinding = true
+    }
+
     defaultConfig {
         minSdk = App.minSdk
         targetSdk = App.targetSdk

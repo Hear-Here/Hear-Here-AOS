@@ -20,14 +20,16 @@ abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) 
     private var _binding: T? = null
     protected val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         _binding = DataBindingUtil.setContentView(this, layoutRes)
         binding.lifecycleOwner = this@BaseActivity
+        onCreateView(savedInstanceState)
 
         observeViewModel()
         observeLoadingState()
+
     }
 
     abstract fun onCreateView(savedInstanceState: Bundle?)
@@ -61,7 +63,7 @@ abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) 
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+       // _binding = null
     }
 
     protected infix fun <T> LiveData<T>.observe(block: (T) -> Unit) {
