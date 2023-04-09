@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -5,6 +7,12 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     //id("com.google.gms.google-services")
+}
+
+
+
+fun getLocalKey(propertyKey: String): String {
+    return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }
 
 android {
@@ -24,6 +32,7 @@ android {
         versionName = "1.0"
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -45,6 +54,8 @@ android {
     kotlinOptions {
         jvmTarget = App.jvmTarget
     }
+
+
 }
 
 dependencies {
@@ -56,6 +67,12 @@ dependencies {
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
     implementation("androidx.appcompat:appcompat:${Dep.appCompat}")
+    implementation( "androidx.security:security-crypto:${Dep.security}")
+    implementation("androidx.security:security-crypto-ktx:${Dep.security}")
+    implementation("androidx.datastore:datastore:${Dep.data_store}")
+    implementation("androidx.datastore:datastore-preferences:${Dep.data_store}")
+    implementation("androidx.datastore:datastore-rxjava2:${Dep.data_store}")
+
 
     androidTestImplementation("androidx.test.ext:junit:${Dep.androidxJunitExt}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${Dep.espresso}")

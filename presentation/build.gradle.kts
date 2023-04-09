@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+    implementation(project(path = ":domain"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Dep.kotlin}")
     implementation("androidx.appcompat:appcompat:${Dep.androidx_appCompat}")
@@ -55,7 +56,8 @@ dependencies {
     implementation("androidx.activity:activity-ktx:${Dep.activity_ktx}")
     implementation("androidx.fragment:fragment-ktx:${Dep.fragment_ktx}")
     implementation("androidx.annotation:annotation:${Dep.androidx_annotation}")
-    implementation(("com.google.android.material:material:${Dep.material}"))
+    implementation("com.google.android.material:material:${Dep.material}")
+    implementation( "androidx.security:security-crypto:${Dep.security}")
 
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")

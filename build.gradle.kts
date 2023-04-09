@@ -20,6 +20,7 @@ buildscript{
         classpath("com.android.tools.build:gradle:7.4.0")
         // Add the Crashlytics Gradle plugin.
         //classpath("com.google.gms:google-services:${Dep.gms_google_services}")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:${Dep.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Dep.kotlin}")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Dep.hilt}")
     }

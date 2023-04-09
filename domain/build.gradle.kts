@@ -36,11 +36,17 @@ android {
 }
 
 dependencies {
-
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Dep.kotlin}")
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")
     implementation("androidx.appcompat:appcompat:${Dep.androidx_appCompat}")
+
+    // retrofit, okhttp
+    api("com.squareup.retrofit2:retrofit:${Dep.retrofit}")
+    api("com.squareup.retrofit2:converter-gson:${Dep.retrofit_converter_gson}")
+    api("com.squareup.okhttp3:okhttp:${Dep.okhttp}")
+    api("com.squareup.retrofit2:converter-jackson:${Dep.retrofit_converter_jackson}")
+    api("com.squareup.okhttp3:logging-interceptor:${Dep.logging_interceptor}")
 
 }

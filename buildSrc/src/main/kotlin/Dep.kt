@@ -33,5 +33,9 @@ object Dep {
     const val material = "1.6.1"
     const val lottie = "3.7.0"
     const val flexbox = "3.0.0"
+    const val security = "1.1.0-alpha03"
+    const val data_store = "1.0.0"
+    const val kotlin_plugin = "1.4.10"
+    const val retrofit_converter_jackson = "2.4.0"
 
 }

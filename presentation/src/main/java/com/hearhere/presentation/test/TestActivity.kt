@@ -12,8 +12,11 @@ import com.hearhere.presentation.base.BaseActivity
 import com.hearhere.presentation.base.BaseAdapter
 import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.base.BaseViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
+import java.util.*
 
-
+@AndroidEntryPoint
 class TestActivity : BaseActivity<ActivityTestBinding>(R.layout.activity_test){
 
     private val viewModel : TestViewModel by viewModels()
@@ -21,7 +24,8 @@ class TestActivity : BaseActivity<ActivityTestBinding>(R.layout.activity_test){
 
     override fun onCreateView(savedInstanceState: Bundle?) {
         initAdapter()
-        binding.testRv.adapter = adapter
+
+        //binding.testRv.adapter = adapter
     }
 
 

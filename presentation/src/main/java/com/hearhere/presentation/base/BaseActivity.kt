@@ -11,8 +11,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+
 
 abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) :
     AppCompatActivity() {
@@ -29,6 +31,7 @@ abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) 
 
         observeViewModel()
         observeLoadingState()
+
 
     }
 
