@@ -2,10 +2,7 @@ package com.hearhere.data.repositoryImpl
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
-import com.hearhere.data.data.local.HearHerePrefKeys
-import com.hearhere.data.data.local.TestPref
-import com.hearhere.data.data.local.toData
-import com.hearhere.data.data.local.toPref
+import com.hearhere.data.data.local.*
 import com.hearhere.data.data.network.ApiHelper
 import com.hearhere.data.di.dataStore
 import com.hearhere.domain.model.TestModel
@@ -25,7 +22,7 @@ class TestRepositoryImpl @Inject constructor(
         val token = preferences[HearHerePrefKeys.ACCESS_TOKEN]?:""
         TestPref(token)
     }
-    override suspend fun getToken() = testPreferencesFlow.first().toData()
+    override suspend fun getToken() = testPreferencesFlow.first().toDomain()
 
     override suspend fun updateToken(token: String) {
         context.dataStore.edit { preferences ->
