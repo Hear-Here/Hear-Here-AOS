@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.hearhere.presentation.common.util.LoadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -21,6 +22,8 @@ abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) 
 
     private var _binding: T? = null
     protected val binding get() = _binding!!
+
+    private var loadingDiaolog : LoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,11 +60,15 @@ abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) 
     }
 
     private fun showLoading() {
-        //TODO 공용 Loading Dialog
+        if(loadingDiaolog!==null) return
+
+        loadingDiaolog = LoadingDialog.newInstance()
+        loadingDiaolog?.show(supportFragmentManager,"dialog")
     }
 
     private fun dismissLoading() {
-
+        loadingDiaolog?.let { it.dismiss() }
+        loadingDiaolog = null
     }
 
     override fun onDestroy() {

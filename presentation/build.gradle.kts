@@ -41,6 +41,7 @@ android {
 
 dependencies {
     implementation(project(path = ":domain"))
+    implementation(project(path = ":presentation:common"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Dep.kotlin}")
     implementation("androidx.appcompat:appcompat:${Dep.androidx_appCompat}")
@@ -63,8 +64,9 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
 
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")
+    implementation("com.airbnb.android:lottie:${Dep.lottie}")
 
-    implementation(project(path = ":presentation:common"))
+
 
 
 
