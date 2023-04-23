@@ -46,6 +46,15 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")
     implementation("androidx.appcompat:appcompat:${Dep.androidx_appCompat}")
+    implementation("com.google.android.material:material:${Dep.material}")
     implementation("com.airbnb.android:lottie:${Dep.lottie}")
 
+    // lottie
+    implementation("com.airbnb.android:lottie:${Dep.lottie}")
+
+    // glide
+    implementation("com.github.bumptech.glide:glide:${Dep.glide}")
+
+    // flex box layout manager
+    implementation("com.google.android.flexbox:flexbox:${Dep.flexbox}")
 }
