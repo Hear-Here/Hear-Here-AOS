@@ -41,7 +41,8 @@ android {
 
 dependencies {
     implementation(project(path = ":domain"))
-
+    api(project(path = ":presentation:common"))
+    
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Dep.kotlin}")
     implementation("androidx.appcompat:appcompat:${Dep.androidx_appCompat}")
 
@@ -64,7 +65,7 @@ dependencies {
 
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")
 
-    implementation(project(path = ":presentation:common"))
+
 
 
 
