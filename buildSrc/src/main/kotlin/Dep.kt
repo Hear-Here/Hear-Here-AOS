@@ -31,7 +31,7 @@ object Dep {
     const val logging_interceptor = "4.9.1"
     const val androidx_recyclerview = "1.2.1"
     const val material = "1.6.1"
-    const val lottie = "3.7.0"
+    const val lottie = "5.2.0"
     const val flexbox = "3.0.0"
     const val security = "1.1.0-alpha03"
     const val data_store = "1.0.0"

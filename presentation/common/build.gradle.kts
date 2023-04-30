@@ -47,6 +47,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")
     implementation("androidx.appcompat:appcompat:${Dep.androidx_appCompat}")
     implementation("com.google.android.material:material:${Dep.material}")
+    implementation("com.airbnb.android:lottie:${Dep.lottie}")
 
     // lottie
     implementation("com.airbnb.android:lottie:${Dep.lottie}")
