@@ -41,8 +41,8 @@ android {
 
 dependencies {
     implementation(project(path = ":domain"))
-    implementation(project(path = ":presentation:common"))
-
+    api(project(path = ":presentation:common"))
+    
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Dep.kotlin}")
     implementation("androidx.appcompat:appcompat:${Dep.androidx_appCompat}")
 
