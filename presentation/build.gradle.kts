@@ -64,6 +64,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
 
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")
+    implementation("com.airbnb.android:lottie:${Dep.lottie}")
 
 
 
