@@ -3,8 +3,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gray20"
         >
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            />
+
        <androidx.constraintlayout.widget.ConstraintLayout
            android:id="@+id/layout_navigator"
            android:layout_width="match_parent"
@@ -43,7 +50,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="12dp"
-            android:src="@drawable/outframe"
+            android:src="@drawable/selector_record"
             android:scaleType="fitXY"
             android:background="@android:color/transparent"
             android:elevation="6dp"
