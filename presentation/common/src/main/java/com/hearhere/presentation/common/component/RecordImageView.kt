@@ -2,7 +2,9 @@ package com.hearhere.presentation.common.component
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.AttributeSet
 import android.util.Log
@@ -17,6 +19,8 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.hearhere.presentation.common.R
 import com.hearhere.presentation.common.databinding.LayoutRecordImageViewBinding
 
@@ -29,6 +33,10 @@ class RecordImageView @JvmOverloads constructor(
     private val binding : LayoutRecordImageViewBinding = LayoutRecordImageViewBinding.inflate(
         LayoutInflater.from(context), this , true )
 
+    var uri : Uri? = null
+        set(value) {
+           uri = value
+        }
 
     init {
         val rotateAnimation = AnimationUtils.loadAnimation(context,R.anim.rotate).apply {
@@ -40,7 +48,8 @@ class RecordImageView @JvmOverloads constructor(
 
     }
 
-    private fun setImageCover(uri : Uri?){
+  fun setImageCover(uri : Uri?){
+       Log.e("trigger",uri.toString())
         uri?.let {
             if(it.path.isNullOrBlank()) {
                 binding.recordInnerframeIv.visibility = View.VISIBLE
@@ -60,8 +69,19 @@ class RecordImageView @JvmOverloads constructor(
                     )
                 )
                 .error(ContextCompat.getDrawable(context,  R.drawable.outframe))
-                .into(binding.recordOutframeIv)
+                .into(object : CustomTarget<Drawable>() {
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: Transition<in Drawable>?
+                    ) {
+                        binding.recordInnerframeIv.setImageDrawable(resource)
+                        invalidate()
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {}
+                })
         }
+
     }
 
     private fun setFillHoleColor(hex:String){
@@ -73,7 +93,6 @@ class RecordImageView @JvmOverloads constructor(
         @JvmStatic
         @BindingAdapter("android:src")
         fun setOutframe(view : RecordImageView ,uri : Uri?){
-            Log.d("setUri",uri.toString())
             view.setImageCover(uri)
         }
 
