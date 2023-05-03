@@ -20,17 +20,23 @@ class MarkerImageView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+
     private val binding: LayoutMarkerViewBinding = LayoutMarkerViewBinding.inflate(
         LayoutInflater.from(context), this, true
     )
+
+    init {
+        binding.headphoneIv.visibility = GONE
+    }
 
     fun setAlbumImage(uri: Uri?) {
         uri?.let {
             if (it.path.isNullOrBlank()) {
                 binding.headphoneIv.visibility = VISIBLE
-                binding.albumIv.visibility = INVISIBLE
+                binding.albumIv.visibility = GONE
             } else {
-                binding.headphoneIv.visibility = INVISIBLE
+                binding.albumIv.visibility = VISIBLE
+                binding.headphoneIv.visibility = GONE
             }
 
             Glide.with(this)
