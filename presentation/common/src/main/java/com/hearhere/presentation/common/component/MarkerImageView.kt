@@ -1,6 +1,9 @@
 package com.hearhere.presentation.common.component
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.drawable.ColorStateListDrawable
 import android.net.Uri
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -53,6 +56,17 @@ class MarkerImageView @JvmOverloads constructor(
                 .into(binding.albumIv)
         }
     }
+
+    fun setMarkerFocus(isFocused : Boolean){
+        if(isFocused){
+            binding.root.backgroundTintList = (ColorStateList.valueOf(ContextCompat.getColor(context,R.color.primary)))
+        }else binding.root.backgroundTintList = null
+    }
+
+    fun setMarkerBitmapImage(bitmap: Bitmap){
+        binding.albumIv.setImageBitmap(bitmap)
+    }
+
 
     companion object {
         @JvmStatic

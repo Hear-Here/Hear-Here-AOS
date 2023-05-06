@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.maps.model.Marker
 import com.hearhere.domain.model.Pin
 import com.hearhere.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,12 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
     val pinStateList: LiveData<List<PinState>>
         get() = _pinStateList
 
+    private val _selectedPin = MutableLiveData<PinState>(null)
+    val selectedPin : LiveData<PinState>
+        get() = _selectedPin
+
+    val markerList = MutableLiveData<List<Marker>>(emptyList())
+
     private val _events = MutableStateFlow<List<PinEvent>>(emptyList())
     val events = _events.asStateFlow()
 
@@ -40,7 +47,7 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
                 126.957395
             ),
             Pin(
-                2,
+                6,
                 "https://thumb.pann.com/tc_480/http://fimg5.pann.com/new/download.jsp?FileID=53302512",
                 37.492081,
                 126.958395
@@ -52,7 +59,7 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
                 126.959395
             ),
             Pin(
-                4, "https://i1.sndcdn.com/artworks-CDyMPstbky5qw7oe-NfF8Pg-t240x240.jpg", 37.496081,
+                40, "https://i1.sndcdn.com/artworks-CDyMPstbky5qw7oe-NfF8Pg-t240x240.jpg", 37.496081,
                 126.967395
             ),
             Pin(
@@ -62,11 +69,11 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
                 126.957695
             ),
             Pin(
-                1, "", 37.497081,
+                11, "", 37.497081,
                 126.957395
             ),
             Pin(
-                1, "", 37.497081,
+                13, "", 37.497081,
                 126.957595
             ),
         )
@@ -89,7 +96,23 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
         _pinStateList.postValue(newPinList)
         _loading.postValue(false)
 
-        addEvent(PinEvent.onCompletedLoad)
+        addEvent(PinEvent.OnCompletedLoad)
+    }
+
+    fun setSelectedPin(postId : Int?){
+        pinStateList.value?.firstOrNull(){it.pin.postId == postId}?.also {
+            _selectedPin.postValue(it)
+            addEvent(PinEvent.OnChangeSelectedPin)
+        }
+    }
+
+    fun getPinStateByMarker(marker: Marker) : PinState? {
+        val postId = marker.tag?: return null
+        return pinStateList?.value?.firstOrNull(){it.pin.postId == postId}
+    }
+
+    fun getMarkerByPinState(pinState:PinState):Marker?{
+        return markerList.value?.firstOrNull(){ it.tag == pinState.pin.postId }
     }
 
 
@@ -130,6 +153,7 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
 
     data class PinState(val pin: Pin, var bitmap: Bitmap?)
     sealed class PinEvent {
-        object onCompletedLoad : PinEvent()
+        object OnCompletedLoad : PinEvent()
+        object OnChangeSelectedPin : PinEvent()
     }
 }

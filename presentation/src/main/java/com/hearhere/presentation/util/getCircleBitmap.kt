@@ -22,7 +22,10 @@ fun Bitmap.getCircledBitmap(): Bitmap {
     paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
     val left = ((squareBitmapWidth - this.width) / 2).toFloat()
     val top = ((squareBitmapWidth - this.height) / 2).toFloat()
+
     canvas.drawBitmap(this, left, top, paint)
-    this.recycle()
+    // this.recycle()
     return dstBitmap
+
+
 }

@@ -7,17 +7,11 @@ import android.content.res.Resources
 import android.graphics.*
 import android.graphics.Bitmap.createBitmap
 import android.location.LocationManager
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
-import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.flowWithLifecycle
@@ -38,11 +32,6 @@ import com.hearhere.presentation.databinding.ActivityMainBinding
 import com.hearhere.presentation.util.getCircledBitmap
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
-import kotlin.math.min
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
@@ -59,13 +48,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
     private val viewModel: MainViewModel by viewModels()
     private var mMap: GoogleMap? = null
+    private var selectedMarker: Marker? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        MapsInitializer.initialize(applicationContext, MapsInitializer.Renderer.LATEST, this)
         super.onCreate(savedInstanceState)
+        MapsInitializer.initialize(applicationContext, MapsInitializer.Renderer.LATEST, this)
         binding.mapView.onCreate(savedInstanceState)
     }
 
@@ -77,6 +67,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         } else {
             ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_PERMISSION_CODE)
         }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        mMap?.let { onMapReady(it) }
     }
 
 
@@ -118,15 +113,44 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     private fun handleEvent(viewEvents: List<MainViewModel.PinEvent>) {
         viewEvents.firstOrNull()?.let { viewEvent ->
             when (viewEvent) {
-                is MainViewModel.PinEvent.onCompletedLoad -> {
+                is MainViewModel.PinEvent.OnCompletedLoad -> {
                     if (mMap != null) initMap()
+                }
+                is MainViewModel.PinEvent.OnChangeSelectedPin -> {
+                    if (mMap != null) {
+                        viewModel.selectedPin.value?.let {
+                            val pin = viewModel.getMarkerByPinState(it) ?: return
+                            setFocusMarker(pin, false)
+                        }
+                    }
                 }
             }
             viewModel.consumeViewEvent(viewEvent)
         }
     }
 
+    private fun setFocusMarker(marker: Marker, isFocused: Boolean) {
+        if (mMap == null) return
+        val pin = viewModel.getPinStateByMarker(marker) ?: return
+
+        marker.apply {
+            zIndex = 1F
+            setIcon(
+                BitmapDescriptorFactory.fromBitmap(
+                    createDrawableFromView(
+                        (pin.bitmap ?: BitmapFactory.decodeResource(
+                            resources,
+                            com.hearhere.presentation.common.R.drawable.headphones
+                        )).getCircledBitmap(),
+                        isFocused
+                    )
+                )
+            )
+        }
+    }
+
     private fun createMarker() {
+        val markers = ArrayList<Marker>()
         try {
             viewModel.pinStateList.value?.forEach {
                 val markerOptions = MarkerOptions().apply {
@@ -134,10 +158,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                     icon(
                         BitmapDescriptorFactory.fromBitmap(
                             createDrawableFromView(
-                                this@MainActivity, (it.bitmap ?: BitmapFactory.decodeResource(
+                                (it.bitmap ?: BitmapFactory.decodeResource(
                                     resources,
                                     com.hearhere.presentation.common.R.drawable.headphones
-                                )).getCircledBitmap()
+                                )).getCircledBitmap(),
+                                false
                             )
                         )
                     )
@@ -145,18 +170,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                 }
                 val marker = mMap!!.addMarker(markerOptions)
                 marker?.tag = it.pin.postId
+                markers.add(marker!!)
             }
+
+            viewModel.markerList.postValue(markers)
 
         } catch (e: Error) {
             Log.e("bitmap error", e.toString())
         }
     }
 
-    private fun setMyLocation(){
+    private fun setMyLocation() {
         val location = getMyLocation()
         val myLocationMarker = mMap!!.addMarker(MarkerOptions().apply {
             position(location)
-            icon(BitmapDescriptorFactory.fromBitmap(getDrawable(R.drawable.ic_mylocation)!!.toBitmap(50,50)))
+            icon(
+                BitmapDescriptorFactory.fromBitmap(
+                    getDrawable(R.drawable.ic_mylocation)!!.toBitmap(
+                        50,
+                        50
+                    )
+                )
+            )
         })
         myLocationMarker?.tag = MYLOCATION_TAG
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM_LEVEL))
@@ -168,7 +203,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         setMyLocation()
         createMarker()
         mMap?.setOnMarkerClickListener {
-            if(it.tag != MYLOCATION_TAG) Toast.makeText(this,it.tag.toString(),Toast.LENGTH_SHORT).show()
+            setFocusMarker(it, true)
+            if (it.tag != MYLOCATION_TAG) {
+                viewModel.setSelectedPin(it.tag as Int)
+            }
+            mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(it.position, DEFAULT_ZOOM_LEVEL))
             return@setOnMarkerClickListener true
         }
     }
@@ -177,9 +216,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         binding.mapView.getMapAsync {
             var location: LatLng = DEFAULT_LOCATION
             mMap = it
-
             it.uiSettings.isMyLocationButtonEnabled = false      // 현재 위치로 이동 button을 비활성화
-
             if (hasPermission()) {
                 try {
                     it.isMyLocationEnabled = true
@@ -197,10 +234,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         }
     }
 
-    private fun createDrawableFromView(context: Context, bitmap: Bitmap): Bitmap {
-        val customView = MarkerImageView(context)
-        customView.findViewById<ImageView>(com.hearhere.presentation.common.R.id.album_iv)
-            .setImageBitmap(bitmap)
+
+    private fun createDrawableFromView(bitmap: Bitmap, isSelected: Boolean): Bitmap {
+        val customView = MarkerImageView(this)
+        customView.setMarkerFocus(isSelected)
+        customView.setMarkerBitmapImage(bitmap)
 
         customView.measure(
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
