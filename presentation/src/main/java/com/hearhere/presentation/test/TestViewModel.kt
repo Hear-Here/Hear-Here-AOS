@@ -1,9 +1,12 @@
 package com.hearhere.presentation.test
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.hearhere.domain.usecase.SearchMusicUseCase
 import com.hearhere.domain.usecase.TestUseCase
+import com.hearhere.domain.usecaseImpl.SearchMusicUseCaseImpl
 import com.hearhere.domain.usecaseImpl.TestUseCaseImpl
 import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.base.BaseViewModel
@@ -15,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TestViewModel @Inject constructor(
-    private val testUseCase: TestUseCaseImpl
+    private val testUseCase: TestUseCaseImpl,
+    private val searchMusicUseCase: SearchMusicUseCaseImpl
 ) : BaseViewModel(){
 
     private val _list = MutableLiveData<List<BaseItemBinder>>()
@@ -24,6 +28,18 @@ class TestViewModel @Inject constructor(
     init {
         setList()
         setToken().also { getToken() }
+        searchMusic("Kitsch")
+    }
+
+    private fun searchMusic(keyword : String){
+        viewModelScope.launch {
+           val res = searchMusicUseCase.getMusicInfo(keyword,null,20)
+            Log.d("search Music result",res.toString())
+        }
+    }
+
+    val onClick = View.OnClickListener {
+        Log.d("record"," success ")
     }
 
     private fun setList(){
@@ -38,6 +54,10 @@ class TestViewModel @Inject constructor(
 
     private fun createBinder() : TestBinder{
         return TestBinder(createRandomId(),::onClickItem)
+    }
+
+    fun test(){
+
     }
 
     fun onClickItem(id: Long){
