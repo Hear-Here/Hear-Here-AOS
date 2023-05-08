@@ -14,7 +14,7 @@ class SearchMusicRepositoryImpl @Inject constructor(
     private val parsingHelperImpl: ParsingHelperImpl
 ) : BaseRepository(), SearchMusicRepository {
 
-    override suspend fun getMusicInfo(
+    override suspend fun searchMusicBySong(
         keyword: String,
         option: String?,
         display: Int?
@@ -38,8 +38,11 @@ class SearchMusicRepositoryImpl @Inject constructor(
             }
         } catch (e: Throwable) {
             return Result.failure<List<Music>>(e)
+        }catch (e : IllegalStateException){
+            return Result.failure<List<Music>>(e)
         }
-        return Result.success(list)
+
+        return Result.failure<List<Music>>(error("parsing fail"))
     }
 
     fun MusicResponse.mapToDomain(): List<Music> {

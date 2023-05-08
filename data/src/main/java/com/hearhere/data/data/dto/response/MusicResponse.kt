@@ -24,19 +24,19 @@ data class Item @JvmOverloads constructor(
     @field:Attribute(required = false)
     var id: String="",
 
-    @field:Element(name = "title")
+    @field:Element(name = "title", required = false)
     var title: String = "",
 
-    @field:Element(name = "link")
+    @field:Element(name = "link", required = false)
     var link: String = "",
 
-    @field:Element(name = "pubDate")
+    @field:Element(name = "pubDate", required = false)
     var pubDate: String = "",
 
-    @field:Element(name = "album")
+    @field:Element(name = "album", required = false)
     var album: Album? = null,
 
-    @field:Element(name = "artist")
+    @field:Element(name = "artist", required = false)
     var artist: Artist? = null
 )
 

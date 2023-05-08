@@ -7,6 +7,6 @@ import javax.inject.Inject
 class SearchMusicUseCaseImpl @Inject constructor(
     private val repository: SearchMusicRepository
 ) : SearchMusicUseCase {
-    override suspend fun getMusicInfo(keyword: String, option: String?, display: Int?) =
-        repository.getMusicInfo(keyword, option?:"song", display?:10)
+    override suspend fun searchMusicBySong(keyword: String, option: String?, display: Int?) =
+        repository.searchMusicBySong(keyword, option?:"song", display?:10)
 }
