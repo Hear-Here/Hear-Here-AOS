@@ -8,7 +8,7 @@ import org.simpleframework.xml.ElementList
 
 
 @Root(name = "rss", strict = false)
-data class MusicResponse(
+data class SearchBySongResponse(
     @field:Element(name = "channel")
     var channel: Channel? = null
 )

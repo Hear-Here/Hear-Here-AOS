@@ -2,7 +2,7 @@ package com.hearhere.data.repositoryImpl
 
 import android.content.Context
 import com.hearhere.data.data.dto.response.ApiResponse
-import com.hearhere.data.data.dto.response.MusicResponse
+import com.hearhere.data.data.dto.response.SearchBySongResponse
 import com.hearhere.data.data.network.ParsingHelperImpl
 import com.hearhere.domain.model.Music
 import com.hearhere.domain.repository.SearchMusicRepository
@@ -45,7 +45,7 @@ class SearchMusicRepositoryImpl @Inject constructor(
         return Result.failure<List<Music>>(error("parsing fail"))
     }
 
-    fun MusicResponse.mapToDomain(): List<Music> {
+    fun SearchBySongResponse.mapToDomain(): List<Music> {
         val list = ArrayList<Music>()
         this.channel?.let { channel ->
             channel.itemList?.forEach {
