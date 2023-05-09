@@ -1,14 +1,13 @@
 package com.hearhere.data.repositoryImpl
 
 import android.content.Context
-import android.util.Log
 import com.hearhere.data.data.dto.response.ApiResponse
 import com.hearhere.data.data.dto.response.ArtistResult
 import com.hearhere.data.data.dto.response.SearchByArtistResponse
 import com.hearhere.data.data.dto.response.SearchBySongResponse
 import com.hearhere.data.data.network.ParsingHelperImpl
 import com.hearhere.data.data.network.SearchArtistParser
-import com.hearhere.domain.model.Music
+import com.hearhere.domain.model.SearchedMusic
 import com.hearhere.domain.repository.SearchMusicRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.ResponseBody
@@ -22,7 +21,8 @@ class SearchMusicRepositoryImpl @Inject constructor(
     private val parser: SearchArtistParser = SearchArtistParser
     override suspend fun searchMusicBySong(
         keyword: String, display: Int?
-    ): Result<List<Music>> {
+    ): Result<List<SearchedMusic>> {
+
         try {
             val response = safeApiCall<SearchBySongResponse> {
                 parsingHelperImpl.searchMusicBySong(
@@ -34,20 +34,20 @@ class SearchMusicRepositoryImpl @Inject constructor(
                     return Result.success(response.data?.mapToDomain() ?: emptyList())
                 }
                 else -> {
-                    response.throwable?.let { Result.failure<List<Music>>(it) }
+                    response.throwable?.let { Result.failure<List<SearchedMusic>>(it) }
                 }
             }
         } catch (e: Throwable) {
-            return Result.failure<List<Music>>(e)
+            return Result.failure<List<SearchedMusic>>(e)
         } catch (e: IllegalStateException) {
-            return Result.failure<List<Music>>(e)
+            return Result.failure<List<SearchedMusic>>(e)
         }
 
-        return Result.failure<List<Music>>(error("parsing fail"))
+        return Result.failure<List<SearchedMusic>>(error("parsing fail"))
     }
 
 
-    override suspend fun searchMusicByArtist(keyword: String, display: Int?): Result<List<Music>> {
+    override suspend fun searchMusicByArtist(keyword: String, display: Int?): Result<List<SearchedMusic>> {
         try {
             val response = safeApiCall<ResponseBody> {
                 parsingHelperImpl.searchMusicByArtist(
@@ -62,32 +62,32 @@ class SearchMusicRepositoryImpl @Inject constructor(
                     }
                 }
                 else -> {
-                    response.throwable?.let { Result.failure<List<Music>>(it) }
+                    response.throwable?.let { Result.failure<List<SearchedMusic>>(it) }
                 }
             }
         } catch (e: Throwable) {
-            return Result.failure<List<Music>>(e)
+            return Result.failure<List<SearchedMusic>>(e)
         } catch (e: IllegalStateException) {
-            return Result.failure<List<Music>>(e)
+            return Result.failure<List<SearchedMusic>>(e)
         }
 
-        return Result.failure<List<Music>>(error("parsing fail"))
+        return Result.failure<List<SearchedMusic>>(error("parsing fail"))
     }
 
 
-    fun SearchBySongResponse.mapToDomain(): List<Music> {
-        val list = ArrayList<Music>()
+    fun SearchBySongResponse.mapToDomain(): List<SearchedMusic> {
+        val list = ArrayList<SearchedMusic>()
         this.channel?.let { channel ->
             channel.itemList?.forEach {
                 if (it.id !== null && !it.title.isNullOrBlank() && it.artist !== null && it.album != null) {
-                    val music = Music(
+                    val searchedMusic = SearchedMusic(
                         songId = it.id.toLong(),
                         title = it.title,
                         artist = it.artist!!.name,
                         cover = it.album?.image ?: null,
                         pubYear = it.album?.title?.getPubYear()
                     )
-                    list.add(music)
+                    list.add(searchedMusic)
                 }
             }
         }
@@ -96,20 +96,20 @@ class SearchMusicRepositoryImpl @Inject constructor(
     }
 
 
-    fun SearchByArtistResponse.mapToDomain(keyword: String): List<Music> {
-        val list = ArrayList<Music>()
+    fun SearchByArtistResponse.mapToDomain(keyword: String): List<SearchedMusic> {
+        val list = ArrayList<SearchedMusic>()
         this.channel?.let { channel ->
             channel.itemList?.forEach {
                 it.majorsongs?.songs?.forEach { song ->
                     if (song.id !== null && !song.name.isNullOrBlank()) {
-                        val music = Music(
+                        val searchedMusic = SearchedMusic(
                             songId = song.id.toLong(),
                             title = song.name,
                             artist = keyword,
                             cover = it.image,
                             pubYear = ""
                         )
-                        list.add(music)
+                        list.add(searchedMusic)
                     }
                 }
             }
@@ -117,8 +117,8 @@ class SearchMusicRepositoryImpl @Inject constructor(
         return list
     }
 
-    fun List<ArtistResult>.matoToDomain(keyword: String): List<Music> {
-        val list = ArrayList<Music>()
+    fun List<ArtistResult>.matoToDomain(keyword: String): List<SearchedMusic> {
+        val list = ArrayList<SearchedMusic>()
 
         this.forEach { res ->
             val cover = res.image
@@ -126,14 +126,14 @@ class SearchMusicRepositoryImpl @Inject constructor(
             if (!title.isNullOrEmpty()) {
                 res.songList.forEach { song ->
                     if (!song.id.isNullOrBlank() && !song.name.isNullOrBlank()) {
-                        val music = Music(
+                        val searchedMusic = SearchedMusic(
                             songId = song.id!!.toLong(),
                             title = song.name!!,
                             artist = title,
                             cover = cover,
                             pubYear = song.release ?: ""
                         )
-                        list.add(music)
+                        list.add(searchedMusic)
                     }
                 }
             }

@@ -1,6 +1,6 @@
 package com.hearhere.domain.model
 
-data class Music (
+data class SearchedMusic (
     val songId : Long,
     val title : String,
     val artist : String,
