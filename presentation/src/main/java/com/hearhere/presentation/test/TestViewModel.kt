@@ -1,15 +1,14 @@
 package com.hearhere.presentation.test
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.hearhere.domain.usecase.TestUseCase
 import com.hearhere.domain.usecaseImpl.TestUseCaseImpl
 import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.util.createRandomId
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -55,4 +54,13 @@ class TestViewModel @Inject constructor(
             testUseCase.updateAccessToken("new token here")
         }
     }
+
+    val onClick = object : View.OnClickListener{
+        override fun onClick(p0: View?) {
+            Log.d("/효민", "dfsdkfljs")
+        }
+
+    }
+
+
 }
