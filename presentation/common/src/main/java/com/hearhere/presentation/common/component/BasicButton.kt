@@ -11,6 +11,7 @@ import androidx.databinding.BindingAdapter
 import com.hearhere.presentation.common.R
 import com.hearhere.presentation.common.databinding.LayoutBasicButtonBinding
 
+
 class BasicButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -40,10 +41,6 @@ class BasicButton @JvmOverloads constructor(
 
         binding.buttonBackground.layoutParams.height =
             typedArray.getLayoutDimension(R.styleable.BasicButton_android_layout_height, 0)
-
-//        binding.buttonBackground.setBackgroundResource(
-//            typedArray.getResourceId(R.styleable.BasicButton_android_background, 0)
-//        )
 
         typedArray.recycle()
     }
@@ -75,17 +72,13 @@ class BasicButton @JvmOverloads constructor(
         binding.buttonBackground.setBackgroundResource(background)
     }
 
-    fun setOnClickListener(listener: OnClickListener) {
-        binding.buttonBackground.setOnClickListener {
+    //함수 작성 시 이름이 기존의 JVM에 있는 것과 동일하게 되지 않도록 주의할 것
+    private fun setButtonClickListener(listener: OnClickListener) {
+        binding.buttonBackground.setOnClickListener{
             listener.onClick(it)
-            isSelected = !isSelected
+            it.isSelected = !it.isSelected
         }
     }
-
-    interface OnClickListener {
-        fun onClick(view: View)
-    }
-
 
     companion object{
 
@@ -104,13 +97,19 @@ class BasicButton @JvmOverloads constructor(
         @JvmStatic
         @BindingAdapter("android:layout_width")
         fun setLayoutWidth(button: BasicButton, layout_width: Int) {
-            button.setLayoutWidth(layout_width)
+            button.setLayouvtWidth(layout_width)
         }
 
         @JvmStatic
         @BindingAdapter("android:layout_height")
         fun setLayoutHeight(button: BasicButton, layout_height: Int) {
             button.setLayoutHeight(layout_height)
+        }
+
+        @JvmStatic
+        @BindingAdapter("android:onClick")
+        fun setOnClick(button: BasicButton, listener: OnClickListener) {
+            button.setButtonClickListener(listener)  // View.OnClickListener
         }
     }
 

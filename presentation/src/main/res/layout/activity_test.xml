@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_width="331dp"
             android:text="회원 가입"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:onClick="@{viewModel.onClick}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

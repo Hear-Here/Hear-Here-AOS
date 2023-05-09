@@ -55,9 +55,7 @@ class TestViewModel @Inject constructor(
         }
     }
 
-    fun onClick(view: View) {
-
-    }
+    val onClick = View.OnClickListener { Log.d("clicked","hello") }
 
 
 }
