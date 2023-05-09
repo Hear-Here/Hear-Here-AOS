@@ -6,6 +6,7 @@ import android.text.Editable
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.hearhere.presentation.common.R
@@ -75,6 +76,22 @@ class BasicButton @JvmOverloads constructor(
         binding.buttonBackground.setBackgroundResource(background)
     }
 
+    fun setOnClickListener(listener: OnClickListener) {
+        binding.buttonBackground.setOnClickListener {
+            listener.onClick(it)
+            isSelected = !isSelected
+        }
+    }
+
+    fun setOnClickListener(action: (view: View) -> Unit) {
+        binding.buttonBackground.setOnClickListener{
+            action(it)
+        }
+    }
+
+    interface OnClickListener {
+        fun onClick(view: View)
+    }
 
 
     companion object{
@@ -101,22 +118,6 @@ class BasicButton @JvmOverloads constructor(
         @BindingAdapter("android:layout_height")
         fun setLayoutHeight(button: BasicButton, layout_height: Int) {
             button.setLayoutHeight(layout_height)
-        }
-
-//        @JvmStatic
-//        @BindingAdapter("android:background")
-//        fun setBackground(button: BasicButton, background: Int){
-//            button.setBackground(background)
-//        }
-
-        @JvmStatic
-        @BindingAdapter("android:onClick")
-        fun setOnClick(button: BasicButton, onClickListener: OnClickListener?) {
-            button.binding.root.setOnClickListener(onClickListener)
-            button.apply {
-                isSelected = !isSelected
-                Log.d("효민", isSelected.toString())
-            }
         }
 
 
