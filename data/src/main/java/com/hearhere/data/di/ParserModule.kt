@@ -1,6 +1,7 @@
 package com.hearhere.data.di
 
 import com.hearhere.data.data.network.*
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +30,7 @@ object ParserModule {
     fun provideXMLInstance(okHttpClient: OkHttpClient) : Retrofit {
         return Retrofit.Builder()
             .baseUrl(provideBaseUrl())
-            .addConverterFactory(SimpleXmlConverterFactory.create())
+            .addConverterFactory(SimpleXmlConverterFactory.createNonStrict())
             .client(okHttpClient)
             .build()
     }
@@ -43,4 +44,8 @@ object ParserModule {
     @Singleton
     @Provides
     fun provideParsingHelper(parsingHelper: ParsingHelperImpl): ParsingHelper = parsingHelper
+
+    @Singleton
+    @Provides
+    fun provideSearchParser(parser : SearchArtistParser) = parser
 }

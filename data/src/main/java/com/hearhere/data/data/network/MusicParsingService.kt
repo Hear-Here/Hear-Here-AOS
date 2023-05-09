@@ -2,6 +2,7 @@ package com.hearhere.data.data.network
 
 import com.hearhere.data.data.dto.response.SearchByArtistResponse
 import com.hearhere.data.data.dto.response.SearchBySongResponse
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -29,5 +30,14 @@ interface MusicParsingService {
         @Query(value = "v") v: String = "0.5"
     ): Response<SearchByArtistResponse>
 
+
+    @GET("api/search/{keyword}/")
+    suspend fun searchByArtistWithXml(
+        @Path(value = "keyword") keyword: String,
+        @Query(value = "sr") option: String = "album",
+        @Query(value = "display") display: Int? = 10,
+        @Query(value = "key") key: String = "example",
+        @Query(value = "v") v: String = "0.5"
+    ): Response<ResponseBody>
 
 }

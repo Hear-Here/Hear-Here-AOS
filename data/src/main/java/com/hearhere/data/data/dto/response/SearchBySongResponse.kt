@@ -1,26 +1,29 @@
 package com.hearhere.data.data.dto.response
 
 
+import okhttp3.ResponseBody
 import org.simpleframework.xml.Attribute
 import org.simpleframework.xml.Root
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.ElementList
+import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserFactory
 
 
 @Root(name = "rss", strict = false)
 data class SearchBySongResponse(
     @field:Element(name = "channel")
-    var channel: Channel? = null
+    var channel: SongChannel? = null
 )
 
 @Root(name = "channel", strict = false)
-data class Channel @JvmOverloads constructor(
+data class SongChannel @JvmOverloads constructor(
     @field:ElementList(inline = true, required = false)
-    var itemList: List<Item>? = null
+    var itemList: List<SongItem>? = null
 )
 
 @Root(name = "item", strict = false)
-data class Item @JvmOverloads constructor(
+data class SongItem @JvmOverloads constructor(
     @field:Attribute(required = false)
     var id: String="",
 

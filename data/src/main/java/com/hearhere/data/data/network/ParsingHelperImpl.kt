@@ -4,8 +4,11 @@ import com.hearhere.data.di.ParserModule
 import javax.inject.Inject
 
 class ParsingHelperImpl @Inject constructor(
-    @ParserModule.parsing private val parser: MusicParsingService,
+    @ParserModule.parsing val parser: MusicParsingService,
 ) : ParsingHelper {
-    override suspend fun getMusicInfo(keyword: String, option: String?, display: Int?) =
-        parser.getMusicInfo(keyword, option = option, display = display)
+    override suspend fun searchMusicBySong(keyword: String, option: String?, display: Int?) =
+        parser.searchBySong(keyword, option = option ?: "song", display = display)
+
+    override suspend fun searchMusicByArtist(keyword: String, display: Int?) =
+        parser.searchByArtistWithXml(keyword,display = display)
 }

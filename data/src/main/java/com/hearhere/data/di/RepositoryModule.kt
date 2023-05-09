@@ -1,6 +1,7 @@
 package com.hearhere.data.di
 
 
+import com.hearhere.data.data.network.SearchArtistParser
 import com.hearhere.data.repositoryImpl.SearchMusicRepositoryImpl
 import com.hearhere.data.repositoryImpl.TestRepositoryImpl
 import com.hearhere.domain.repository.SearchMusicRepository
