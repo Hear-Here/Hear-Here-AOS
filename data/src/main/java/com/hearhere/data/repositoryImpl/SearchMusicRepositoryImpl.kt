@@ -21,12 +21,12 @@ class SearchMusicRepositoryImpl @Inject constructor(
 
     private val parser: SearchArtistParser = SearchArtistParser
     override suspend fun searchMusicBySong(
-        keyword: String, option: String?, display: Int?
+        keyword: String, display: Int?
     ): Result<List<Music>> {
         try {
             val response = safeApiCall<SearchBySongResponse> {
                 parsingHelperImpl.searchMusicBySong(
-                    keyword = keyword, option = option, display = display
+                    keyword = keyword, display = display
                 )
             }
             when (response) {

@@ -30,19 +30,19 @@ class TestViewModel @Inject constructor(
 
     private fun searchMusic(keyword : String){
         viewModelScope.launch {
-//            kotlin.runCatching{
-//                val res = searchMusicUseCase.searchMusicBySong(keyword,"artist",1)
-//                Log.d("search Music result",res.toString())
-//            }.onFailure {
-//                Log.d("search Music result fail!!!!!! ",it.toString())
-//            }
-//
+            kotlin.runCatching{
+                val res = searchMusicUseCase.searchMusicBySong("Kitsch",10)
+                Log.d("search Music by song result",res.toString())
+            }.onFailure {
+                Log.d("search Music result fail... ",it.toString())
+            }
+
 
             kotlin.runCatching{
                 val res = searchMusicUseCase.searchMusicByArtist(keyword,30)
                 Log.d("search Music result",res.toString())
             }.onFailure {
-                Log.d("search Music result fail!!!!!! ",it.toString())
+                Log.d("search Music result fail... ",it.toString())
             }
         }
     }

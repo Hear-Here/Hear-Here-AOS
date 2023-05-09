@@ -8,7 +8,6 @@ import retrofit2.Response
 interface ParsingHelper {
     suspend fun searchMusicBySong(
         keyword: String,
-        option: String?,
         display: Int?
     ): Response<SearchBySongResponse>
 
