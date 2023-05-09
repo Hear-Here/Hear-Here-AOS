@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.text.Editable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -83,12 +82,6 @@ class BasicButton @JvmOverloads constructor(
         }
     }
 
-    fun setOnClickListener(action: (view: View) -> Unit) {
-        binding.buttonBackground.setOnClickListener{
-            action(it)
-        }
-    }
-
     interface OnClickListener {
         fun onClick(view: View)
     }
@@ -119,8 +112,6 @@ class BasicButton @JvmOverloads constructor(
         fun setLayoutHeight(button: BasicButton, layout_height: Int) {
             button.setLayoutHeight(layout_height)
         }
-
-
     }
 
 
