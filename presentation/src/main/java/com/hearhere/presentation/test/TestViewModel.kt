@@ -7,6 +7,10 @@ import com.hearhere.domain.usecase.TestUseCase
 import com.hearhere.domain.usecaseImpl.TestUseCaseImpl
 import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.base.BaseViewModel
+import com.hearhere.presentation.common.component.emojiButton.EmotionType
+import com.hearhere.presentation.common.component.emojiButton.GenreType
+import com.hearhere.presentation.common.component.emojiButton.WeatherType
+import com.hearhere.presentation.common.component.emojiButton.WithType
 import com.hearhere.presentation.common.util.createRandomId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -20,6 +24,11 @@ class TestViewModel @Inject constructor(
 
     private val _list = MutableLiveData<List<BaseItemBinder>>()
     val list get() = _list
+
+    val type1 = EmotionType.ANGRY
+    val type2 = WeatherType.SNOWY
+    val type3 = WithType.COUPLE
+    val type4 = GenreType.BALLAD
 
     init {
         setList()
