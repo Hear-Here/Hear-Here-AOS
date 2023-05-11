@@ -9,5 +9,6 @@ class TestUseCaseImpl @Inject constructor(private val repository: TestRepository
 
     override suspend fun getAccessToken() = repository.getToken()
     override suspend fun updateAccessToken(token: String) = repository.updateToken(token)
+
 }
 
