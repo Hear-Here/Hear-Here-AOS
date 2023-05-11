@@ -1,21 +1,22 @@
 package com.hearhere.presentation.test
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.hearhere.domain.usecase.TestUseCase
+import com.hearhere.domain.usecaseImpl.SearchMusicUseCaseImpl
 import com.hearhere.domain.usecaseImpl.TestUseCaseImpl
 import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.util.createRandomId
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TestViewModel @Inject constructor(
-    private val testUseCase: TestUseCaseImpl
+    private val testUseCase: TestUseCaseImpl,
+    private val searchMusicUseCase: SearchMusicUseCaseImpl
 ) : BaseViewModel(){
 
     private val _list = MutableLiveData<List<BaseItemBinder>>()
@@ -24,6 +25,30 @@ class TestViewModel @Inject constructor(
     init {
         setList()
         setToken().also { getToken() }
+        searchMusic("아이유")
+    }
+
+    private fun searchMusic(keyword : String){
+        viewModelScope.launch {
+            kotlin.runCatching{
+                val res = searchMusicUseCase.searchMusicBySong("Kitsch",10)
+                Log.d("search Music by song result",res.toString())
+            }.onFailure {
+                Log.d("search Music result fail... ",it.toString())
+            }
+
+
+            kotlin.runCatching{
+                val res = searchMusicUseCase.searchMusicByArtist(keyword,30)
+                Log.d("search Music result",res.toString())
+            }.onFailure {
+                Log.d("search Music result fail... ",it.toString())
+            }
+        }
+    }
+
+    val onClick = View.OnClickListener {
+        Log.d("record"," success ")
     }
 
     private fun setList(){
@@ -38,6 +63,10 @@ class TestViewModel @Inject constructor(
 
     private fun createBinder() : TestBinder{
         return TestBinder(createRandomId(),::onClickItem)
+    }
+
+    fun test(){
+
     }
 
     fun onClickItem(id: Long){
