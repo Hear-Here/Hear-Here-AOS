@@ -25,6 +25,8 @@ class TestActivity : BaseActivity<ActivityTestBinding>(R.layout.activity_test){
     override fun onCreateView(savedInstanceState: Bundle?) {
         initAdapter()
         binding.viewmodel = viewModel
+
+        //binding.testRv.adapter = adapter
     }
 
 
