@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="customTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
+        <item name="android:fontFamily">@font/font</item>
+    </style>
+
+    <style name="customButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+        <item name="android:fontFamily">@font/font</item>
+    </style>
+
+    <style name="customEditTextFontStyle" parent="@android:style/Widget.DeviceDefault.EditText">
+        <item name="android:fontFamily">@font/font</item>
+    </style>
+
+    <style name="customRadioButtonFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.RadioButton">
+        <item name="android:fontFamily">@font/font</item>
+    </style>
+
+    <style name="customCheckboxFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox">
+        <item name="android:fontFamily">@font/font</item>
+    </style>
+
+
+    <style name="head" parent="@android:style/Widget.TextView">
+        <item name="fontFamily">@font/pretendardbold</item>
+        <item name ="fontWeight">700</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textSize">24dp</item>
+        <item name="android:textColor">@color/gray90</item>
+    </style>
+
+    <style name="title" parent="@android:style/Widget.TextView">
+        <item name="fontFamily">@font/pretendardmedium</item>
+        <item name ="fontWeight">700</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/gray90</item>
+    </style>
+
+
+    <style name="subtitle1" parent="@android:style/Widget.TextView">
+        <item name="fontFamily">@font/pretendardregular</item>
+        <item name ="fontWeight">400</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/gray90</item>
+    </style>
+
+    <style name="subtitle2" parent="@android:style/Widget.TextView">
+        <item name="fontFamily">@font/pretendardmedium</item>
+        <item name ="fontWeight">500</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/gray90</item>
+    </style>
+
+
+    <style name="body" parent="@android:style/Widget.TextView">
+        <item name="fontFamily">@font/pretendardregular</item>
+        <item name ="fontWeight">400</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/gray90</item>
+    </style>
+
+
+    <style name="sub" parent="@android:style/Widget.TextView">
+        <item name="fontFamily">@font/pretendardlight</item>
+        <item name ="fontWeight">300</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/gray50</item>
+    </style>
+
+</resources>

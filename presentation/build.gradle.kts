@@ -46,6 +46,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Dep.kotlin}")
     implementation("androidx.appcompat:appcompat:${Dep.androidx_appCompat}")
+    implementation("com.google.android.flexbox:flexbox:${Dep.flexbox}")
 
 
     // androidx
