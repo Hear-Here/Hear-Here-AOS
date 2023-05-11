@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.*
 import android.graphics.Bitmap.createBitmap
+import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
@@ -60,7 +61,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     }
 
     override fun onCreateView(savedInstanceState: Bundle?) {
-        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
         viewModel.requestPins()
         if (hasPermission()) {
             initMap()
@@ -112,16 +113,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
     private fun handleEvent(viewEvents: List<MainViewModel.PinEvent>) {
         viewEvents.firstOrNull()?.let { viewEvent ->
-            when (viewEvent) {
-                is MainViewModel.PinEvent.OnCompletedLoad -> {
-                    if (mMap != null) initMap()
-                }
-                is MainViewModel.PinEvent.OnChangeSelectedPin -> {
-                    if (mMap != null) {
+            mMap?.let {
+                when (viewEvent) {
+                    is MainViewModel.PinEvent.OnCompletedLoad -> {
+                         initMap()
+                    }
+                    is MainViewModel.PinEvent.OnChangeSelectedPin -> {
                         viewModel.selectedPin.value?.let {
                             val pin = viewModel.getMarkerByPinState(it) ?: return
                             setFocusMarker(pin, false)
                         }
+                    }
+                    is MainViewModel.PinEvent.OnClickMyLocation->{
+                        setCameraToMyLocation(viewModel.myLocation.value)
                     }
                 }
             }
@@ -221,6 +225,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                 try {
                     it.isMyLocationEnabled = true
                     location = getMyLocation()
+                    viewModel.myLocation.postValue(location)
                     it.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
                 } catch (e: SecurityException) {
                 } catch (e: Resources.NotFoundException) {
@@ -230,8 +235,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                 Toast.makeText(this, "접근 권한이 없습니다.", Toast.LENGTH_SHORT).show()
             }
             it.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM_LEVEL))
+
             onMapReady(mMap!!)
         }
+    }
+
+    private fun setCameraToMyLocation(location: LatLng?){
+        mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location?:getMyLocation(), DEFAULT_ZOOM_LEVEL))
     }
 
 

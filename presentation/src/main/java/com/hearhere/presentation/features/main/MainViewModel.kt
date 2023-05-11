@@ -2,9 +2,11 @@ package com.hearhere.presentation.features.main
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.hearhere.domain.model.Pin
 import com.hearhere.presentation.base.BaseViewModel
@@ -30,6 +32,8 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
         get() = _selectedPin
 
     val markerList = MutableLiveData<List<Marker>>(emptyList())
+
+    var myLocation = MutableLiveData<LatLng>(null)
 
     private val _events = MutableStateFlow<List<PinEvent>>(emptyList())
     val events = _events.asStateFlow()
@@ -143,6 +147,10 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
         return bitmap
     }
 
+    fun onClickMyLocation(){
+        addEvent(PinEvent.OnClickMyLocation)
+    }
+
     private fun addEvent(event: PinEvent) {
         _events.update { it + event }
     }
@@ -155,5 +163,7 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
     sealed class PinEvent {
         object OnCompletedLoad : PinEvent()
         object OnChangeSelectedPin : PinEvent()
+
+        object OnClickMyLocation : PinEvent()
     }
 }

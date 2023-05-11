@@ -1,60 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.hearhere.presentation.features.main.MainViewModel" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/map_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/map_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/layout_navigator">
 
-       <androidx.constraintlayout.widget.ConstraintLayout
-           android:id="@+id/layout_navigator"
-           android:layout_width="match_parent"
-           android:layout_height="54dp"
-           app:layout_constraintBottom_toBottomOf="parent"
-           android:background="@drawable/radius_rectangle"
-           android:paddingLeft="32dp"
-           android:paddingRight="32dp"
-           android:elevation="6dp"
-           >
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map_view"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageButton
+                android:id="@+id/list_btn"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/list_btn"
+                android:background="@android:color/transparent"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toTopOf="@id/my_location_btn"
+                app:layout_constraintEnd_toEndOf="@id/my_location_btn" />
+
+            <ImageButton
+                android:id="@+id/my_location_btn"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="20dp"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/location_btn"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="@{_->viewModel.onClickMyLocation()}"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_navigator"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:background="@drawable/radius_rectangle"
+            android:elevation="6dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
             <ImageButton
                 android:layout_width="26dp"
                 android:layout_height="28dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:src="@drawable/ic_love"
-                android:scaleType="fitXY"
                 android:background="@android:color/transparent"
-                />
-           <ImageButton
-               android:layout_width="26dp"
-               android:layout_height="30dp"
-               app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintTop_toTopOf="parent"
-               app:layout_constraintBottom_toBottomOf="parent"
-               android:src="@drawable/ic_profile"
-               android:scaleType="fitXY"
-               android:background="@android:color/transparent"
-               />
-       </androidx.constraintlayout.widget.ConstraintLayout>
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_love"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:layout_width="26dp"
+                android:layout_height="30dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <ImageButton
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="12dp"
-            android:src="@drawable/selector_record"
-            android:scaleType="fitXY"
             android:background="@android:color/transparent"
             android:elevation="6dp"
-            />
+            android:scaleType="fitXY"
+            android:src="@drawable/selector_record"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
