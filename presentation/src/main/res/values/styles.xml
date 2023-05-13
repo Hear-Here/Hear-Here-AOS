@@ -1,4 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="typo_test">Lorem ipsum dolor sit amet, consectetur aeget, condimentum nequla sollicitudin, nibh urna dignissim nisi,  </string>
+
+    <style name="button_gray90">
+        <item name="android:background">@drawable/basic_button_background_gray90</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="button_gray30">
+        <item name="android:background">@drawable/basic_button_background_gray30</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
+    <style name="button_primary">
+        <item name="android:background">@drawable/basic_button_background_primary</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+    <style name="button_selector">
+        <item name="android:background">@drawable/basic_button_background_selector</item>
+        <item name="android:textColor">@drawable/basic_button_text_selector</item>
+    </style>
+
+    <style name="button_primary_enabled">
+        <item name="android:background">@drawable/basic_button_background_enabled_primary</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

@@ -10,6 +10,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.hearhere.presentation.common.R
 import com.hearhere.presentation.common.databinding.LayoutBasicButtonBinding
+import java.lang.Boolean.FALSE
+import java.lang.Boolean.TRUE
 
 
 class BasicButton @JvmOverloads constructor(
@@ -30,55 +32,47 @@ class BasicButton @JvmOverloads constructor(
         val typedArray: TypedArray =
             context.obtainStyledAttributes(attrs, R.styleable.BasicButton)
 
-        binding.textview.text = typedArray.getString(R.styleable.BasicButton_android_text) ?: ""
+        binding.button.text = typedArray.getString(R.styleable.BasicButton_android_text) ?: ""
 
-        binding.textview.setTextColor(
-            (typedArray.getColor(R.styleable.BasicButton_android_textColor, 0))
+        binding.button.setTextColor(
+             (resources.getColorStateList(typedArray.getResourceId(R.styleable.BasicButton_android_textColor, 0), null))
         )
 
-        binding.buttonBackground.layoutParams.width =
-            typedArray.getLayoutDimension(R.styleable.BasicButton_android_layout_width, 0)
+        binding.button.setBackgroundResource(
+            (typedArray.getResourceId(R.styleable.BasicButton_android_background, 0))
+        )
 
-        binding.buttonBackground.layoutParams.height =
-            typedArray.getLayoutDimension(R.styleable.BasicButton_android_layout_height, 0)
+        binding.button.isEnabled = typedArray.getBoolean(R.styleable.BasicButton_android_enabled, true)
+
 
         typedArray.recycle()
     }
 
     fun setText(text: String){
-        binding.textview.text = text
+        binding.button.text = text
     }
 
     fun setTextColor(textColor: Int){
-        binding.textview.setTextColor(textColor)
-    }
-
-    fun setLayoutWidth(layout_width: Int){
-        val layoutParams = binding.buttonBackground.layoutParams
-        layoutParams.width = width.toInt()
-        layoutParams.height = height.toInt()
-        binding.buttonBackground.layoutParams = layoutParams
-    }
-
-    fun setLayoutHeight(layout_height: Int){
-        val layoutParams = binding.buttonBackground.layoutParams
-        layoutParams.width = width.toInt()
-        layoutParams.height = height.toInt()
-        binding.buttonBackground.layoutParams = layoutParams
+        binding.button.setTextColor(textColor)
     }
 
 
     fun setBackground(background: Int){
-        binding.buttonBackground.setBackgroundResource(background)
+        binding.button.setBackgroundResource(background)
+    }
+
+    fun setButtonEnabled(isEnabled: Boolean) {
+        binding.button.isEnabled = isEnabled
     }
 
     //함수 작성 시 이름이 기존의 JVM에 있는 것과 동일하게 되지 않도록 주의할 것
     private fun setButtonClickListener(listener: OnClickListener) {
-        binding.buttonBackground.setOnClickListener{
+        binding.button.setOnClickListener{
             listener.onClick(it)
             it.isSelected = !it.isSelected
         }
     }
+
 
     companion object{
 
@@ -95,21 +89,22 @@ class BasicButton @JvmOverloads constructor(
         }
 
         @JvmStatic
-        @BindingAdapter("android:layout_width")
-        fun setLayoutWidth(button: BasicButton, layout_width: Int) {
-            button.setLayouvtWidth(layout_width)
+        @BindingAdapter("android:background")
+        fun setBackground(button: BasicButton, background: Int) {
+            button.setBackground(background)
         }
 
-        @JvmStatic
-        @BindingAdapter("android:layout_height")
-        fun setLayoutHeight(button: BasicButton, layout_height: Int) {
-            button.setLayoutHeight(layout_height)
-        }
 
         @JvmStatic
         @BindingAdapter("android:onClick")
         fun setOnClick(button: BasicButton, listener: OnClickListener) {
             button.setButtonClickListener(listener)  // View.OnClickListener
+        }
+
+        @JvmStatic
+        @BindingAdapter("android:enabled")
+        fun setEnabled(button: BasicButton, isEnabled: Boolean) {
+            button.setButtonEnabled(isEnabled)
         }
     }
 
