@@ -8,5 +8,5 @@
     <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="backgroundTint">@android:color/transparent</item>
     </style>
-    <string name="typo_test">Lorem ipsum dolor sit amet, consectetur aeget, condimentum nequla sollicitudin, nibh urna dignissim nisi,  </string>
+    <string name="typo_test" translatable="false">Lorem ipsum dolor sit amet, consectetur aeget, condimentum nequla sollicitudin, nibh urna dignissim nisi,  </string>
 </resources>

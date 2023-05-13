@@ -49,8 +49,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
     private val viewModel: MainViewModel by viewModels()
     private var mMap: GoogleMap? = null
-    private var selectedMarker: Marker? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private lateinit var markerDetailDialog : MarkerDetailBottomSheet
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +73,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
     override fun onRestart() {
         super.onRestart()
-        mMap?.let { onMapReady(it) }
+        mMap?.let {
+            viewModel.requestPins()
+            initMap()
+        }
     }
 
 
@@ -186,7 +190,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
     private fun setMyLocation() {
         val location = getMyLocation()
-        val myLocationMarker = mMap!!.addMarker(MarkerOptions().apply {
+        val option = MarkerOptions().apply {
             position(location)
             icon(
                 BitmapDescriptorFactory.fromBitmap(
@@ -196,8 +200,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                     )
                 )
             )
-        })
+        }
+        viewModel.myLocationMarker.value?.let { it.remove() }
+
+        val myLocationMarker = mMap!!.addMarker(option)
         myLocationMarker?.tag = MYLOCATION_TAG
+        viewModel.myLocationMarker.postValue(myLocationMarker)
+
         mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM_LEVEL))
 
     }
@@ -208,8 +217,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         createMarker()
         mMap?.setOnMarkerClickListener {
             setFocusMarker(it, true)
+
             if (it.tag != MYLOCATION_TAG) {
                 viewModel.setSelectedPin(it.tag as Int)
+                showMarkerDialog(it.tag as Int)
             }
             mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(it.position, DEFAULT_ZOOM_LEVEL))
             return@setOnMarkerClickListener true
@@ -242,6 +253,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
     private fun setCameraToMyLocation(location: LatLng?){
         mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location?:getMyLocation(), DEFAULT_ZOOM_LEVEL))
+    }
+
+    private fun showMarkerDialog(postId : Int){
+        if (::markerDetailDialog.isInitialized && markerDetailDialog.isAdded) {
+            markerDetailDialog.dismiss()
+        }
+
+        markerDetailDialog = MarkerDetailBottomSheet.newInstance(postId).also {
+            dialog -> dialog.show(supportFragmentManager,dialog.tag)
+        }
     }
 
 

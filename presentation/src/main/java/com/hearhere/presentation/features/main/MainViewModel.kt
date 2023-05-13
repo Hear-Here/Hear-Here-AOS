@@ -35,6 +35,9 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
 
     var myLocation = MutableLiveData<LatLng>(null)
 
+    var myLocationMarker = MutableLiveData<Marker>(null)
+
+
     private val _events = MutableStateFlow<List<PinEvent>>(emptyList())
     val events = _events.asStateFlow()
 
@@ -117,6 +120,10 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
 
     fun getMarkerByPinState(pinState:PinState):Marker?{
         return markerList.value?.firstOrNull(){ it.tag == pinState.pin.postId }
+    }
+
+    fun setMyLocationMarker(location : LatLng){
+
     }
 
 
