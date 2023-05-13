@@ -2,6 +2,7 @@ package com.hearhere.presentation.common.component
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -23,6 +24,9 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.hearhere.presentation.common.R
 import com.hearhere.presentation.common.databinding.LayoutRecordImageViewBinding
+import com.hearhere.presentation.util.ConvertDPtoPX
+import com.hearhere.presentation.util.dp
+import com.hearhere.presentation.util.dpToPx
 
 class RecordImageView @JvmOverloads constructor(
     context: Context,
@@ -45,17 +49,22 @@ class RecordImageView @JvmOverloads constructor(
             this.duration = 2000L
         }
         binding.root.startAnimation(rotateAnimation)
+        val typedArray: TypedArray =
+            context.obtainStyledAttributes(attrs, R.styleable.DefaultView)
+
+        typedArray.recycle()
 
     }
 
   fun setImageCover(uri : Uri?){
-       Log.e("trigger",uri.toString())
         uri?.let {
             if(it.path.isNullOrBlank()) {
-                binding.recordInnerframeIv.visibility = View.VISIBLE
+                binding.recordInnerLayout.visibility = View.INVISIBLE
+                binding.recordInnerframeIv.setImageDrawable(ContextCompat.getDrawable(context,  R.drawable.outframe))
+                return
             }
             else{
-                binding.recordInnerframeIv.visibility = View.INVISIBLE
+                binding.recordInnerLayout.visibility = View.VISIBLE
             }
 
             Glide.with(this)
@@ -83,9 +92,29 @@ class RecordImageView @JvmOverloads constructor(
         }
 
     }
-
     private fun setFillHoleColor(hex:String){
         binding.recordFrameHoleIv.background = ContextCompat.getDrawable(context,  R.drawable.innerframe)
+    }
+
+    private fun setRecordType(type: String){
+        when(type){
+            "small"->{
+                binding.recordFrameLayout.layoutParams.apply {
+                    width = ConvertDPtoPX(context,145)
+                    height = ConvertDPtoPX(context,145)
+                }
+
+                binding.recordHoleLayout.layoutParams.apply {
+                    width = ConvertDPtoPX(context,30)
+                    height = ConvertDPtoPX(context,30)
+                }
+
+                binding.recordInnerLayout.layoutParams.apply {
+                    width = ConvertDPtoPX(context,110)
+                    height = ConvertDPtoPX(context,110)
+                }
+            }
+        }
     }
 
 
@@ -97,10 +126,11 @@ class RecordImageView @JvmOverloads constructor(
         }
 
         @JvmStatic
-        @BindingAdapter("holeColor")
-        fun setBackground(view : RecordImageView , hex : String){
-           view.setFillHoleColor(hex)
+        @BindingAdapter("type")
+        fun setRecordType(view : RecordImageView ,type : String){
+            view.setRecordType(type)
         }
+
     }
 
 }

@@ -13,6 +13,7 @@
         android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/record_frame_layout"
             android:layout_width="195dp"
             android:layout_height="195dp"
             app:cardCornerRadius="195dp"
@@ -24,20 +25,31 @@
                 android:background="@drawable/outframe"
                 android:layout_gravity="center"
                 />
+        </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/record_inner_layout"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            app:cardCornerRadius="150dp"
+            android:layout_gravity="center"
+            >
             <ImageView
                 android:id="@+id/record_innerframe_iv"
                 android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 />
-
         </androidx.cardview.widget.CardView>
+
+
         <androidx.cardview.widget.CardView
+            android:id="@+id/record_hole_layout"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:cardCornerRadius="50dp"
             android:layout_gravity="center"
+            android:visibility="invisible"
             >
             <ImageView
                 android:id="@+id/record_frame_hole_iv"
