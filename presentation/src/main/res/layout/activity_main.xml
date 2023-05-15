@@ -31,7 +31,10 @@
                 android:background="@android:color/transparent"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toTopOf="@id/my_location_btn"
-                app:layout_constraintEnd_toEndOf="@id/my_location_btn" />
+                app:layout_constraintEnd_toEndOf="@id/my_location_btn"
+                android:onClick="@{_->viewModel.onClickList()}"
+
+                />
 
             <ImageButton
                 android:id="@+id/my_location_btn"
@@ -54,7 +57,7 @@
             android:id="@+id/layout_navigator"
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:background="@drawable/radius_rectangle"
+            android:background="@drawable/nav_top_radius_rectangle"
             android:elevation="6dp"
             android:paddingLeft="32dp"
             android:paddingRight="32dp"

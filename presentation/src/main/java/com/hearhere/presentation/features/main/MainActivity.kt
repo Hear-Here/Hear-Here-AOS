@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.*
 import android.graphics.Bitmap.createBitmap
-import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
@@ -130,6 +129,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                     }
                     is MainViewModel.PinEvent.OnClickMyLocation->{
                         setCameraToMyLocation(viewModel.myLocation.value)
+                    }
+                    is MainViewModel.PinEvent.OnClickList ->{
+                        MarkerListActivity.start(this)
                     }
                 }
             }

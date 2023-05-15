@@ -158,6 +158,10 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
         addEvent(PinEvent.OnClickMyLocation)
     }
 
+    fun onClickList(){
+        addEvent(PinEvent.OnClickList)
+    }
+
     private fun addEvent(event: PinEvent) {
         _events.update { it + event }
     }
@@ -172,5 +176,7 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
         object OnChangeSelectedPin : PinEvent()
 
         object OnClickMyLocation : PinEvent()
+
+        object OnClickList : PinEvent()
     }
 }
