@@ -29,6 +29,7 @@ import com.hearhere.presentation.base.BaseActivity
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.component.MarkerImageView
 import com.hearhere.presentation.databinding.ActivityMainBinding
+import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.util.getCircledBitmap
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -68,6 +69,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             initMap()
         } else {
             ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_PERMISSION_CODE)
+        }
+
+        binding.likeBtn.setOnClickListener {
+            MarkerLikeActivity.start(this)
         }
     }
 

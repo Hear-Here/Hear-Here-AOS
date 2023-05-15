@@ -66,6 +66,7 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageButton
+                android:id="@+id/like_btn"
                 android:layout_width="26dp"
                 android:layout_height="28dp"
                 android:background="@android:color/transparent"

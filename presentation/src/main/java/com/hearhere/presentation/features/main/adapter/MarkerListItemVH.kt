@@ -21,5 +21,4 @@ class MarkerListItemVH(private val binding: ViewDataBinding) : BaseViewHolder(bi
         binder as MarkerListItemBinder
         binding as ItemMarkerListBinding
     }
-
 }

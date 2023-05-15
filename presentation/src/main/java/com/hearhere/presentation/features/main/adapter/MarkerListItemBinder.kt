@@ -25,11 +25,8 @@ class MarkerListItemBinder() : BaseItemBinder {
     private val _marker =  MutableLiveData<MarkerListViewModel.MarkerListItemState>()
     val marker get() = _marker
 
-    val coverImage = ObservableField<String>("")
-
     fun setMarker(m: MarkerListViewModel.MarkerListItemState){
         _marker.postValue(m)
-        coverImage.set(m.coverPath)
     }
 
     override fun areContentsTheSame(oldItem: BaseItemBinder, newItem: BaseItemBinder): Boolean {

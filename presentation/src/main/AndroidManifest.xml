@@ -10,5 +10,6 @@
         <activity android:name=".test.TestActivity" />
         <activity android:name=".features.main.MainActivity" />
         <activity android:name=".features.main.MarkerListActivity" />
+        <activity android:name=".features.main.like.MarkerLikeActivity" />
     </application>
 </manifest>
