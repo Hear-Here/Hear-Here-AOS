@@ -24,6 +24,7 @@ class MarkerCreateDialog :BottomSheetDialogFragment() {
     ): View {
         binding = DialogMarkerCreateBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
+        binding.view = this
         return binding.root
     }
 
@@ -44,15 +45,14 @@ class MarkerCreateDialog :BottomSheetDialogFragment() {
                 height = (screenHeight * 0.25).toInt()
             }
         }
+    }
 
-        binding.positiveBtn.setOnClickListener{
-           listener?.onClickPositive()
-        }
-        binding.negativeBtn.setOnClickListener {
-            listener?.onClickNegative()
-        }
+    fun onClickPositive(){
+        listener?.onClickPositive()
+    }
 
-
+    fun onClickNegative(){
+        listener?.onClickNegative()
     }
 
     interface OnClickDialog{
