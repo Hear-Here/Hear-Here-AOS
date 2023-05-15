@@ -27,6 +27,7 @@ class TestActivity : BaseActivity<ActivityTestBinding>(R.layout.activity_test){
         binding.viewmodel = viewModel
 
         //binding.testRv.adapter = adapter
+
     }
 
 
