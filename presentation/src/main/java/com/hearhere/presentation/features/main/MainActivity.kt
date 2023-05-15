@@ -51,6 +51,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private lateinit var markerDetailDialog : MarkerDetailBottomSheet
+    private lateinit var markerCreateDialog: MarkerCreateDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,6 +133,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                     }
                     is MainViewModel.PinEvent.OnClickList ->{
                         MarkerListActivity.start(this)
+                    }
+                    is MainViewModel.PinEvent.OnClickCreate->{
+                        showMarkerCreateDialog()
                     }
                 }
             }
@@ -267,6 +271,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         }
     }
 
+    private fun showMarkerCreateDialog(){
+        if (::markerCreateDialog.isInitialized && markerCreateDialog.isAdded) {
+            markerCreateDialog.dismiss()
+        }
+
+        markerCreateDialog = MarkerCreateDialog.newInstance(markerCreateListener).also {
+                dialog -> dialog.show(supportFragmentManager,dialog.tag)
+        }
+    }
+
+
+    private val markerCreateListener = object : MarkerCreateDialog.OnClickDialog{
+        override fun onClickPositive() {
+            Toast.makeText(this@MainActivity,"yes",Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onClickNegative() {
+            Toast.makeText(this@MainActivity,"no",Toast.LENGTH_SHORT).show()
+            markerCreateDialog?.dismiss()
+        }
+
+    }
 
     private fun createDrawableFromView(bitmap: Bitmap, isSelected: Boolean): Bitmap {
         val customView = MarkerImageView(this)
