@@ -38,6 +38,8 @@ android {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Dep.kotlin}")
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
+    implementation("androidx.test:monitor:1.5.0")
+    implementation("androidx.test.ext:junit-ktx:1.1.3")
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")
     implementation("androidx.appcompat:appcompat:${Dep.androidx_appCompat}")

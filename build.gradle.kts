@@ -17,7 +17,7 @@ buildscript{
     dependencies{
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files
-        classpath("com.android.tools.build:gradle:7.4.0")
+        classpath("com.android.tools.build:gradle:7.4.2")
         // Add the Crashlytics Gradle plugin.
         //classpath("com.google.gms:google-services:${Dep.gms_google_services}")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Dep.kotlin}")
