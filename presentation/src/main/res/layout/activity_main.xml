@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.hearhere.presentation.features.main.MainViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/map_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/layout_navigator">
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map_view"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <ImageButton
+                android:id="@+id/list_btn"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/list_btn"
+                android:background="@android:color/transparent"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toTopOf="@id/my_location_btn"
+                app:layout_constraintEnd_toEndOf="@id/my_location_btn"
+                android:onClick="@{_->viewModel.onClickList()}"
+
+                />
+
+            <ImageButton
+                android:id="@+id/my_location_btn"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="20dp"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/location_btn"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="@{_->viewModel.onClickMyLocation()}"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_navigator"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:background="@drawable/nav_top_radius_rectangle"
+            android:elevation="6dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageButton
+                android:id="@+id/like_btn"
+                android:layout_width="26dp"
+                android:layout_height="28dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_love"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:layout_width="26dp"
+                android:layout_height="30dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="@{_->viewModel.onClickMyProfile()}"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="12dp"
+            android:background="@android:color/transparent"
+            android:elevation="6dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/selector_record"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:onClick="@{_->viewModel.onClickCreate()}"
+
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

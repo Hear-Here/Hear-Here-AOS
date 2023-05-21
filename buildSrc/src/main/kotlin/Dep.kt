@@ -37,5 +37,7 @@ object Dep {
     const val data_store = "1.0.0"
     const val kotlin_plugin = "1.4.10"
     const val retrofit_converter_jackson = "2.4.0"
-
+    const val google_map = "18.1.0"
+    const val google_location = "21.0.1"
+    const val google_map_gradle = "2.0.0"
 }

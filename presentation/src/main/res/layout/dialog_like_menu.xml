@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+
+    </data>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/marker_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_top_corner">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="30dp"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/delete_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="목록에서 삭제하기"
+                android:paddingVertical="10dp"
+                style="@style/subtitle2"
+                android:textColor="@color/red"
+                android:gravity="center"
+                >
+
+            </TextView>
+            <TextView
+                android:id="@+id/copy_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="제목 복사하기"
+                android:paddingVertical="10dp"
+                style="@style/subtitle2"
+                android:gravity="center"
+                >
+            </TextView>
+
+        </LinearLayout>
+    </ScrollView>
+</layout>
