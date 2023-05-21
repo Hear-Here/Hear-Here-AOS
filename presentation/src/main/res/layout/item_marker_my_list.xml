@@ -12,6 +12,7 @@
         android:paddingRight="20dp"
         android:background="@drawable/radius_rectangle"
         android:elevation="1dp"
+        android:onClick="@{_->binder.onClickItem()}"
         >
         <androidx.cardview.widget.CardView
             android:id="@+id/cover_iv"
@@ -77,6 +78,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:src="@drawable/ic_menu"
+            android:onClick="@{_->binder.onClickItemMenu()}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

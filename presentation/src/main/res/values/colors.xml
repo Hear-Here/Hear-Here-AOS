@@ -14,6 +14,7 @@
     <color name="gray30">#EBEBEB</color>
     <color name="gray20">#F1F1F1</color>
     <color name="bg">#FFFDF8</color>
+    <color name="red">#A50000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>
