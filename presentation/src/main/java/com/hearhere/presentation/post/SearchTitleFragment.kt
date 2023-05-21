@@ -11,10 +11,10 @@ import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseFragment
 import com.hearhere.presentation.databinding.FragmentSearchTitleBinding
 
-class SearchTitleFragment : BaseFragment<FragmentSearchTitleBinding>(R.layout.fragment_search_title) {
+class SearchTitleFragment :
+    BaseFragment<FragmentSearchTitleBinding>(R.layout.fragment_search_title) {
 
     private val viewModel: SearchTitleViewModel by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

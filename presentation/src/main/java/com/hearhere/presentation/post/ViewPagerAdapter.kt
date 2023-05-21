@@ -5,15 +5,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import kotlin.collections.ArrayList
 
-class ViewPagerAdapter(fragment: FragmentActivity): FragmentStateAdapter(fragment) {
+class ViewPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {
 
     var list: ArrayList<Fragment> = arrayListOf(SearchTitleFragment(), SearchSingerFragment())
 
     override fun getItemCount(): Int = 2
-
-//    override fun createFragment(position: Int): Fragment {
-//        TODO("Not yet implemented")
-//    }
 
     fun setList(fragments: Array<Fragment>) {
         list.clear()

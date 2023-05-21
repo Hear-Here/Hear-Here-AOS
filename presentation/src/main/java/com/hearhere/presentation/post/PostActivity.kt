@@ -16,16 +16,17 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PostActivity : BaseActivity<ActivityPostBinding>(R.layout.activity_post) {
 
-    private val viewModel : PostViewModel by viewModels()
-//
-//    private val fragmentManager = supportFragmentManager
-//    private lateinit var transaction: FragmentTransaction
-
-//    lateinit var adapter : BaseAdapter
-//    private lateinit var viewPager: ViewPager2
-
+    private val viewModel: PostViewModel by viewModels()
     override fun onCreateView(savedInstanceState: Bundle?) {
-//        initAdapter()
+        setViewPager()
+    }
+
+    override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
+
+    override fun observeViewModel() {
+    }
+
+    private fun setViewPager() {
         val pagerAdapter = ViewPagerAdapter(this)
         val tabName = listOf("Title", "Artist")
         binding.viewPager.adapter = pagerAdapter
@@ -33,32 +34,5 @@ class PostActivity : BaseActivity<ActivityPostBinding>(R.layout.activity_post) {
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             tab.text = "${(tabName[position])}"
         }.attach()
-
-
-//        setViewPager()
-
-//        binding.viewModel = viewModel
-//        transaction = fragmentManager.beginTransaction()
-//        transaction.add(R.id.frameLayout, SearchSingerFragment())
-//        transaction.commit()
-//        setViewPager()
-
-    }
-
-//    private fun initAdapter() {
-//        adapter = BaseAdapter.build()
-//    }
-
-    override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
-
-    override fun observeViewModel() {
-
-    }
-    private fun setViewPager() {
-        val viewPager2 = binding.viewPager
-
-        val adapter = ViewPagerAdapter(this)
-//        adapter.setList()
-        viewPager2.adapter = adapter
     }
 }

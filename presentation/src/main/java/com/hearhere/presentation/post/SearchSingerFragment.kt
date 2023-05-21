@@ -16,7 +16,6 @@ import com.hearhere.presentation.databinding.FragmentSearchSingerBinding
 class SearchSingerFragment : BaseFragment<FragmentSearchSingerBinding>(R.layout.fragment_search_singer) {
 
     private val viewModel: SearchSingerViewModel by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,7 +26,7 @@ class SearchSingerFragment : BaseFragment<FragmentSearchSingerBinding>(R.layout.
     }
 
     override fun initView() {
-        Log.d("/Here", "shet")
+
     }
 
 }
