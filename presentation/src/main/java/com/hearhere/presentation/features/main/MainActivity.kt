@@ -30,6 +30,7 @@ import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.component.MarkerImageView
 import com.hearhere.presentation.databinding.ActivityMainBinding
 import com.hearhere.presentation.features.main.like.MarkerLikeActivity
+import com.hearhere.presentation.features.main.profile.MarkerMyPostingActivity
 import com.hearhere.presentation.util.getCircledBitmap
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -141,6 +142,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                     }
                     is MainViewModel.PinEvent.OnClickCreate->{
                         showMarkerCreateDialog()
+                    }
+                    is MainViewModel.PinEvent.OnClickMyProfile->{
+                        MarkerMyPostingActivity.start(this)
                     }
                 }
             }

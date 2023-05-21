@@ -166,6 +166,10 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
         addEvent(PinEvent.OnClickCreate)
     }
 
+    fun onClickMyProfile(){
+        addEvent(PinEvent.OnClickMyProfile)
+    }
+
     private fun addEvent(event: PinEvent) {
         _events.update { it + event }
     }
@@ -184,5 +188,7 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
         object OnClickList : PinEvent()
 
         object OnClickCreate : PinEvent()
+
+        object OnClickMyProfile : PinEvent()
     }
 }
