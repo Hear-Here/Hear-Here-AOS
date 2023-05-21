@@ -52,7 +52,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     private var mMap: GoogleMap? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private lateinit var markerDetailDialog : MarkerDetailBottomSheet
+    private lateinit var markerDetailDialog: MarkerDetailBottomSheet
     private lateinit var markerCreateDialog: MarkerCreateDialog
 
 
@@ -126,7 +126,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             mMap?.let {
                 when (viewEvent) {
                     is MainViewModel.PinEvent.OnCompletedLoad -> {
-                         initMap()
+                        initMap()
                     }
                     is MainViewModel.PinEvent.OnChangeSelectedPin -> {
                         viewModel.selectedPin.value?.let {
@@ -134,16 +134,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                             setFocusMarker(pin, false)
                         }
                     }
-                    is MainViewModel.PinEvent.OnClickMyLocation->{
+                    is MainViewModel.PinEvent.OnClickMyLocation -> {
                         setCameraToMyLocation(viewModel.myLocation.value)
                     }
-                    is MainViewModel.PinEvent.OnClickList ->{
+                    is MainViewModel.PinEvent.OnClickList -> {
                         MarkerListActivity.start(this)
                     }
-                    is MainViewModel.PinEvent.OnClickCreate->{
+                    is MainViewModel.PinEvent.OnClickCreate -> {
                         showMarkerCreateDialog()
                     }
-                    is MainViewModel.PinEvent.OnClickMyProfile->{
+                    is MainViewModel.PinEvent.OnClickMyProfile -> {
                         MarkerMyPostingActivity.start(this)
                     }
                 }
@@ -266,38 +266,43 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         }
     }
 
-    private fun setCameraToMyLocation(location: LatLng?){
-        mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location?:getMyLocation(), DEFAULT_ZOOM_LEVEL))
+    private fun setCameraToMyLocation(location: LatLng?) {
+        mMap?.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                location ?: getMyLocation(),
+                DEFAULT_ZOOM_LEVEL
+            )
+        )
     }
 
-    private fun showMarkerDialog(postId : Int){
+    private fun showMarkerDialog(postId: Int) {
         if (::markerDetailDialog.isInitialized && markerDetailDialog.isAdded) {
             markerDetailDialog.dismiss()
         }
 
-        markerDetailDialog = MarkerDetailBottomSheet.newInstance(postId).also {
-            dialog -> dialog.show(supportFragmentManager,dialog.tag)
+        markerDetailDialog = MarkerDetailBottomSheet.newInstance(postId).also { dialog ->
+            dialog.show(supportFragmentManager, dialog.tag)
         }
     }
 
-    private fun showMarkerCreateDialog(){
+    private fun showMarkerCreateDialog() {
         if (::markerCreateDialog.isInitialized && markerCreateDialog.isAdded) {
             markerCreateDialog.dismiss()
         }
 
-        markerCreateDialog = MarkerCreateDialog.newInstance(markerCreateListener).also {
-                dialog -> dialog.show(supportFragmentManager,dialog.tag)
+        markerCreateDialog = MarkerCreateDialog.newInstance(markerCreateListener).also { dialog ->
+            dialog.show(supportFragmentManager, dialog.tag)
         }
     }
 
 
-    private val markerCreateListener = object : MarkerCreateDialog.OnClickDialog{
+    private val markerCreateListener = object : MarkerCreateDialog.OnClickDialog {
         override fun onClickPositive() {
-            Toast.makeText(this@MainActivity,"yes",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, "yes", Toast.LENGTH_SHORT).show()
         }
 
         override fun onClickNegative() {
-            Toast.makeText(this@MainActivity,"no",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, "no", Toast.LENGTH_SHORT).show()
             markerCreateDialog?.dismiss()
         }
 

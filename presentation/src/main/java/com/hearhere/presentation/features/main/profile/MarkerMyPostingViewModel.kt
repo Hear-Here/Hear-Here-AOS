@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-class MarkerMyPostingViewModel @Inject constructor():  BaseViewModel() {
+class MarkerMyPostingViewModel @Inject constructor() : BaseViewModel() {
     private val _events = MutableStateFlow<List<MarkerMyPostingEvent>>(emptyList())
     val events get() = _events.asStateFlow()
 
@@ -98,7 +98,6 @@ class MarkerMyPostingViewModel @Inject constructor():  BaseViewModel() {
         }
 
     }
-
 
 
     private fun onClickDetail(postId: Int) {

@@ -50,34 +50,34 @@ class MarkerLikeActivity  : BaseActivity<ActivityMarkerLikeBinding>(R.layout.act
         viewModel.events.flowWithLifecycle(lifecycle).onEach(::handleEvent).launchIn(lifecycleScope)
     }
 
-    private fun handleEvent( viewEvents : List<MarkerLikeViewModel.MarkerLikeEvent>){
+    private fun handleEvent(viewEvents: List<MarkerLikeViewModel.MarkerLikeEvent>) {
         viewEvents.firstOrNull()?.let { event ->
             when (event) {
                 is MarkerLikeViewModel.MarkerLikeEvent.ShowDialog -> {
-                    showDialog(event.postId,event.title)
+                    showDialog(event.postId, event.title)
                 }
                 is MarkerLikeViewModel.MarkerLikeEvent.DismissDialog -> {
                     dismissDialog()
                 }
                 else -> {
-                    Toast.makeText(this,"아이템 상세보기",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "아이템 상세보기", Toast.LENGTH_SHORT).show()
                 }
             }
             viewModel.consumeViewEvent(event)
         }
     }
 
-    private fun showDialog(postId : Int, title : String){
+    private fun showDialog(postId: Int, title: String) {
         if (::dialog.isInitialized && dialog.isAdded) {
             dialog.dismiss()
         }
 
-        dialog= MarkerLikeDialog.newInstance(postId,title).also {
-                dialog -> dialog.show(supportFragmentManager,dialog.tag)
+        dialog = MarkerLikeDialog.newInstance(postId, title).also { dialog ->
+            dialog.show(supportFragmentManager, dialog.tag)
         }
     }
 
-    private fun dismissDialog(){
+    private fun dismissDialog() {
         if (::dialog.isInitialized && dialog.isAdded) {
             dialog.dismiss()
         }

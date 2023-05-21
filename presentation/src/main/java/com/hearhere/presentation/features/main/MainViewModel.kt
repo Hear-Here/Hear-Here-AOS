@@ -28,7 +28,7 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
         get() = _pinStateList
 
     private val _selectedPin = MutableLiveData<PinState>(null)
-    val selectedPin : LiveData<PinState>
+    val selectedPin: LiveData<PinState>
         get() = _selectedPin
 
     val markerList = MutableLiveData<List<Marker>>(emptyList())
@@ -66,7 +66,9 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
                 126.959395
             ),
             Pin(
-                40, "https://i1.sndcdn.com/artworks-CDyMPstbky5qw7oe-NfF8Pg-t240x240.jpg", 37.496081,
+                40,
+                "https://i1.sndcdn.com/artworks-CDyMPstbky5qw7oe-NfF8Pg-t240x240.jpg",
+                37.496081,
                 126.967395
             ),
             Pin(
@@ -106,23 +108,23 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
         addEvent(PinEvent.OnCompletedLoad)
     }
 
-    fun setSelectedPin(postId : Int?){
-        pinStateList.value?.firstOrNull(){it.pin.postId == postId}?.also {
+    fun setSelectedPin(postId: Int?) {
+        pinStateList.value?.firstOrNull() { it.pin.postId == postId }?.also {
             _selectedPin.postValue(it)
             addEvent(PinEvent.OnChangeSelectedPin)
         }
     }
 
-    fun getPinStateByMarker(marker: Marker) : PinState? {
-        val postId = marker.tag?: return null
-        return pinStateList?.value?.firstOrNull(){it.pin.postId == postId}
+    fun getPinStateByMarker(marker: Marker): PinState? {
+        val postId = marker.tag ?: return null
+        return pinStateList?.value?.firstOrNull() { it.pin.postId == postId }
     }
 
-    fun getMarkerByPinState(pinState:PinState):Marker?{
-        return markerList.value?.firstOrNull(){ it.tag == pinState.pin.postId }
+    fun getMarkerByPinState(pinState: PinState): Marker? {
+        return markerList.value?.firstOrNull() { it.tag == pinState.pin.postId }
     }
 
-    fun setMyLocationMarker(location : LatLng){
+    fun setMyLocationMarker(location: LatLng) {
 
     }
 
@@ -154,19 +156,19 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
         return bitmap
     }
 
-    fun onClickMyLocation(){
+    fun onClickMyLocation() {
         addEvent(PinEvent.OnClickMyLocation)
     }
 
-    fun onClickList(){
+    fun onClickList() {
         addEvent(PinEvent.OnClickList)
     }
 
-    fun onClickCreate(){
+    fun onClickCreate() {
         addEvent(PinEvent.OnClickCreate)
     }
 
-    fun onClickMyProfile(){
+    fun onClickMyProfile() {
         addEvent(PinEvent.OnClickMyProfile)
     }
 

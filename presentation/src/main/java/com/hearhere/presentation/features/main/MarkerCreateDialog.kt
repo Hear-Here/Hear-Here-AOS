@@ -13,9 +13,9 @@ import com.hearhere.presentation.databinding.DialogMarkerCreateBinding
 import com.hearhere.presentation.databinding.FragmentMarkerdetailBottomBinding
 import com.hearhere.presentation.util.screenHeight
 
-class MarkerCreateDialog :BottomSheetDialogFragment() {
+class MarkerCreateDialog : BottomSheetDialogFragment() {
     private lateinit var binding: DialogMarkerCreateBinding
-    private var listener : OnClickDialog? = null
+    private var listener: OnClickDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +34,7 @@ class MarkerCreateDialog :BottomSheetDialogFragment() {
 
     }
 
-    private fun initView(){
+    private fun initView() {
         BottomSheetBehavior.from(view?.parent as View).apply {
             state = BottomSheetBehavior.STATE_EXPANDED
             skipCollapsed = true
@@ -47,21 +47,21 @@ class MarkerCreateDialog :BottomSheetDialogFragment() {
         }
     }
 
-    fun onClickPositive(){
+    fun onClickPositive() {
         listener?.onClickPositive()
     }
 
-    fun onClickNegative(){
+    fun onClickNegative() {
         listener?.onClickNegative()
     }
 
-    interface OnClickDialog{
+    interface OnClickDialog {
         fun onClickPositive()
         fun onClickNegative()
     }
 
-    companion object{
-        fun newInstance(listener: OnClickDialog) : MarkerCreateDialog{
+    companion object {
+        fun newInstance(listener: OnClickDialog): MarkerCreateDialog {
             val fr = MarkerCreateDialog()
             fr.listener = listener
             return fr

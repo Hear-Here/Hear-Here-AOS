@@ -24,19 +24,20 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class MarkerMyPostingActivity : BaseActivity<ActivityMarkerMyPostingBinding>(R.layout.activity_marker_my_posting)  {
+class MarkerMyPostingActivity :
+    BaseActivity<ActivityMarkerMyPostingBinding>(R.layout.activity_marker_my_posting) {
 
-    private lateinit var dialog : MarkerMyPostingDialog
+    private lateinit var dialog: MarkerMyPostingDialog
 
-    private lateinit var adapter : BaseAdapter
-    private val viewModel : MarkerMyPostingViewModel by viewModels()
+    private lateinit var adapter: BaseAdapter
+    private val viewModel: MarkerMyPostingViewModel by viewModels()
 
     override fun onCreateView(savedInstanceState: Bundle?) {
         binding.lifecycleOwner = this
         adapter = BaseAdapter.build()
-        binding.markerListRv.let{
-            it.adapter=adapter
-            it.addItemDecoration(MarginItemDecoration(ConvertDPtoPX(this,8)))
+        binding.markerListRv.let {
+            it.adapter = adapter
+            it.addItemDecoration(MarginItemDecoration(ConvertDPtoPX(this, 8)))
         }
         binding.backBtn.setOnClickListener { finish() }
     }
@@ -46,50 +47,50 @@ class MarkerMyPostingActivity : BaseActivity<ActivityMarkerMyPostingBinding>(R.l
     override fun observeViewModel() {
         viewModel.binder.observe {
             adapter.submitList(it)
-            Log.d("binder",it.toString())
+            Log.d("binder", it.toString())
         }
 
         viewModel.uiState.observe {
-            Log.d("state",it.toString())
+            Log.d("state", it.toString())
         }
         viewModel.events.flowWithLifecycle(lifecycle).onEach(::handleEvent).launchIn(lifecycleScope)
     }
 
-    private fun handleEvent( viewEvents : List<MarkerMyPostingViewModel.MarkerMyPostingEvent>){
+    private fun handleEvent(viewEvents: List<MarkerMyPostingViewModel.MarkerMyPostingEvent>) {
         viewEvents.firstOrNull()?.let { event ->
             when (event) {
                 is MarkerMyPostingViewModel.MarkerMyPostingEvent.ShowDialog -> {
-                    showDialog(event.postId,event.title)
+                    showDialog(event.postId, event.title)
                 }
                 is MarkerMyPostingViewModel.MarkerMyPostingEvent.DismissDialog -> {
                     dismissDialog()
                 }
                 else -> {
-                    Toast.makeText(this,"아이템 상세보기", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "아이템 상세보기", Toast.LENGTH_SHORT).show()
                 }
             }
             viewModel.consumeViewEvent(event)
         }
     }
 
-    private fun showDialog(postId : Int, title : String){
+    private fun showDialog(postId: Int, title: String) {
         if (::dialog.isInitialized && dialog.isAdded) {
             dialog.dismiss()
         }
 
-        dialog= MarkerMyPostingDialog.newInstance(postId,title).also {
-                dialog -> dialog.show(supportFragmentManager,dialog.tag)
+        dialog = MarkerMyPostingDialog.newInstance(postId, title).also { dialog ->
+            dialog.show(supportFragmentManager, dialog.tag)
         }
     }
 
-    private fun dismissDialog(){
+    private fun dismissDialog() {
         if (::dialog.isInitialized && dialog.isAdded) {
             dialog.dismiss()
         }
     }
 
-    companion object{
-        fun start(context : Context){
+    companion object {
+        fun start(context: Context) {
             val intent = Intent(context, MarkerMyPostingActivity::class.java)
             ContextCompat.startActivity(context, intent, null)
         }

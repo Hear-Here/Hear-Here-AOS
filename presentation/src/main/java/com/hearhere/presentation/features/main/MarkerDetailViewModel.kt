@@ -18,29 +18,29 @@ import javax.inject.Inject
 @HiltViewModel
 class MarkerDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
-) : BaseViewModel(){
+) : BaseViewModel() {
 
     val POST_ID = "postId"
 
     private val _uiState = MutableLiveData<MarkerDetailUiState>()
-    val uiState : LiveData<MarkerDetailUiState> get() = _uiState
+    val uiState: LiveData<MarkerDetailUiState> get() = _uiState
 
     var postId = 0
-        get()  = savedStateHandle.get<Int>(POST_ID)?:-1
+        get() = savedStateHandle.get<Int>(POST_ID) ?: -1
 
-    private var toggleJob : Job?=null
+    private var toggleJob: Job? = null
 
     init {
         getMarkerDetail()
     }
 
-    private fun getMarkerDetail(){
+    private fun getMarkerDetail() {
         _loading.postValue(true)
         //TODO
         _uiState.postValue(
             MarkerDetailUiState(
                 postId = postId,
-                writer = "영종킴"+postId.toString(),
+                writer = "영종킴" + postId.toString(),
                 title = "노래노래",
                 artist = "hihihihi",
                 cover = Uri.parse(""),
@@ -50,39 +50,58 @@ class MarkerDetailViewModel @Inject constructor(
                 withType = WithType.FAMILY,
                 emotionType = EmotionType.HEART,
                 distance = 50.0,
-                isLike = false
+                isLike = false,
+                likeCnt = 180
             )
         )
 
         _loading.postValue(false)
     }
 
-    fun onClickLikeToggle(){
-        _uiState.postValue(uiState.value?.copy(isLike = !uiState.value!!.isLike))
-         //디바운스 처리
-         toggleJob?.cancel()
-         toggleJob = viewModelScope.launch {
+    fun onClickLikeToggle() {
+        if (uiState.value?.isLike == true) {
+            _uiState.postValue(
+                uiState.value?.copy(
+                    isLike = !uiState.value!!.isLike,
+                    likeCnt = uiState.value!!.likeCnt - 1
+                )
+            )
+        } else {
+            _uiState.postValue(
+                uiState.value?.copy(
+                    isLike = !uiState.value!!.isLike,
+                    likeCnt = uiState.value!!.likeCnt + 1
+                )
+            )
+        }
+
+        //디바운스 처리
+        toggleJob?.cancel()
+        toggleJob = viewModelScope.launch {
             delay(2000)
             //API
-             Log.d("bottom toggle",uiState.value?.isLike.toString())
-         }
+            Log.d("bottom toggle", uiState.value?.isLike.toString())
+
+        }
     }
 
     data class MarkerDetailUiState(
-        val postId : Int,
-        val writer : String,
-        val title : String,
-        val artist : String,
-        val cover : Uri?,
-        val message : String?,
+        val postId: Int,
+        val writer: String,
+        val title: String,
+        val artist: String,
+        val cover: Uri?,
+        val message: String?,
         val genreType: GenreType?,
         val weatherType: WeatherType?,
         val withType: WithType?,
         val emotionType: EmotionType?,
-        val distance : Double,
-        val isLike : Boolean,
-    ){
+        val distance: Double,
+        val isLike: Boolean,
+        val likeCnt: Int,
+    ) {
         val distanceStr = distance.toString()
+        val likeCntStr = likeCnt.toString()
     }
 
 }

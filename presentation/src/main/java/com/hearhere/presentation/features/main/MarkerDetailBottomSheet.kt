@@ -20,13 +20,17 @@ import com.hearhere.presentation.util.screenHeight
 import kotlinx.coroutines.launch
 
 
-class MarkerDetailBottomSheet  : BottomSheetDialogFragment(){
+class MarkerDetailBottomSheet : BottomSheetDialogFragment() {
 
-    private lateinit var binding : FragmentMarkerdetailBottomBinding
-    private val viewModel : MarkerDetailViewModel by viewModels()
+    private lateinit var binding: FragmentMarkerdetailBottomBinding
+    private val viewModel: MarkerDetailViewModel by viewModels()
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentMarkerdetailBottomBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -43,7 +47,7 @@ class MarkerDetailBottomSheet  : BottomSheetDialogFragment(){
 
     }
 
-    private fun initView(){
+    private fun initView() {
         BottomSheetBehavior.from(view?.parent as View).apply {
             state = BottomSheetBehavior.STATE_EXPANDED
             skipCollapsed = true
@@ -56,19 +60,18 @@ class MarkerDetailBottomSheet  : BottomSheetDialogFragment(){
         }
 
         viewModel.uiState.observe(this, Observer {
-            Toast.makeText(requireContext(),it.isLike.toString(),Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), it.isLike.toString(), Toast.LENGTH_SHORT).show()
         })
     }
 
 
-
-    companion object{
-        fun newInstance(postId : Int) : MarkerDetailBottomSheet{
+    companion object {
+        fun newInstance(postId: Int): MarkerDetailBottomSheet {
             val fragment = MarkerDetailBottomSheet()
             val POST_ID = "postId"
 
             val bundle = Bundle().apply {
-                putInt(POST_ID,postId)
+                putInt(POST_ID, postId)
             }
             fragment.arguments = bundle
             return fragment

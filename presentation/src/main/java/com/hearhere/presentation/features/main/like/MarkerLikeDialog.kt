@@ -14,12 +14,16 @@ class MarkerLikeDialog : BottomSheetDialogFragment() {
     private val POST_ID = "postId"
     private val TITLE = "title"
 
-    private lateinit var binding : DialogLikeMenuBinding
+    private lateinit var binding: DialogLikeMenuBinding
 
 
-    private val viewModel : MarkerLikeViewModel by activityViewModels()
+    private val viewModel: MarkerLikeViewModel by activityViewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DialogLikeMenuBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         return binding.root
@@ -30,7 +34,7 @@ class MarkerLikeDialog : BottomSheetDialogFragment() {
         initView()
     }
 
-    private fun initView(){
+    private fun initView() {
         BottomSheetBehavior.from(view?.parent as View).apply {
             state = BottomSheetBehavior.STATE_EXPANDED
             skipCollapsed = true
@@ -43,29 +47,28 @@ class MarkerLikeDialog : BottomSheetDialogFragment() {
         }
 
         binding.deleteBtn.setOnClickListener {
-            arguments?.getInt(POST_ID)?.let { id->
+            arguments?.getInt(POST_ID)?.let { id ->
                 viewModel.onClickItemDelete(id)
             }
         }
 
         binding.copyBtn.setOnClickListener {
-            arguments?.getString(TITLE)?.let { title->
+            arguments?.getString(TITLE)?.let { title ->
                 viewModel.onClickItemCopy(title)
             }
         }
     }
 
 
-
-    companion object{
-        fun newInstance(postId : Int, title: String) : MarkerLikeDialog {
+    companion object {
+        fun newInstance(postId: Int, title: String): MarkerLikeDialog {
             val fragment = MarkerLikeDialog()
             val POST_ID = "postId"
-            val TITLE ="title"
+            val TITLE = "title"
 
             val bundle = Bundle().apply {
-                putInt(POST_ID,postId)
-                putString(TITLE,title)
+                putInt(POST_ID, postId)
+                putString(TITLE, title)
             }
             fragment.arguments = bundle
             return fragment

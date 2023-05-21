@@ -15,17 +15,17 @@ import com.hearhere.presentation.databinding.ActivityMarkerListBinding
 import com.hearhere.presentation.util.ConvertDPtoPX
 import com.hearhere.presentation.util.dpToPx
 
-class MarkerListActivity : BaseActivity<ActivityMarkerListBinding>(R.layout.activity_marker_list){
-    private val viewModel : MarkerListViewModel by viewModels()
-    private lateinit var adapter : BaseAdapter
+class MarkerListActivity : BaseActivity<ActivityMarkerListBinding>(R.layout.activity_marker_list) {
+    private val viewModel: MarkerListViewModel by viewModels()
+    private lateinit var adapter: BaseAdapter
 
     override fun onCreateView(savedInstanceState: Bundle?) {
         binding.lifecycleOwner = this
 
         adapter = BaseAdapter.build()
-        binding.markerListRv.let{
-            it.adapter=adapter
-            it.addItemDecoration(MarginItemDecoration(ConvertDPtoPX(this,8)))
+        binding.markerListRv.let {
+            it.adapter = adapter
+            it.addItemDecoration(MarginItemDecoration(ConvertDPtoPX(this, 8)))
         }
         binding.backBtn.setOnClickListener { finish() }
     }
@@ -34,19 +34,19 @@ class MarkerListActivity : BaseActivity<ActivityMarkerListBinding>(R.layout.acti
 
     override fun observeViewModel() {
         viewModel.binder.observe {
-          adapter.submitList(it)
-          Log.d("binder",it.toString())
+            adapter.submitList(it)
+            Log.d("binder", it.toString())
         }
 
         viewModel.uiState.observe {
-            Log.d("state",it.toString())
+            Log.d("state", it.toString())
         }
     }
 
-    companion object{
-        fun start(context : Context){
-            val intent = Intent(context,MarkerListActivity::class.java)
-            startActivity(context,intent,null)
+    companion object {
+        fun start(context: Context) {
+            val intent = Intent(context, MarkerListActivity::class.java)
+            startActivity(context, intent, null)
         }
     }
 }
