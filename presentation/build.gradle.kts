@@ -61,10 +61,13 @@ dependencies {
     implementation( "androidx.security:security-crypto:${Dep.security}")
 
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
 
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")
     implementation("com.airbnb.android:lottie:${Dep.lottie}")
+
 
 
 

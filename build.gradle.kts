@@ -2,6 +2,7 @@
 plugins {
     id("org.jetbrains.kotlin.jvm") version Dep.kotlin
     id("org.jetbrains.kotlin.kapt") version Dep.kotlin
+    id("org.jetbrains.kotlin.android") version "1.8.0" apply false
 }
 
 buildscript{
