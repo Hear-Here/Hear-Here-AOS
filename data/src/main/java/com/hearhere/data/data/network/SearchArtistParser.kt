@@ -18,6 +18,7 @@ object SearchArtistParser  {
 
         var songId = ""
         var songName = ""
+        val songList = ArrayList<SongResult>()
 
         var nowTag : String? = null
 
@@ -51,6 +52,9 @@ object SearchArtistParser  {
                         "maniadb:artist"->{
                             nowTag ="artist"
                         }
+                        "maniadb:tracklist"->{
+                            nowTag = "albumtrack"
+                        }
 
                     }
                 }
@@ -59,7 +63,8 @@ object SearchArtistParser  {
                         "item" ->   artistList.add(artist!!)
                         "song"->{
                             if (artist != null) {
-                                artist.songList.add(SongResult(songId,songName,artist.release))
+                                songList.add(SongResult(songId,songName,artist.release,cover=null))
+                               // artist.songList.add(SongResult(songId,songName,artist.release))
                             }
                         }
                     }
@@ -77,9 +82,13 @@ object SearchArtistParser  {
                             nowTag = null
                         }
                         "image"->{
-                            if (artist != null) {
-                                artist.image = parser.text.trim()
+                            if (artist != null && songList.isNotEmpty()) {
+                                val image = parser.text.trim()
+                                songList.forEach { it.cover = image }
+                                artist.songList.addAll(songList)
+                                songList.clear()
                             }
+
                             nowTag = null
                         }
                         "release"->{

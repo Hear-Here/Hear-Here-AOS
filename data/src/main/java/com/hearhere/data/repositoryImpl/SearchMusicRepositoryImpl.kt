@@ -130,7 +130,7 @@ class SearchMusicRepositoryImpl @Inject constructor(
                             songId = song.id!!.toLong(),
                             title = song.name!!,
                             artist = title,
-                            cover = cover,
+                            cover = song.cover,
                             pubYear = song.release ?: ""
                         )
                         list.add(searchedMusic)
