@@ -56,7 +56,7 @@ object NetworkModule {
     @api
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(BASE_URL)
+        .baseUrl("https://hear-here.shop/")
         .client(okHttpClient)
         .build()
 
