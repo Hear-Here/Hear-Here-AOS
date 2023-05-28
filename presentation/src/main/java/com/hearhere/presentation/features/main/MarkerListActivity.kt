@@ -12,6 +12,7 @@ import com.hearhere.presentation.base.BaseAdapter
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.util.MarginItemDecoration
 import com.hearhere.presentation.databinding.ActivityMarkerListBinding
+import com.hearhere.presentation.features.detail.DetailActivity
 import com.hearhere.presentation.util.ConvertDPtoPX
 import com.hearhere.presentation.util.dpToPx
 
@@ -35,11 +36,15 @@ class MarkerListActivity : BaseActivity<ActivityMarkerListBinding>(R.layout.acti
     override fun observeViewModel() {
         viewModel.binder.observe {
             adapter.submitList(it)
-            Log.d("binder", it.toString())
+
         }
 
         viewModel.uiState.observe {
-            Log.d("state", it.toString())
+
+        }
+
+        viewModel.navigateToDetails.observe {
+          if(it !==null )  DetailActivity.start(this,it)
         }
     }
 

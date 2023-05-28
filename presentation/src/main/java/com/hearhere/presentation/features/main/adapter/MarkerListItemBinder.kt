@@ -18,7 +18,7 @@ import com.hearhere.presentation.common.util.createRandomId
 import com.hearhere.presentation.databinding.ItemMarkerListBinding
 import com.hearhere.presentation.features.main.MarkerListViewModel
 
-class MarkerListItemBinder() : BaseItemBinder {
+class MarkerListItemBinder(val onClick : (Long)->Unit) : BaseItemBinder {
     override var itemId: Long = createRandomId()
     override var itemLayoutId: Int = R.layout.item_marker_list
 
@@ -31,6 +31,12 @@ class MarkerListItemBinder() : BaseItemBinder {
 
     override fun areContentsTheSame(oldItem: BaseItemBinder, newItem: BaseItemBinder): Boolean {
         return true
+    }
+
+    fun onClickItem(){
+        marker.value?.let {
+            onClick(it.postId.toLong())
+        }
     }
 
 }

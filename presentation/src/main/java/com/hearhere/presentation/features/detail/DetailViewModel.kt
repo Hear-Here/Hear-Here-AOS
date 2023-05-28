@@ -1,4 +1,4 @@
-package com.hearhere.presentation.features.main
+package com.hearhere.presentation.features.detail
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,7 +14,9 @@ import com.hearhere.presentation.common.component.emojiButton.GenreType
 import com.hearhere.presentation.common.component.emojiButton.WeatherType
 import com.hearhere.presentation.common.component.emojiButton.WithType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
@@ -22,14 +24,13 @@ import java.net.URL
 import javax.inject.Inject
 
 @HiltViewModel
-class MarkerDetailViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
+class DetailViewModel @Inject constructor(   private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     val POST_ID = "postId"
 
-    private val _uiState = MutableLiveData<MarkerDetailUiState>()
-    val uiState: LiveData<MarkerDetailUiState> get() = _uiState
+    private val _uiState = MutableLiveData<PostingDetailUiState?>(null)
+    val uiState: LiveData<PostingDetailUiState?> get() = _uiState
 
     var postId = 0
         get() = savedStateHandle.get<Int>(POST_ID) ?: -1
@@ -44,12 +45,13 @@ class MarkerDetailViewModel @Inject constructor(
         _loading.postValue(true)
         //TODO
         _uiState.postValue(
-            MarkerDetailUiState(
+            PostingDetailUiState(
                 postId = postId,
                 writer = "영종킴" + postId.toString(),
                 title = "노래노래",
                 artist = "hihihihi",
                 cover = Uri.parse(""),
+                bitmap = loadUrlToBitmap(""),
                 message = "hefheihoehaoehfoi",
                 genreType = GenreType.HIPHOP,
                 weatherType = WeatherType.RAINY,
@@ -57,10 +59,11 @@ class MarkerDetailViewModel @Inject constructor(
                 emotionType = EmotionType.HEART,
                 distance = 50.0,
                 isLike = false,
-                likeCnt = 180
+                likeCnt = 180,
+                latitude = 37.566667,
+                longitude =126.978427 ,
             )
         )
-
         _loading.postValue(false)
     }
 
@@ -91,25 +94,52 @@ class MarkerDetailViewModel @Inject constructor(
         }
     }
 
+    private fun loadUrlToBitmap(url: String): Bitmap? {
+        var bitmap: Bitmap? = null
+        val uThread: Thread = object : Thread() {
+            override fun run() {
+                try {
+                    val conn = URL(url).openConnection() as HttpURLConnection
+                    conn.doInput = true
+                    conn.connect()
+                    val `is` = conn.inputStream
+                    bitmap = BitmapFactory.decodeStream(`is`)
+                } catch (e: MalformedURLException) {
+                    e.printStackTrace()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        uThread.start()
 
+        try {
+            uThread.join()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+        return bitmap
+    }
 
-    data class MarkerDetailUiState(
+    data class PostingDetailUiState(
         val postId: Int,
         val writer: String,
         val title: String,
         val artist: String,
         val cover: Uri?,
+        val bitmap: Bitmap?,
         val message: String?,
         val genreType: GenreType?,
         val weatherType: WeatherType?,
         val withType: WithType?,
         val emotionType: EmotionType?,
         val distance: Double,
+        val latitude : Double,
+        val longitude : Double,
         val isLike: Boolean,
         val likeCnt: Int,
     ) {
         val distanceStr = distance.toString()
         val likeCntStr = likeCnt.toString()
     }
-
 }
