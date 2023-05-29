@@ -1,9 +1,11 @@
 package com.hearhere.presentation.features.main
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.features.main.adapter.MarkerListItemBinder
+import com.hearhere.presentation.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,6 +17,11 @@ class MarkerListViewModel @Inject constructor():  BaseViewModel(){
 
     private val _binder = MutableLiveData<List<MarkerListItemBinder>>(emptyList())
     val binder get() = _binder
+
+    private val _navigateToDetails = SingleLiveEvent<Long?>()
+
+    val navigateToDetails : LiveData<Long?>
+        get() = _navigateToDetails
 
     init {
         //call API
@@ -59,13 +66,18 @@ class MarkerListViewModel @Inject constructor():  BaseViewModel(){
 
         val binders = arrayListOf<MarkerListItemBinder>()
         res.forEach{
-            val binder = MarkerListItemBinder()
+            val binder = MarkerListItemBinder(::onClickItem)
             binder.setMarker(it)
             binders.add(binder)
         }.also {
             binder.postValue(binders)
         }
 
+    }
+
+    fun onClickItem(postId: Long){
+        _navigateToDetails.value = postId
+        _navigateToDetails.call()
     }
 
 

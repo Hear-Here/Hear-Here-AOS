@@ -31,6 +31,7 @@ import com.hearhere.presentation.common.component.MarkerImageView
 import com.hearhere.presentation.databinding.ActivityMainBinding
 import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.features.main.profile.MarkerMyPostingActivity
+import com.hearhere.presentation.util.createDrawableFromView
 import com.hearhere.presentation.util.getCircledBitmap
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -160,7 +161,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             zIndex = 1F
             setIcon(
                 BitmapDescriptorFactory.fromBitmap(
-                    createDrawableFromView(
+                    this@MainActivity.createDrawableFromView(
                         (pin.bitmap ?: BitmapFactory.decodeResource(
                             resources,
                             com.hearhere.presentation.common.R.drawable.headphones
@@ -180,7 +181,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                     position(LatLng(it.pin.latitude, it.pin.longitude))
                     icon(
                         BitmapDescriptorFactory.fromBitmap(
-                            createDrawableFromView(
+                            this@MainActivity.createDrawableFromView(
                                 (it.bitmap ?: BitmapFactory.decodeResource(
                                     resources,
                                     com.hearhere.presentation.common.R.drawable.headphones
@@ -305,29 +306,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             Toast.makeText(this@MainActivity, "no", Toast.LENGTH_SHORT).show()
             markerCreateDialog?.dismiss()
         }
-
-    }
-
-    private fun createDrawableFromView(bitmap: Bitmap, isSelected: Boolean): Bitmap {
-        val customView = MarkerImageView(this)
-        customView.setMarkerFocus(isSelected)
-        customView.setMarkerBitmapImage(bitmap)
-
-        customView.measure(
-            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        )
-
-        val bmp = createBitmap(
-            customView.measuredWidth, customView.measuredHeight, Bitmap.Config.ARGB_8888
-        )
-        customView.layout(0, 0, customView.measuredWidth, customView.measuredHeight)
-        customView.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-
-        val canvas = Canvas(bmp)
-        customView.draw(canvas)
-
-        return bmp
 
     }
 

@@ -15,6 +15,7 @@ import com.hearhere.presentation.base.BaseAdapter
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.util.MarginItemDecoration
 import com.hearhere.presentation.databinding.ActivityMarkerLikeBinding
+import com.hearhere.presentation.features.detail.DetailActivity
 import com.hearhere.presentation.util.ConvertDPtoPX
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -59,8 +60,8 @@ class MarkerLikeActivity  : BaseActivity<ActivityMarkerLikeBinding>(R.layout.act
                 is MarkerLikeViewModel.MarkerLikeEvent.DismissDialog -> {
                     dismissDialog()
                 }
-                else -> {
-                    Toast.makeText(this, "아이템 상세보기", Toast.LENGTH_SHORT).show()
+                is MarkerLikeViewModel.MarkerLikeEvent.OnClickDetail -> {
+                    DetailActivity.start(this,event.postId.toLong())
                 }
             }
             viewModel.consumeViewEvent(event)

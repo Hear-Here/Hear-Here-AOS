@@ -15,6 +15,7 @@ import com.hearhere.presentation.base.BaseAdapter
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.util.MarginItemDecoration
 import com.hearhere.presentation.databinding.ActivityMarkerMyPostingBinding
+import com.hearhere.presentation.features.detail.DetailActivity
 import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.features.main.like.MarkerLikeDialog
 import com.hearhere.presentation.features.main.like.MarkerLikeViewModel
@@ -65,8 +66,9 @@ class MarkerMyPostingActivity :
                 is MarkerMyPostingViewModel.MarkerMyPostingEvent.DismissDialog -> {
                     dismissDialog()
                 }
-                else -> {
+                is MarkerMyPostingViewModel.MarkerMyPostingEvent.OnClickDetail -> {
                     Toast.makeText(this, "아이템 상세보기", Toast.LENGTH_SHORT).show()
+                    DetailActivity.start(this,event.postId.toLong())
                 }
             }
             viewModel.consumeViewEvent(event)

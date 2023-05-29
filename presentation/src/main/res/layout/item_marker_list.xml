@@ -12,6 +12,7 @@
         android:paddingRight="20dp"
         android:background="@drawable/radius_rectangle"
         android:elevation="1dp"
+        android:onClick="@{_->binder.onClickItem()}"
         >
         <androidx.cardview.widget.CardView
             android:id="@+id/cover_iv"
