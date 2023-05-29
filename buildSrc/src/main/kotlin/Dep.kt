@@ -37,5 +37,6 @@ object Dep {
     const val data_store = "1.0.0"
     const val kotlin_plugin = "1.4.10"
     const val retrofit_converter_jackson = "2.4.0"
+    const val kakao = "2.1.3"
 
 }

@@ -3,5 +3,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
 <application>
     <activity android:name=".test.TestActivity"/>
+    <activity android:name=".login.LoginActivity"/>
+    <activity android:name=".login.SplashActivity"/>
+    <activity android:name=".login.OnBoardingActivity"/>
+    <activity android:name=".login.SetNickNameActivity"/>
 </application>
 </manifest>

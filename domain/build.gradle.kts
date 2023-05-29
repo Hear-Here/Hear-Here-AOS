@@ -37,6 +37,8 @@ android {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Dep.kotlin}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
     implementation("androidx.test:monitor:1.5.0")
     implementation("androidx.test.ext:junit-ktx:1.1.3")
