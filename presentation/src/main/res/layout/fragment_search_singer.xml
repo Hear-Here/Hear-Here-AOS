@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.hearhere.presentation.post.SearchSingerViewModel" />
+            type="com.hearhere.presentation.post.PostViewModel" />
     </data>
 
     <FrameLayout
@@ -14,10 +14,11 @@
         tools:context=".post.SearchSingerFragment">
 
         <TextView
+            android:id="@+id/text_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Hello"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
     </FrameLayout>
 </layout>

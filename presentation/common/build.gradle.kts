@@ -53,7 +53,7 @@ dependencies {
     implementation("com.airbnb.android:lottie:${Dep.lottie}")
 
     // glide
-    implementation("com.github.bumptech.glide:glide:${Dep.glide}")
+   implementation("com.github.bumptech.glide:glide:${Dep.glide}")
 
     // flex box layout manager
     implementation("com.google.android.flexbox:flexbox:${Dep.flexbox}")

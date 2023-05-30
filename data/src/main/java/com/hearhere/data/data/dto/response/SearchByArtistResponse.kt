@@ -68,6 +68,7 @@ data class SongResult(
     var id: String?=null,
     var name: String?=null,
     var release : String?=null,
+    var cover : String?=null
 )
 
 
