@@ -31,8 +31,8 @@ class MarkerDetailViewModel @Inject constructor(
     private val _uiState = MutableLiveData<MarkerDetailUiState>()
     val uiState: LiveData<MarkerDetailUiState> get() = _uiState
 
-    var postId = 0
-        get() = savedStateHandle.get<Int>(POST_ID) ?: -1
+    var postId = 0L
+        get() = savedStateHandle.get<Long>(POST_ID) ?: -1L
 
     private var toggleJob: Job? = null
 
@@ -94,7 +94,7 @@ class MarkerDetailViewModel @Inject constructor(
 
 
     data class MarkerDetailUiState(
-        val postId: Int,
+        val postId: Long,
         val writer: String,
         val title: String,
         val artist: String,

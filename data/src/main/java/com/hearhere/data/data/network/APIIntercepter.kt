@@ -24,7 +24,7 @@ class APIInterceptor @Inject constructor(
         request = request?.newBuilder()
             ?.addHeader("Content-Type", "application/json")
             ?.addHeader("Accept", "application/json")
-            ?.addHeader("Authentication",token)
+            ?.addHeader("Authorization: Bearer",token)
             ?.build()!!
         Log.d("header request",request.toString())
         return chain.proceed(request)

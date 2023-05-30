@@ -5,11 +5,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.*
-import android.graphics.Bitmap.createBitmap
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
@@ -27,7 +25,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseActivity
 import com.hearhere.presentation.base.BaseViewModel
-import com.hearhere.presentation.common.component.MarkerImageView
 import com.hearhere.presentation.databinding.ActivityMainBinding
 import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.features.main.profile.MarkerMyPostingActivity
@@ -235,8 +232,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             setFocusMarker(it, true)
 
             if (it.tag != MYLOCATION_TAG) {
-                viewModel.setSelectedPin(it.tag as Int)
-                showMarkerDialog(it.tag as Int)
+                viewModel.setSelectedPin(it.tag as Long)
+                showMarkerDialog(it.tag as Long)
             }
             mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(it.position, DEFAULT_ZOOM_LEVEL))
             return@setOnMarkerClickListener true
@@ -276,7 +273,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         )
     }
 
-    private fun showMarkerDialog(postId: Int) {
+    private fun showMarkerDialog(postId: Long) {
         if (::markerDetailDialog.isInitialized && markerDetailDialog.isAdded) {
             markerDetailDialog.dismiss()
         }

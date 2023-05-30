@@ -66,12 +66,12 @@ class MarkerDetailBottomSheet : BottomSheetDialogFragment() {
 
 
     companion object {
-        fun newInstance(postId: Int): MarkerDetailBottomSheet {
+        fun newInstance(postId: Long): MarkerDetailBottomSheet {
             val fragment = MarkerDetailBottomSheet()
             val POST_ID = "postId"
 
             val bundle = Bundle().apply {
-                putInt(POST_ID, postId)
+                putLong(POST_ID, postId)
             }
             fragment.arguments = bundle
             return fragment

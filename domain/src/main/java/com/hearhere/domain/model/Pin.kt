@@ -8,7 +8,7 @@ import java.net.MalformedURLException
 import java.net.URL
 
 data class Pin (
-    val postId : Int,
+    val postId : Long,
     val imageUrl : String? = null,
     val latitude : Double,
     val longitude : Double,

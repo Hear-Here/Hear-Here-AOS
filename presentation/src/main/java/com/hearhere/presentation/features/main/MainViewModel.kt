@@ -6,14 +6,19 @@ import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.hearhere.domain.model.ApiResponse
 import com.hearhere.domain.model.Pin
+import com.hearhere.domain.usecase.GetPostUseCase
+import com.hearhere.domain.usecaseImpl.GetPostUseCaseImpl
 import com.hearhere.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
@@ -21,7 +26,9 @@ import java.net.URL
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor() : BaseViewModel() {
+class MainViewModel @Inject constructor(
+   private val getPostUseCase: GetPostUseCaseImpl
+) : BaseViewModel() {
 
     private val _pinStateList = MutableLiveData<List<PinState>>(emptyList())
     val pinStateList: LiveData<List<PinState>>
@@ -86,6 +93,21 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
                 126.957595
             ),
         )
+
+        /**
+        viewModelScope.launch {
+            if(myLocation.value!=null){
+                getPostUseCase.getPostList( myLocation.value!!.latitude,
+                    myLocation.value!!.longitude).also {
+                    when(it){
+                        is ApiResponse.Success ->{}
+                        is ApiResponse.Error->{}
+                    }
+                }
+            }
+        }
+        **/
+
         repsonse.forEach {
             tempList.add(PinState(it, null))
         }
@@ -108,7 +130,7 @@ class MainViewModel @Inject constructor() : BaseViewModel() {
         addEvent(PinEvent.OnCompletedLoad)
     }
 
-    fun setSelectedPin(postId: Int?) {
+    fun setSelectedPin(postId: Long?) {
         pinStateList.value?.firstOrNull() { it.pin.postId == postId }?.also {
             _selectedPin.postValue(it)
             addEvent(PinEvent.OnChangeSelectedPin)
