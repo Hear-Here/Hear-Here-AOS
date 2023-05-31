@@ -8,8 +8,12 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.hearhere.presentation.R
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.common.util.createRandomId
@@ -41,21 +45,32 @@ fun setCoverImage(imageview: ImageView, url: String?){
     Log.d("url -옥",url.toString())
     if(url.isNullOrBlank()) return
     url?.let {
-        Glide.with(imageview)
-            .load(it)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .fitCenter()
+        Glide.with(imageview.context)
+            .load(url)
+            .centerCrop()
             .placeholder(com.hearhere.presentation.common.R.drawable.outframe)
             .error(
                 com.hearhere.presentation.common.R.drawable.outframe)
-            .into(object : CustomTarget<Drawable>() {
-                override fun onResourceReady(
-                    resource: Drawable,
-                    transition: Transition<in Drawable>?
-                ) {
-                    imageview.setImageDrawable(resource)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Log.d("glide-heare","===${e}")
+                    return false
                 }
-                override fun onLoadCleared(placeholder: Drawable?) {}
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                }
             })
-    }
+            .into(imageview)
+            }
 }
