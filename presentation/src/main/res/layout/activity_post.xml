@@ -27,8 +27,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/search_bar_layout"
+            android:layout_marginHorizontal="36dp"
             android:layout_width="match_parent"
             android:layout_height="42dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/back_btn"
@@ -55,8 +58,10 @@
                 android:layout_width="42dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/search_btn_background"
-                android:src="@drawable/ic_forward_white"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:src="@drawable/ic_search_white"
+
+                android:scaleType="centerInside"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

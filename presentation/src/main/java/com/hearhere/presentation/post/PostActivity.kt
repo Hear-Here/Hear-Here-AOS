@@ -37,7 +37,7 @@ class PostActivity : BaseActivity<ActivityPostBinding>(R.layout.activity_post) {
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
 
     override fun observeViewModel() {
-        viewModel.binder.observe {
+        viewModel.titleBinder.observe {
             adapter.submitList(it)
             Log.d("binder", it.toString())
         }

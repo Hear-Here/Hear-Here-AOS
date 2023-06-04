@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.hearhere.presentation.post.SearchTitleViewModel" />
+            type="com.hearhere.presentation.post.PostViewModel" />
     </data>
 
     <FrameLayout

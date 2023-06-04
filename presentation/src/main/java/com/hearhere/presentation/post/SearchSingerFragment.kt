@@ -18,9 +18,21 @@ class SearchSingerFragment : BaseFragment<FragmentSearchSingerBinding>(R.layout.
 
     private val viewModel: PostViewModel by activityViewModels()
 
+    private lateinit var adapter : BaseAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        adapter = BaseAdapter.build()
+
+    }
     override fun initView() {
 
-        // viewModel.searchMusic("아이유")
+        binding.markerListRv.adapter = adapter
+        viewModel.singerBinder.observe(requireActivity()) {
+            adapter.submitList(it)
+            Log.d("binder", it.toString())
+        }
 
     }
 

@@ -25,8 +25,12 @@ class PostViewModel @Inject constructor(
     private val _list = MutableLiveData<List<BaseItemBinder>>()
     val list get() = _list
 
-    private val _binder = MutableLiveData<List<BaseItemBinder>>()
-    val binder get() = _binder
+    private val _titleBinder = MutableLiveData<List<BaseItemBinder>>()
+    val titleBinder get() = _titleBinder
+
+    private val _singerBinder = MutableLiveData<List<BaseItemBinder>>()
+    val singerBinder get() = _singerBinder
+
 
     init {
         setList()
@@ -37,8 +41,9 @@ class PostViewModel @Inject constructor(
 
         Log.d("/옥채연", keyword)
         viewModelScope.launch {
+            _loading.postValue(true)
             kotlin.runCatching{
-                val res = searchMusicUseCase.searchMusicBySong(keyword,10)
+                val res = searchMusicUseCase.searchMusicBySong(keyword,30)
 
                 val binders = arrayListOf<MusicListItemBinder>()
 
@@ -54,7 +59,7 @@ class PostViewModel @Inject constructor(
                         binder.setMusic(state)
                         binders.add(binder)
                     }.also {
-                        binder.postValue(binders)
+                        titleBinder.postValue(binders)
                     }
 
                 }
@@ -66,13 +71,33 @@ class PostViewModel @Inject constructor(
 
             kotlin.runCatching{
                 val res = searchMusicUseCase.searchMusicByArtist(keyword,30)
+
+                val binders = arrayListOf<MusicListItemBinder>()
+
+                res.onSuccess {
+                    it.forEach{
+                        val binder = MusicListItemBinder()
+                        val state = MusicListItemState(
+                            it.songId,
+                            it.title,
+                            it.artist,
+                            cover =  it.cover,
+                            it.pubYear)
+
+                        binder.setMusic(state)
+                        binders.add(binder)
+                    }.also {
+                        singerBinder.postValue(binders)
+                    }
+                }
+
                 Log.d("/옥채연/search Music result",res.toString())
             }.onFailure {
                 Log.d("search Music result fail... ",it.toString())
             }
+            _loading.postValue(false)
         }
 
-        val tempList = ArrayList<BaseItemBinder>()
 
     }
 
