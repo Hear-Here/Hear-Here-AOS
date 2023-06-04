@@ -19,7 +19,9 @@ import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.common.util.createRandomId
 import com.hearhere.presentation.post.PostViewModel
 
-class MusicListItemBinder(): BaseItemBinder {
+class MusicListItemBinder(
+    val onClickItem : (PostViewModel.MusicListItemState) ->Unit
+): BaseItemBinder {
     override var itemId: Long = createRandomId()
     override var itemLayoutId: Int = R.layout.item_music_list
 
@@ -36,6 +38,12 @@ class MusicListItemBinder(): BaseItemBinder {
 
     override fun areContentsTheSame(oldItem: BaseItemBinder, newItem: BaseItemBinder): Boolean {
         return true
+    }
+
+    fun onClick(){
+        music.value?.let{
+            onClickItem(it)
+        }
     }
 
 }

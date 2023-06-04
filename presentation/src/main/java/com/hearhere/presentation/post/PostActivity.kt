@@ -1,11 +1,7 @@
 package com.hearhere.presentation.post
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseActivity
@@ -37,11 +33,12 @@ class PostActivity : BaseActivity<ActivityPostBinding>(R.layout.activity_post) {
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
 
     override fun observeViewModel() {
-        viewModel.titleBinder.observe {
-            adapter.submitList(it)
-            Log.d("binder", it.toString())
+        viewModel.selectedMusic.observe{
+            if(it != null){
+                val music = it
+                //이 값을 받아서 start activity
+            }
         }
-
     }
 
     private fun setViewPager() {

@@ -9,4 +9,5 @@
         <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
         <item name="colorAccent">@color/primary</item>
     </style>
+    <style name="Theme.HearHere" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

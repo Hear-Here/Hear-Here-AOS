@@ -31,14 +31,12 @@ class PostViewModel @Inject constructor(
     private val _singerBinder = MutableLiveData<List<BaseItemBinder>>()
     val singerBinder get() = _singerBinder
 
+    private val _selectedMusic = MutableLiveData<MusicListItemState?>(null)
+    val selectedMusic get() = _selectedMusic
 
-    init {
-        setList()
-        setToken().also { getToken() }
-    }
 
     fun searchMusic(keyword : String){
-
+        if(keyword.isNullOrBlank()) return
         Log.d("/옥채연", keyword)
         viewModelScope.launch {
             _loading.postValue(true)
@@ -49,7 +47,7 @@ class PostViewModel @Inject constructor(
 
                 res.onSuccess {
                     it.forEach {
-                        val binder = MusicListItemBinder()
+                        val binder = MusicListItemBinder(::onClickItem)
                         val state = MusicListItemState(
                             it.songId,
                             it.title,
@@ -76,7 +74,7 @@ class PostViewModel @Inject constructor(
 
                 res.onSuccess {
                     it.forEach{
-                        val binder = MusicListItemBinder()
+                        val binder = MusicListItemBinder(::onClickItem)
                         val state = MusicListItemState(
                             it.songId,
                             it.title,
@@ -105,39 +103,18 @@ class PostViewModel @Inject constructor(
         Log.d("record"," success ")
     }
 
-    private fun setList(){
-        val listItems = arrayListOf<TestBinder>()
-        for(i in 0 until 10){
-            listItems.add(createBinder().apply {
-                this.text.set(i.toString())
-            })
-        }
-        _list.postValue(listItems)
-    }
-
-    private fun createBinder() : TestBinder{
-        return TestBinder(createRandomId(),::onClickItem)
-    }
 
     fun test(){
 
     }
 
-    fun onClickItem(id: Long){
+    fun onClickItem(state : MusicListItemState){
         //클릭 이벤트 시 binder 에서 호출됨
+        Log.d("OK music state", state.toString())
+        _selectedMusic.postValue(state)
+
     }
 
-    private fun getToken(){
-        viewModelScope.launch {
-            val token = testUseCase.getAccessToken()
-            Log.d("token", token.toString())
-        }
-    }
-    private fun setToken(){
-        viewModelScope.launch {
-            testUseCase.updateAccessToken("new token here")
-        }
-    }
 
     data class MusicListItemState(
         val songId : Long,

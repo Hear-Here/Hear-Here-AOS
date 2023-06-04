@@ -18,6 +18,9 @@ android {
         minSdk = App.minSdk
         targetSdk = App.targetSdk
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildTypes {
@@ -35,8 +38,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = App.jvmTarget
+        jvmTarget = "1.8"
     }
+
 }
 
 dependencies {
