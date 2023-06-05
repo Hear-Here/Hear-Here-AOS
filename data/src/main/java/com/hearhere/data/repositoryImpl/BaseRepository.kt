@@ -26,6 +26,7 @@ abstract class BaseRepository() {
         } catch (e: IOException) {
             emit(ApiResponse.Error("Please check your network connection",throwable = e))
         } catch (e: Exception) {
+            Log.d("safeApi-Error",e.message.toString())
             emit(ApiResponse.Error(errorMessage = "Something went wrong",throwable = e))
         }
     }.flowOn(Dispatchers.IO)

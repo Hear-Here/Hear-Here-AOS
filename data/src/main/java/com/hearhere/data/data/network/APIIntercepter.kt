@@ -19,12 +19,13 @@ class APIInterceptor @Inject constructor(
         var token  = runBlocking {
             repository.getAuthToken().accessToken
         }
+        Log.d("header request token",token.toString())
 
         var request = chain.request()
         request = request?.newBuilder()
             ?.addHeader("Content-Type", "application/json")
             ?.addHeader("Accept", "application/json")
-            ?.addHeader("Authorization: Bearer",token)
+            ?.addHeader("Authorization","Bearer ${token}")
             ?.build()!!
         Log.d("header request",request.toString())
         return chain.proceed(request)

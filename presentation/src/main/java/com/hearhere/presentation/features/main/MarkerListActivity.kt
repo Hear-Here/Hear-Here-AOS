@@ -15,7 +15,9 @@ import com.hearhere.presentation.databinding.ActivityMarkerListBinding
 import com.hearhere.presentation.features.detail.DetailActivity
 import com.hearhere.presentation.util.ConvertDPtoPX
 import com.hearhere.presentation.util.dpToPx
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MarkerListActivity : BaseActivity<ActivityMarkerListBinding>(R.layout.activity_marker_list) {
     private val viewModel: MarkerListViewModel by viewModels()
     private lateinit var adapter: BaseAdapter

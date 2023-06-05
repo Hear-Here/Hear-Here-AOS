@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.hearhere.domain.usecase.PatchPostUseCase
+import com.hearhere.domain.usecaseImpl.PatchPostUseCaseImpl
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.component.emojiButton.EmotionType
 import com.hearhere.presentation.common.component.emojiButton.GenreType
@@ -24,16 +26,17 @@ import java.net.URL
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(   private val savedStateHandle: SavedStateHandle
+class DetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val patchPostUseCase: PatchPostUseCaseImpl
 ) : BaseViewModel() {
 
-    val POST_ID = "postId"
+    val POST_ID = "POST_ID"
 
     private val _uiState = MutableLiveData<PostingDetailUiState?>(null)
     val uiState: LiveData<PostingDetailUiState?> get() = _uiState
 
-    var postId = 0
-        get() = savedStateHandle.get<Int>(POST_ID) ?: -1
+    var postId = savedStateHandle.get<Long>(POST_ID) ?: -1L
 
     private var toggleJob: Job? = null
 
@@ -42,6 +45,7 @@ class DetailViewModel @Inject constructor(   private val savedStateHandle: Saved
     }
 
     private fun getMarkerDetail() {
+        Log.d("hyom",postId.toString())
         _loading.postValue(true)
         //TODO
         _uiState.postValue(
@@ -61,7 +65,7 @@ class DetailViewModel @Inject constructor(   private val savedStateHandle: Saved
                 isLike = false,
                 likeCnt = 180,
                 latitude = 37.566667,
-                longitude =126.978427 ,
+                longitude = 126.978427,
             )
         )
         _loading.postValue(false)
@@ -89,6 +93,11 @@ class DetailViewModel @Inject constructor(   private val savedStateHandle: Saved
         toggleJob = viewModelScope.launch {
             delay(2000)
             //API
+            if(uiState.value?.isLike == true){
+                patchPostUseCase.likePost(uiState.value!!.postId)
+            }else{
+                patchPostUseCase.disLikePost(uiState.value!!.postId)
+            }
             Log.d("bottom toggle", uiState.value?.isLike.toString())
 
         }
@@ -122,7 +131,7 @@ class DetailViewModel @Inject constructor(   private val savedStateHandle: Saved
     }
 
     data class PostingDetailUiState(
-        val postId: Int,
+        val postId: Long,
         val writer: String,
         val title: String,
         val artist: String,
@@ -134,8 +143,8 @@ class DetailViewModel @Inject constructor(   private val savedStateHandle: Saved
         val withType: WithType?,
         val emotionType: EmotionType?,
         val distance: Double,
-        val latitude : Double,
-        val longitude : Double,
+        val latitude: Double,
+        val longitude: Double,
         val isLike: Boolean,
         val likeCnt: Int,
     ) {

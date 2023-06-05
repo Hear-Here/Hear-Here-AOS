@@ -2,11 +2,15 @@ package com.hearhere.data.data.network
 
 import com.hearhere.data.data.dto.request.AuthRequest
 import com.hearhere.data.data.dto.response.AuthResponse
+import com.hearhere.data.data.dto.response.LikePostItem
+import com.hearhere.data.data.dto.response.LikePostListResponse
+import com.hearhere.data.data.dto.response.PostItemResponse
 import com.hearhere.data.data.dto.response.PostListResponse
 import com.hearhere.domain.model.ApiResponse
 import retrofit2.Response
 
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -27,6 +31,27 @@ interface HearHereApiService {
       @Query("latitude") latitude : Double,
       @Query("longitude") longitude : Double,
     ) : Response<PostListResponse>
+
+
+    @GET("/post/{postId}")
+    suspend fun getPost(
+        @Path("postId") postId : Long
+    ):Response<PostItemResponse>
+
+
+    @POST("/post/{postId}/heart")
+    suspend fun likePost(
+        @Path("postId") postId : Long
+    ):Response<*>
+
+
+    @DELETE("/post/{postId}/heart")
+    suspend fun disLikePost(
+        @Path("postId") postId : Long
+    ):Response<*>
+
+    @GET("/post/heart/list")
+    suspend fun getLikePostList():Response<List<LikePostItem>>
 }
 
 
