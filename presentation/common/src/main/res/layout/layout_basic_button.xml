@@ -4,14 +4,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="0dp"
+        >
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button"
             style="@style/subtitle2"
-            android:textSize="16dp"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingTop="12dp"

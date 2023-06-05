@@ -23,6 +23,8 @@ android {
 
         buildConfigField("String", "encrypted_pref", getLocalKey("encrypted_pref"))
         buildConfigField("String", "PREF_KEY", getLocalKey("pref_key"))
+        buildConfigField("String", "BASE_URL",   "\"${getLocalKey("BASE_URL")}\"" )
+
     }
 
     buildTypes {
@@ -50,7 +52,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-serialization:${Dep.kotlin}")
     implementation( "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")

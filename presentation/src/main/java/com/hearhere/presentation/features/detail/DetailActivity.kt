@@ -40,18 +40,31 @@ class DetailActivity  : BaseActivity<ActivityDetailBinding>(R.layout.activity_de
         binding.viewModel =  viewModel
     }
 
+    override fun onRestart() {
+        viewModel.getMarkerDetail()
+        super.onRestart()
+    }
+
+    override fun onResume() {
+        Log.d("hyomk","resume")
+        viewModel.getMarkerDetail()
+        super.onResume()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapsInitializer.initialize(applicationContext, MapsInitializer.Renderer.LATEST, this)
         binding.mapView.onCreate(savedInstanceState)
-        initMap()
+
     }
 
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
 
     override fun observeViewModel() {
         viewModel.uiState.observe {
-            if(it!=null) initMap()
+            if(it!=null){
+                initMap()
+            }
         }
     }
 

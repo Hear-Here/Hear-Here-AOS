@@ -42,6 +42,11 @@ class TestViewModel @Inject constructor(
             kotlin.runCatching{
                 val res = searchMusicUseCase.searchMusicBySong("Kitsch",10)
                 Log.d("search Music by song result",res.toString())
+                res.onSuccess {
+                    it.forEach{
+
+                    }
+                }
             }.onFailure {
                 Log.d("search Music result fail... ",it.toString())
             }

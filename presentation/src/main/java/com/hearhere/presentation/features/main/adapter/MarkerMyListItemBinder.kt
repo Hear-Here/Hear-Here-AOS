@@ -8,8 +8,8 @@ import com.hearhere.presentation.features.main.like.MarkerLikeViewModel
 import com.hearhere.presentation.features.main.profile.MarkerMyPostingViewModel
 
 class MarkerMyListItemBinder(
-    private val onClick:(Int)->Unit?,
-    private val onClickMenu : (Int ,String) -> Unit?
+    private val onClick:(Long)->Unit?,
+    private val onClickMenu : (Long ,String) -> Unit?
 
 ) : BaseItemBinder  {
     override var itemId: Long = createRandomId()
