@@ -57,7 +57,7 @@
                         android:layout_height="35dp"
                         android:background="@drawable/selector_like_btn"
                         android:button="@null"
-                        android:checked="@{viewModel.uiState.like}"
+                        android:checked="@{viewModel.uiState.liked}"
                         android:onClick="@{_->viewModel.onClickLikeToggle()}"
                         android:scaleType="centerCrop" />
 

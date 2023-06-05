@@ -1,4 +1,4 @@
-package com.hearhere.data.data.dto.response
+package com.hearhere.domain.model
 
 sealed class ApiResponse<T>(
     val data: T? = null,

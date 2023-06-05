@@ -1,15 +1,16 @@
 package com.hearhere.data.repositoryImpl
 
 import android.content.Context
-import com.hearhere.data.data.dto.response.ApiResponse
 import com.hearhere.data.data.dto.response.ArtistResult
 import com.hearhere.data.data.dto.response.SearchByArtistResponse
 import com.hearhere.data.data.dto.response.SearchBySongResponse
 import com.hearhere.data.data.network.ParsingHelperImpl
 import com.hearhere.data.data.network.SearchArtistParser
+import com.hearhere.domain.model.ApiResponse
 import com.hearhere.domain.model.SearchedMusic
 import com.hearhere.domain.repository.SearchMusicRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.first
 import okhttp3.ResponseBody
 import javax.inject.Inject
 
@@ -22,25 +23,20 @@ class SearchMusicRepositoryImpl @Inject constructor(
     override suspend fun searchMusicBySong(
         keyword: String, display: Int?
     ): Result<List<SearchedMusic>> {
-
-        try {
-            val response = safeApiCall<SearchBySongResponse> {
-                parsingHelperImpl.searchMusicBySong(
-                    keyword = keyword, display = display
-                )
-            }
-            when (response) {
+        safeApiCall<SearchBySongResponse> {
+            parsingHelperImpl.searchMusicBySong(
+                keyword = keyword, display = display
+            )
+        }.first().let{ it ->
+            when (it) {
                 is ApiResponse.Success -> {
-                    return Result.success(response.data?.mapToDomain() ?: emptyList())
+                    return(Result.success(it.data?.mapToDomain() ?: emptyList()))
                 }
+
                 else -> {
-                    response.throwable?.let { Result.failure<List<SearchedMusic>>(it) }
+                    it.throwable?.let { return Result.failure<List<SearchedMusic>>(it) }
                 }
             }
-        } catch (e: Throwable) {
-            return Result.failure<List<SearchedMusic>>(e)
-        } catch (e: IllegalStateException) {
-            return Result.failure<List<SearchedMusic>>(e)
         }
 
         return Result.failure<List<SearchedMusic>>(error("parsing fail"))
@@ -48,12 +44,11 @@ class SearchMusicRepositoryImpl @Inject constructor(
 
 
     override suspend fun searchMusicByArtist(keyword: String, display: Int?): Result<List<SearchedMusic>> {
-        try {
-            val response = safeApiCall<ResponseBody> {
-                parsingHelperImpl.searchMusicByArtist(
-                    keyword = keyword, display = display
-                )
-            }
+        safeApiCall<ResponseBody> {
+            parsingHelperImpl.searchMusicByArtist(
+                keyword = keyword, display = display
+            )
+        }.first().let{ response ->
             when (response) {
                 is ApiResponse.Success -> {
                     response.data?.let {
@@ -62,15 +57,10 @@ class SearchMusicRepositoryImpl @Inject constructor(
                     }
                 }
                 else -> {
-                    response.throwable?.let { Result.failure<List<SearchedMusic>>(it) }
+                    response.throwable?.let { return Result.failure<List<SearchedMusic>>(it) }
                 }
             }
-        } catch (e: Throwable) {
-            return Result.failure<List<SearchedMusic>>(e)
-        } catch (e: IllegalStateException) {
-            return Result.failure<List<SearchedMusic>>(e)
         }
-
         return Result.failure<List<SearchedMusic>>(error("parsing fail"))
     }
 
@@ -130,7 +120,7 @@ class SearchMusicRepositoryImpl @Inject constructor(
                             songId = song.id!!.toLong(),
                             title = song.name!!,
                             artist = title,
-                            cover = cover,
+                            cover = song.cover,
                             pubYear = song.release ?: ""
                         )
                         list.add(searchedMusic)

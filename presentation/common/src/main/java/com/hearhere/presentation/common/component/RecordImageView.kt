@@ -64,7 +64,7 @@ class RecordImageView @JvmOverloads constructor(
                 return
             }
             else{
-                binding.recordInnerLayout.visibility = View.VISIBLE
+                binding.recordHoleLayout.visibility = View.VISIBLE
             }
 
             Glide.with(this)
@@ -83,7 +83,7 @@ class RecordImageView @JvmOverloads constructor(
                         resource: Drawable,
                         transition: Transition<in Drawable>?
                     ) {
-                        binding.recordInnerframeIv.setImageDrawable(resource)
+                        binding.recordOutframeIv.setImageDrawable(resource)
                         invalidate()
                     }
 
@@ -105,14 +105,14 @@ class RecordImageView @JvmOverloads constructor(
                 }
 
                 binding.recordHoleLayout.layoutParams.apply {
-                    width = ConvertDPtoPX(context,30)
-                    height = ConvertDPtoPX(context,30)
+                    width = ConvertDPtoPX(context,40)
+                    height = ConvertDPtoPX(context,40)
                 }
 
-                binding.recordInnerLayout.layoutParams.apply {
-                    width = ConvertDPtoPX(context,110)
-                    height = ConvertDPtoPX(context,110)
-                }
+//                binding.recordInnerLayout.layoutParams.apply {
+//                    width = ConvertDPtoPX(context,110)
+//                    height = ConvertDPtoPX(context,110)
+//                }
             }
         }
     }

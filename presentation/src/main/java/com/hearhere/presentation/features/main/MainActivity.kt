@@ -2,18 +2,19 @@ package com.hearhere.presentation.features.main
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.*
-import android.graphics.Bitmap.createBitmap
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.ContentInfoCompat.Flags
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -27,16 +28,17 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseActivity
 import com.hearhere.presentation.base.BaseViewModel
-import com.hearhere.presentation.common.component.MarkerImageView
 import com.hearhere.presentation.databinding.ActivityMainBinding
 import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.features.main.profile.MarkerMyPostingActivity
 import com.hearhere.presentation.util.createDrawableFromView
 import com.hearhere.presentation.util.getCircledBitmap
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     OnMapsSdkInitializedCallback, OnMapReadyCallback {
 
@@ -217,6 +219,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                 )
             )
         }
+        viewModel.setMyLocation(location)
         viewModel.myLocationMarker.value?.let { it.remove() }
 
         val myLocationMarker = mMap!!.addMarker(option)
@@ -235,8 +238,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             setFocusMarker(it, true)
 
             if (it.tag != MYLOCATION_TAG) {
-                viewModel.setSelectedPin(it.tag as Int)
-                showMarkerDialog(it.tag as Int)
+                viewModel.setSelectedPin(it.tag as Long)
+                showMarkerDialog(it.tag as Long)
             }
             mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(it.position, DEFAULT_ZOOM_LEVEL))
             return@setOnMarkerClickListener true
@@ -252,7 +255,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                 try {
                     it.isMyLocationEnabled = true
                     location = getMyLocation()
-                    viewModel.myLocation.postValue(location)
+                    viewModel.setMyLocation(location)
                     it.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
                 } catch (e: SecurityException) {
                 } catch (e: Resources.NotFoundException) {
@@ -276,7 +279,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         )
     }
 
-    private fun showMarkerDialog(postId: Int) {
+    private fun showMarkerDialog(postId: Long) {
         if (::markerDetailDialog.isInitialized && markerDetailDialog.isAdded) {
             markerDetailDialog.dismiss()
         }
@@ -320,6 +323,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         } catch (e: IllegalArgumentException) {
         }
         return DEFAULT_LOCATION
+    }
+
+    companion object{
+        fun start(context: Context){
+            val intent = Intent(context, MainActivity::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            ContextCompat.startActivity(context, intent, null)
+        }
     }
 
 }

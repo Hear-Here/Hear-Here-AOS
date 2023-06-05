@@ -7,8 +7,8 @@ import com.hearhere.presentation.common.util.createRandomId
 import com.hearhere.presentation.features.main.like.MarkerLikeViewModel
 
 class MarkerLikeItemBinder(
-    private val onClick:(Int)->Unit?,
-    private val onClickMenu : (Int ,String) -> Unit?
+    private val onClick:(Long)->Unit?,
+    private val onClickMenu : (Long ,String) -> Unit?
     ) : BaseItemBinder {
     override var itemId: Long = createRandomId()
     override var itemLayoutId: Int = R.layout.item_marker_like_list

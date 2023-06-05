@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pin_name">%s님의 Pin</string>
+    <string name="pin_distance">%fm</string>
     <string name="marker_distance">내 위치에서 %sm 떨어져있어요!</string>
 </resources>

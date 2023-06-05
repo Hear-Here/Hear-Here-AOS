@@ -47,7 +47,7 @@ class MarkerLikeDialog : BottomSheetDialogFragment() {
         }
 
         binding.deleteBtn.setOnClickListener {
-            arguments?.getInt(POST_ID)?.let { id ->
+            arguments?.getLong(POST_ID)?.let { id ->
                 viewModel.onClickItemDelete(id)
             }
         }
@@ -61,13 +61,13 @@ class MarkerLikeDialog : BottomSheetDialogFragment() {
 
 
     companion object {
-        fun newInstance(postId: Int, title: String): MarkerLikeDialog {
+        fun newInstance(postId: Long, title: String): MarkerLikeDialog {
             val fragment = MarkerLikeDialog()
             val POST_ID = "postId"
             val TITLE = "title"
 
             val bundle = Bundle().apply {
-                putInt(POST_ID, postId)
+                putLong(POST_ID, postId)
                 putString(TITLE, title)
             }
             fragment.arguments = bundle
