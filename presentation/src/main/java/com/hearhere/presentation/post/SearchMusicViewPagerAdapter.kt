@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import kotlin.collections.ArrayList
 
-class ViewPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {
+class SearchMusicViewPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {
 
     var list: ArrayList<Fragment> = arrayListOf(SearchTitleFragment(), SearchSingerFragment())
 

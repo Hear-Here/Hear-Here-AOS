@@ -16,4 +16,11 @@
         </shape>
     </item>
 
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/primary"/>
+            <corners android:radius="10dp"/>
+        </shape>
+    </item>
+
 </selector>

@@ -1,5 +1,6 @@
 package com.hearhere.presentation.post
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
@@ -37,12 +38,18 @@ class PostActivity : BaseActivity<ActivityPostBinding>(R.layout.activity_post) {
             if(it != null){
                 val music = it
                 //이 값을 받아서 start activity
+                val intent = Intent(this@PostActivity, PostSelectOptionActivity::class.java)
+                intent.putExtra("music_cover", music.cover)
+                intent.putExtra("music_artist", music.artist)
+                intent.putExtra("music_title", music.title)
+                startActivity(intent)
+
             }
         }
     }
 
     private fun setViewPager() {
-        val pagerAdapter = ViewPagerAdapter(this)
+        val pagerAdapter = SearchMusicViewPagerAdapter(this)
         val tabName = listOf("Title", "Artist")
             binding.viewPager.adapter = pagerAdapter
 

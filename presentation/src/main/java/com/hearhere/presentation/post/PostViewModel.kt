@@ -8,6 +8,7 @@ import com.hearhere.domain.usecaseImpl.SearchMusicUseCaseImpl
 import com.hearhere.domain.usecaseImpl.TestUseCaseImpl
 import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.base.BaseViewModel
+import com.hearhere.presentation.common.component.emojiButton.GenreType
 import com.hearhere.presentation.common.util.createRandomId
 import com.hearhere.presentation.post.adapter.MusicListItemBinder
 import com.hearhere.presentation.test.TestBinder
@@ -123,4 +124,6 @@ class PostViewModel @Inject constructor(
         val cover : String?="",
         val pubYear : String?
     )
+
+
 }

@@ -20,6 +20,6 @@
         <activity
             android:name=".post.PostSelectOptionActivity"
             android:exported="true"
-            android:theme="@style/Theme.HearHere" />
+          />
     </application>
 </manifest>

@@ -4,4 +4,5 @@
     <string name="marker_distance">내 위치에서 %sm 떨어져있어요!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_post_select_option">PostSelectOptionActivity</string>
+    <string name="r_b"><![CDATA[R&B]]></string>
 </resources>
