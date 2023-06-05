@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.google.android.gms.common.** { *; }
+
+#look for a file in your project called proguard-project.txt open it and add
+#-keep class com.google.android.gms.ads.**
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**

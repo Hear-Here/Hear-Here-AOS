@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -49,6 +50,7 @@ dependencies {
     
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Dep.kotlin}")
     implementation("androidx.appcompat:appcompat:${Dep.androidx_appCompat}")
+    implementation("com.google.android.flexbox:flexbox:${Dep.flexbox}")
 
 
     // androidx
@@ -65,7 +67,13 @@ dependencies {
     implementation( "androidx.security:security-crypto:${Dep.security}")
 
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
+    implementation("com.google.android.gms:play-services-fido:20.0.1")
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
+
+    implementation ("com.google.android.gms:play-services-maps:${Dep.google_map}")
+    implementation ("com.google.android.gms:play-services-location:${Dep.google_location}")
+
+    implementation("com.github.bumptech.glide:glide:${Dep.glide}")
 
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")
     implementation("com.airbnb.android:lottie:${Dep.lottie}")

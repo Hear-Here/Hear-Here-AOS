@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="view"
+            type="com.hearhere.presentation.features.main.MarkerCreateDialog" />
+    </data>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/marker_bottom_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_top_corner">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="50dp"
+        android:paddingBottom="20dp"
+        android:gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="현재 위치가 맞습니까?"
+            style="@style/subtitle2"
+            android:layout_marginBottom="20dp"
+            >
+
+        </TextView>
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:justifyContent="space_around"
+            >
+            <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/positive_btn"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                style="@style/button_gray30"
+                android:layout_marginRight="6dp"
+                android:text="다시 찾기"
+                android:onClick="@{view.onClickNegative}"
+                />
+            <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/negative_btn"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                style="@style/button_gray90"
+                android:layout_marginLeft="6dp"
+                android:text="확인"
+                android:onClick="@{view.onClickPositive}"
+                />
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+    </LinearLayout>
+</ScrollView>
+</layout>

@@ -7,6 +7,7 @@ plugins {
 
 buildscript{
     repositories {
+        gradlePluginPortal()
         google()  // Google"s Maven repository
         mavenCentral()
         maven {
@@ -24,11 +25,13 @@ buildscript{
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Dep.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Dep.kotlin}")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Dep.hilt}")
+        classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:${Dep.google_map_gradle}")
     }
 }
 
 allprojects {
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
         maven { url = uri("https://jitpack.io") }

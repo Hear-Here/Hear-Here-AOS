@@ -73,7 +73,11 @@ class BasicButton @JvmOverloads constructor(
         }
     }
 
-
+    private fun setButtonClickListener(listener: ()->Unit) {
+        binding.button.setOnClickListener{
+            listener.invoke()
+        }
+    }
     companion object{
 
         @JvmStatic
@@ -98,6 +102,12 @@ class BasicButton @JvmOverloads constructor(
         @JvmStatic
         @BindingAdapter("android:onClick")
         fun setOnClick(button: BasicButton, listener: OnClickListener) {
+            button.setButtonClickListener(listener)  // View.OnClickListener
+        }
+
+        @JvmStatic
+        @BindingAdapter("android:onClick")
+        fun setOnClick(button: BasicButton, listener: ()->Unit) {
             button.setButtonClickListener(listener)  // View.OnClickListener
         }
 

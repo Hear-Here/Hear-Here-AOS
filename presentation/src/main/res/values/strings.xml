@@ -1,5 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="pin_name">%s님의 Pin</string>
+    <string name="marker_distance">내 위치에서 %sm 떨어져있어요!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_post_select_option">PostSelectOptionActivity</string>
 </resources>

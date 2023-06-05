@@ -41,27 +41,31 @@ class EmojiButton @JvmOverloads constructor(
     companion object{
         @JvmStatic
         @BindingAdapter("emoji")
-        fun setEmojiByWithType(view: EmojiButton, type : WithType ){
+        fun setEmojiByWithType(view: EmojiButton, type : WithType? ){
+            if(type==null) return
             view.setEmojiResource(type.getResource())
             view.setLabelText(type.kor)
         }
 
         @JvmStatic
         @BindingAdapter("emoji")
-        fun setEmojiByWeatherType(view: EmojiButton, type : WeatherType){
+        fun setEmojiByWeatherType(view: EmojiButton, type : WeatherType?){
+            if(type==null) return
             view.setNonLabelResource(type.getResource())
         }
 
         @JvmStatic
         @BindingAdapter("emoji")
-        fun setEmojiByGenreType(view: EmojiButton, type :GenreType){
+        fun setEmojiByGenreType(view: EmojiButton, type :GenreType?){
+            if(type==null) return
             view.setEmojiResource(type.getResource())
             view.setLabelText(type.kor)
         }
 
         @JvmStatic
         @BindingAdapter("emoji")
-        fun setEmojiByEmotionType(view: EmojiButton, type :EmotionType){
+        fun setEmojiByEmotionType(view: EmojiButton, type :EmotionType?){
+            if(type==null) return
             view.setNonLabelResource(type.getResource())
         }
     }

@@ -6,7 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-    //id("com.google.gms.google-services")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 
@@ -19,7 +19,7 @@ android {
     namespace = "com.hearhere"
     compileSdk = App.targetSdk
 
-    buildFeatures{
+    buildFeatures {
         dataBinding = true
         viewBinding = true
     }
@@ -61,13 +61,13 @@ android {
 dependencies {
     implementation(project(path = ":presentation"))
     implementation(project(path = ":data"))
-    implementation (project(path = ":domain"))
+    implementation(project(path = ":domain"))
 
 
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
     implementation("androidx.appcompat:appcompat:${Dep.appCompat}")
-    implementation( "androidx.security:security-crypto:${Dep.security}")
+    implementation("androidx.security:security-crypto:${Dep.security}")
     implementation("androidx.security:security-crypto-ktx:${Dep.security}")
     implementation("androidx.datastore:datastore:${Dep.data_store}")
     implementation("androidx.datastore:datastore-preferences:${Dep.data_store}")

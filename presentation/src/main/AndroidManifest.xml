@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application android:usesCleartextTraffic="true" >
+    <application>
+        <activity android:name=".test.TestActivity"/>
+        <activity android:name=".features.main.MainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".features.main.MarkerListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".features.main.like.MarkerLikeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".features.main.profile.MarkerMyPostingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".features.detail.DetailActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".post.PostActivity"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity
             android:name=".post.PostSelectOptionActivity"
             android:exported="true"
             android:theme="@style/Theme.HearHere" />
     </application>
-
 </manifest>
