@@ -35,7 +35,7 @@ class SetNickNameViewModel @Inject constructor(
     }
 
     data class NickNameState(val nickname : String){
-        val isEnabled = !nickname.isNullOrBlank()
+        val isEnabled = true// !nickname.isNullOrBlank()
     }
 
 }

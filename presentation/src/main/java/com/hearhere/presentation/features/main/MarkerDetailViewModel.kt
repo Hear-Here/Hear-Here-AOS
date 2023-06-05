@@ -8,6 +8,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.hearhere.domain.model.ApiResponse
+import com.hearhere.domain.usecaseImpl.GetPostUseCaseImpl
+import com.hearhere.domain.usecaseImpl.PatchPostUseCaseImpl
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.component.emojiButton.EmotionType
 import com.hearhere.presentation.common.component.emojiButton.GenreType
@@ -23,7 +26,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MarkerDetailViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val getPostUseCase : GetPostUseCaseImpl,
+    private val patchPostUseCase: PatchPostUseCaseImpl
 ) : BaseViewModel() {
 
     val POST_ID = "postId"
@@ -43,39 +48,50 @@ class MarkerDetailViewModel @Inject constructor(
     private fun getMarkerDetail() {
         _loading.postValue(true)
         //TODO
-        _uiState.postValue(
-            MarkerDetailUiState(
-                postId = postId,
-                writer = "영종킴" + postId.toString(),
-                title = "노래노래",
-                artist = "hihihihi",
-                cover = Uri.parse(""),
-                message = "hefheihoehaoehfoi",
-                genreType = GenreType.HIPHOP,
-                weatherType = WeatherType.RAINY,
-                withType = WithType.FAMILY,
-                emotionType = EmotionType.HEART,
-                distance = 50.0,
-                isLike = false,
-                likeCnt = 180
-            )
-        )
 
-        _loading.postValue(false)
+        viewModelScope.launch {
+            getPostUseCase.getPost(postId).also {
+                when(it){
+                    is ApiResponse.Success->{
+                        val res = it.data!!
+                        val state = MarkerDetailUiState(
+                            postId = res.postId,
+                            writer = res.writer + postId.toString(),
+                            title = res.title,
+                            artist = res.artist,
+                            cover = Uri.parse(res.cover),
+                            message = res.content,
+                            genreType = GenreType.valueOf(res.genre),
+                            weatherType = WeatherType.valueOf(res.weather),
+                            withType = WithType.valueOf(res.whoWith),
+                            emotionType = EmotionType.valueOf(res.mood),
+                            distance = res.distance,
+                            isLiked = res.isLike,
+                            likeCnt = res.likeCount
+                        )
+                        _uiState.postValue(state)
+                        _loading.postValue(false)
+                    }
+                    else ->{
+
+                    }
+                }
+            }
+        }
     }
 
     fun onClickLikeToggle() {
-        if (uiState.value?.isLike == true) {
+        if (uiState.value?.isLiked == true) {
             _uiState.postValue(
                 uiState.value?.copy(
-                    isLike = !uiState.value!!.isLike,
+                    isLiked = !uiState.value!!.isLiked,
                     likeCnt = uiState.value!!.likeCnt - 1
                 )
             )
         } else {
             _uiState.postValue(
                 uiState.value?.copy(
-                    isLike = !uiState.value!!.isLike,
+                    isLiked = !uiState.value!!.isLiked,
                     likeCnt = uiState.value!!.likeCnt + 1
                 )
             )
@@ -84,10 +100,21 @@ class MarkerDetailViewModel @Inject constructor(
         //디바운스 처리
         toggleJob?.cancel()
         toggleJob = viewModelScope.launch {
-            delay(2000)
+            delay(500)
             //API
-            Log.d("bottom toggle", uiState.value?.isLike.toString())
+            Log.d("bottom toggle", uiState.value?.isLiked.toString())
+            sendLikeState()
 
+        }
+    }
+
+    fun sendLikeState(){
+        viewModelScope.launch {
+            if(uiState.value?.isLiked == true){
+                patchPostUseCase.likePost(uiState.value!!.postId)
+            }else{
+                patchPostUseCase.disLikePost(uiState.value!!.postId)
+            }
         }
     }
 
@@ -105,7 +132,7 @@ class MarkerDetailViewModel @Inject constructor(
         val withType: WithType?,
         val emotionType: EmotionType?,
         val distance: Double,
-        val isLike: Boolean,
+        val isLiked: Boolean,
         val likeCnt: Int,
     ) {
         val distanceStr = distance.toString()

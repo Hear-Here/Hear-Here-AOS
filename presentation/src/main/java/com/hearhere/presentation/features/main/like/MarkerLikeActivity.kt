@@ -38,6 +38,11 @@ class MarkerLikeActivity  : BaseActivity<ActivityMarkerLikeBinding>(R.layout.act
         binding.backBtn.setOnClickListener { finish() }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getMarkerList()
+    }
+
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
 
     override fun observeViewModel() {

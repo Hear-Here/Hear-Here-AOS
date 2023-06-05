@@ -36,7 +36,7 @@ class MarkerLikeViewModel @Inject constructor(
         getMarkerList()
     }
 
-    private fun getMarkerList() {
+   fun getMarkerList() {
         viewModelScope.launch {
             val res = getPostUseCase.getLikePostList()
 

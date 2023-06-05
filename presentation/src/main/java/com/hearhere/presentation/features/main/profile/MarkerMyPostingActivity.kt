@@ -75,7 +75,7 @@ class MarkerMyPostingActivity :
         }
     }
 
-    private fun showDialog(postId: Int, title: String) {
+    private fun showDialog(postId: Long, title: String) {
         if (::dialog.isInitialized && dialog.isAdded) {
             dialog.dismiss()
         }

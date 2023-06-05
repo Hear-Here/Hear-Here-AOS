@@ -8,6 +8,7 @@ import com.hearhere.presentation.base.BaseActivity
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.databinding.ActivityNicknameBinding
 import com.hearhere.presentation.databinding.ActivitySplashBinding
+import com.hearhere.presentation.features.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -24,9 +25,7 @@ class SetNickNameActivity : BaseActivity<ActivityNicknameBinding>(R.layout.activ
     }
 
     private fun navigateToMain(){
-//        Intent(this,LoginActivity::class.java).also {
-//            startActivity(it)
-//        }
+        MainActivity.start(this)
     }
 
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)

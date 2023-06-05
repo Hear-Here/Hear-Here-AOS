@@ -30,18 +30,25 @@ interface HearHereApiService {
     suspend fun getPostList(
       @Query("latitude") latitude : Double,
       @Query("longitude") longitude : Double,
-    ) : Response<PostListResponse>
+    ) : Response<List<PostItemResponse>>
 
 
     @GET("/post/{postId}")
     suspend fun getPost(
-        @Path("postId") postId : Long
+        @Path("postId") postId : Long,
+        @Query("latitude") latitude : Double,
+        @Query("longitude") longitude : Double,
     ):Response<PostItemResponse>
+
+    @DELETE("/post/{postId}")
+    suspend fun deletePost(
+        @Path("postId") postId : Long
+    ):Response<*>
 
 
     @POST("/post/{postId}/heart")
     suspend fun likePost(
-        @Path("postId") postId : Long
+        @Path("postId") postId : Long,
     ):Response<*>
 
 
@@ -51,7 +58,10 @@ interface HearHereApiService {
     ):Response<*>
 
     @GET("/post/heart/list")
-    suspend fun getLikePostList():Response<List<LikePostItem>>
+    suspend fun getLikePostList(
+        @Query("latitude") latitude : Double,
+        @Query("longitude") longitude : Double,
+    ):Response<List<LikePostItem>>
 }
 
 

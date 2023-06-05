@@ -1,15 +1,22 @@
 package com.hearhere.presentation.features.main.profile
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.hearhere.domain.usecaseImpl.PatchPostUseCaseImpl
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.features.main.adapter.MarkerMyListItemBinder
 import com.hearhere.presentation.features.main.like.MarkerLikeViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MarkerMyPostingViewModel @Inject constructor() : BaseViewModel() {
+@HiltViewModel
+class MarkerMyPostingViewModel @Inject constructor(
+    private val patchUseCase: PatchPostUseCaseImpl
+) : BaseViewModel() {
     private val _events = MutableStateFlow<List<MarkerMyPostingEvent>>(emptyList())
     val events get() = _events.asStateFlow()
 
@@ -100,18 +107,21 @@ class MarkerMyPostingViewModel @Inject constructor() : BaseViewModel() {
     }
 
 
-    private fun onClickDetail(postId: Int) {
+    private fun onClickDetail(postId:Long) {
         //delete api 위치
         addEvent(MarkerMyPostingEvent.OnClickDetail(postId))
     }
 
 
-    private fun onClickItemMenu(postId: Int, title: String) {
+    private fun onClickItemMenu(postId: Long, title: String) {
         addEvent(MarkerMyPostingEvent.ShowDialog(postId, title))
     }
 
-    fun onClickItemDelete(postId: Int) {
+    fun onClickItemDelete(postId: Long) {
         //delete api 위치
+        viewModelScope.launch {
+            patchUseCase.deletePost(postId)
+        }
         addEvent(MarkerMyPostingEvent.DismissDialog)
     }
 
@@ -131,7 +141,7 @@ class MarkerMyPostingViewModel @Inject constructor() : BaseViewModel() {
 
 
     data class MarkerMyItemState(
-        val postId: Int,
+        val postId: Long,
         val title: String,
         val artist: String,
         val coverPath: String? = "",
@@ -139,8 +149,8 @@ class MarkerMyPostingViewModel @Inject constructor() : BaseViewModel() {
     )
 
     sealed class MarkerMyPostingEvent() {
-        data class OnClickDetail(val postId: Int) : MarkerMyPostingEvent()
-        data class ShowDialog(val postId: Int, val title: String) : MarkerMyPostingEvent()
+        data class OnClickDetail(val postId: Long) : MarkerMyPostingEvent()
+        data class ShowDialog(val postId: Long, val title: String) : MarkerMyPostingEvent()
         object DismissDialog : MarkerMyPostingEvent()
     }
 }

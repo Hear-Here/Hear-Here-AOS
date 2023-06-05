@@ -2,8 +2,6 @@ package com.hearhere.data.repositoryImpl
 
 import android.util.Log
 import com.hearhere.data.data.dto.response.LikePostItem
-import com.hearhere.data.data.dto.response.LikePostListResponse
-import com.hearhere.data.data.dto.response.PostItem
 import com.hearhere.data.data.dto.response.PostItemResponse
 import com.hearhere.data.data.dto.response.PostListResponse
 import com.hearhere.data.data.network.ApiHelperImpl
@@ -12,9 +10,8 @@ import com.hearhere.domain.model.LikeMusicPost
 import com.hearhere.domain.model.MusicPost
 import com.hearhere.domain.model.Pin
 import com.hearhere.domain.repository.PostRepository
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.util.concurrent.Flow
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
@@ -36,8 +33,8 @@ class PostRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun getPost(postId: Long)=  flow<ApiResponse<MusicPost>> {
-        safeApiCall { apiHelper.getPost(postId) }
+    override suspend fun getPost(postId: Long, lat: Double, lng: Double)=  flow<ApiResponse<MusicPost>> {
+        safeApiCall { apiHelper.getPost(postId,lat , lng) }
             .collect{
                 when(it){
                     is ApiResponse.Success ->{
@@ -48,6 +45,10 @@ class PostRepositoryImpl @Inject constructor(
                     }
                 }
             }
+    }
+
+    override suspend fun deletePost(postId: Long): Flow<ApiResponse<*>> {
+        return safeApiCall { apiHelper.deletePost(postId) }
     }
 
     override suspend fun likePost(postId: Long){
@@ -77,8 +78,8 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getLikePostList()= flow<ApiResponse<List<LikeMusicPost>>> {
-        safeApiCall { apiHelper.getLikePostList() }
+    override suspend fun getLikePostList(lat: Double,lng: Double)= flow<ApiResponse<List<LikeMusicPost>>> {
+        safeApiCall { apiHelper.getLikePostList(lat, lng) }
             .collect{
                 when(it){
                     is ApiResponse.Success ->{
@@ -92,14 +93,19 @@ class PostRepositoryImpl @Inject constructor(
     }
 
 
-    fun PostListResponse.mapToDomain(): ApiResponse<List<Pin>> {
+    @JvmName("loadPostList")
+    fun List<PostItemResponse>.mapToDomain(): ApiResponse<List<Pin>> {
         val temp = ArrayList<Pin>()
-        this.list.forEach {
+        this.forEach {
             val pin = Pin(
                 postId = it.postId,
                 imageUrl = it.cover,
                 latitude = it.latitude,
-                longitude = it.longitude
+                longitude = it.longitude,
+                distance = it.distance,
+                writer = it.writer,
+                title = it.title,
+                artist = it.artist
             )
             temp.add(pin)
         }
@@ -111,34 +117,51 @@ class PostRepositoryImpl @Inject constructor(
         this?.forEach {
             val post = LikeMusicPost(
                 postId = it.postId?:-1,
-                coverPath = it.musicCover?:null,
-                artist = it.musicArtist?:"",
-                title = it.musicTittle?:"",
-                distance = 0.0 //TODO Fix
+                coverPath = it.cover,
+                artist = it.artist,
+                title = it.title,
+                distance = it.distance
             )
             temp.add(post)
         }
         return ApiResponse.Success(temp)
     }
-
+/**
+ * val postId : Long,
+    val writer : String,
+    val title : String,
+    val artist : String,
+    val cover : String?,
+    val genreType : String,
+    val whoWithTy : String,
+    val temp : Double,
+    val weather : String,
+    val mood : String,
+    val content : String?,
+    val longitude : Double,
+    val latitude : Double,
+    val distance : Double,
+    val likeCount : Int,
+    val isLike : Boolean
+    **/
     fun PostItemResponse.maptoDomain(): ApiResponse<MusicPost> {
         val post = MusicPost(
-            postId,
-            writer,
-            title,
-            artist,
-            cover,
-            genre,
-            whoWith,
-            temp,
-            weather,
-            mood,
-            content,
-            longitude,
-            latitude,
-            distance,
-            likeCount,
-            isLike
+            postId = postId,
+            writer = writer,
+            title = title,
+            artist = artist,
+            cover = cover,
+            genre = genreType,
+            whoWith = withType,
+            temp = temp,
+            weather = weatherType,
+            mood = emotionType,
+            content = content,
+            longitude= longitude,
+            latitude= latitude,
+            distance = distance,
+            likeCount = likeCount,
+            isLike= isLiked
         )
         return ApiResponse.Success(post)
     }

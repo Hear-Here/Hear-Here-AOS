@@ -17,6 +17,7 @@
             android:layout_width="195dp"
             android:layout_height="195dp"
             app:cardCornerRadius="195dp"
+            android:elevation="10dp"
             >
             <ImageView
                 android:id="@+id/record_outframe_iv"
@@ -29,10 +30,12 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/record_inner_layout"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            app:cardCornerRadius="150dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="50dp"
             android:layout_gravity="center"
+            android:visibility="gone"
+
             >
             <ImageView
                 android:id="@+id/record_innerframe_iv"

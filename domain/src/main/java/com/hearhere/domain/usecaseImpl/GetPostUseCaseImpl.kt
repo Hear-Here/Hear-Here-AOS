@@ -45,11 +45,13 @@ class GetPostUseCaseImpl @Inject constructor(
     }
 
     override suspend fun getPost(postId: Long): ApiResponse<MusicPost> {
-        return postRepository.getPost(postId).first()
+        val location = myLocation?:getLocation()
+        return postRepository.getPost(postId,location.lat,location.lng).first()
     }
 
     override suspend fun getLikePostList(): ApiResponse<List<LikeMusicPost>> {
-        return postRepository.getLikePostList().first()
+        val location = myLocation?:getLocation()
+        return postRepository.getLikePostList(location.lat,location.lng).first()
     }
 
 

@@ -2,6 +2,7 @@ package com.hearhere.presentation.features.main
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.*
@@ -11,7 +12,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.ContentInfoCompat.Flags
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -30,10 +33,12 @@ import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.features.main.profile.MarkerMyPostingActivity
 import com.hearhere.presentation.util.createDrawableFromView
 import com.hearhere.presentation.util.getCircledBitmap
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     OnMapsSdkInitializedCallback, OnMapReadyCallback {
 
@@ -214,6 +219,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                 )
             )
         }
+        viewModel.setMyLocation(location)
         viewModel.myLocationMarker.value?.let { it.remove() }
 
         val myLocationMarker = mMap!!.addMarker(option)
@@ -249,7 +255,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                 try {
                     it.isMyLocationEnabled = true
                     location = getMyLocation()
-                    viewModel.myLocation.postValue(location)
+                    viewModel.setMyLocation(location)
                     it.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
                 } catch (e: SecurityException) {
                 } catch (e: Resources.NotFoundException) {
@@ -317,6 +323,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         } catch (e: IllegalArgumentException) {
         }
         return DEFAULT_LOCATION
+    }
+
+    companion object{
+        fun start(context: Context){
+            val intent = Intent(context, MainActivity::class.java).apply {
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            ContextCompat.startActivity(context, intent, null)
+        }
     }
 
 }

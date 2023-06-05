@@ -1,10 +1,6 @@
 package com.hearhere.data.data.dto.response
 
-data class LikePostListResponse(
-    val list: List<LikePostItem>?
-)
-
-data class LikePostItem(
+data class PostItemResponse (
     val postId : Long,
     val writer : String,
     val title : String,
@@ -21,5 +17,5 @@ data class LikePostItem(
     val distance : Double,
     val likeCount : Int,
     val isLiked : Boolean
-
 )
+

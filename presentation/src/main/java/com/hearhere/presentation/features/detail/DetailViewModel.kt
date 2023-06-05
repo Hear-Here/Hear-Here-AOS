@@ -8,13 +8,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.hearhere.domain.model.ApiResponse
 import com.hearhere.domain.usecase.PatchPostUseCase
+import com.hearhere.domain.usecaseImpl.GetPostUseCaseImpl
 import com.hearhere.domain.usecaseImpl.PatchPostUseCaseImpl
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.component.emojiButton.EmotionType
 import com.hearhere.presentation.common.component.emojiButton.GenreType
 import com.hearhere.presentation.common.component.emojiButton.WeatherType
 import com.hearhere.presentation.common.component.emojiButton.WithType
+import com.hearhere.presentation.features.main.MarkerDetailViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -28,6 +31,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val getPostUseCase: GetPostUseCaseImpl,
     private val patchPostUseCase: PatchPostUseCaseImpl
 ) : BaseViewModel() {
 
@@ -44,31 +48,43 @@ class DetailViewModel @Inject constructor(
         getMarkerDetail()
     }
 
-    private fun getMarkerDetail() {
+    fun getMarkerDetail() {
         Log.d("hyom",postId.toString())
-        _loading.postValue(true)
-        //TODO
-        _uiState.postValue(
-            PostingDetailUiState(
-                postId = postId,
-                writer = "영종킴" + postId.toString(),
-                title = "노래노래",
-                artist = "hihihihi",
-                cover = Uri.parse(""),
-                bitmap = loadUrlToBitmap(""),
-                message = "hefheihoehaoehfoi",
-                genreType = GenreType.HIPHOP,
-                weatherType = WeatherType.RAINY,
-                withType = WithType.FAMILY,
-                emotionType = EmotionType.HEART,
-                distance = 50.0,
-                isLike = false,
-                likeCnt = 180,
-                latitude = 37.566667,
-                longitude = 126.978427,
-            )
-        )
-        _loading.postValue(false)
+        viewModelScope.launch {
+            _loading.postValue(true)
+            getPostUseCase.getPost(postId).also {
+                when(it){
+                    is ApiResponse.Success->{
+                        val res = it.data!!
+                        val state =  PostingDetailUiState(
+                            postId = res.postId,
+                            writer = res.writer + postId.toString(),
+                            title = res.title,
+                            artist = res.artist,
+                            cover = Uri.parse(res.cover),
+                            bitmap = loadUrlToBitmap(""),
+                            message = res.content,
+                            genreType = GenreType.valueOf(res.genre),
+                            weatherType = WeatherType.valueOf(res.weather),
+                            withType = WithType.valueOf(res.whoWith),
+                            emotionType = EmotionType.valueOf(res.mood),
+                            distance = res.distance,
+                            isLike = res.isLike,
+                            likeCnt = res.likeCount,
+                            latitude = res.latitude,
+                            longitude = res.longitude
+                        )
+                        Log.d("hyom - detail",state.toString())
+                        _uiState.postValue(state)
+                        _loading.postValue(false)
+                    }
+                    else ->{
+                        Log.d("hyom - detail",it.message.toString())
+                    }
+                }
+             }
+        }
+
     }
 
     fun onClickLikeToggle() {
@@ -91,15 +107,21 @@ class DetailViewModel @Inject constructor(
         //디바운스 처리
         toggleJob?.cancel()
         toggleJob = viewModelScope.launch {
-            delay(2000)
+            delay(500)
             //API
+            sendLikeState()
+            Log.d("bottom toggle", uiState.value?.isLike.toString())
+
+        }
+    }
+
+    fun sendLikeState(){
+        viewModelScope.launch {
             if(uiState.value?.isLike == true){
                 patchPostUseCase.likePost(uiState.value!!.postId)
             }else{
                 patchPostUseCase.disLikePost(uiState.value!!.postId)
             }
-            Log.d("bottom toggle", uiState.value?.isLike.toString())
-
         }
     }
 

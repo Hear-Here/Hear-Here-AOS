@@ -35,9 +35,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         }
 
         viewModel.navigateToMainEvent.observe{
-            Intent(this, MainActivity::class.java).also {
-                startActivity(it)
-            }
+            MainActivity.start(this)
         }
     }
 }

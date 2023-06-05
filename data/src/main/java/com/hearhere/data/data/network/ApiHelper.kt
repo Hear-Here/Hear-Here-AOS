@@ -10,9 +10,10 @@ import retrofit2.Response
 
 interface ApiHelper {
     suspend fun login(token:AuthRequest) : Response<AuthResponse>
-    suspend fun getPostList(lat : Double, lng : Double) : Response<PostListResponse>
-    suspend fun getPost(postId : Long) : Response<PostItemResponse>
+    suspend fun getPostList(lat : Double, lng : Double) : Response<List<PostItemResponse>>
+    suspend fun getPost(postId : Long,lat: Double, lng: Double) : Response<PostItemResponse>
+    suspend fun deletePost(postId: Long) : Response<*>
     suspend fun likePost(postId: Long) : Response<*>
     suspend fun disLikePost(postId: Long) : Response<*>
-    suspend fun getLikePostList() : Response<List<LikePostItem>>
+    suspend fun getLikePostList(lat : Double,lng: Double) : Response<List<LikePostItem>>
 }

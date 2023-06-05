@@ -14,13 +14,14 @@ class ApiHelperImpl @Inject constructor(
     @NetworkModule.api val apiService: HearHereApiService
 ) : ApiHelper {
     override suspend fun login(request: AuthRequest): Response<AuthResponse> = apiService.login(request)
-    override suspend fun getPostList(lat: Double, lng: Double): Response<PostListResponse>
+    override suspend fun getPostList(lat: Double, lng: Double) : Response<List<PostItemResponse>>
     = apiService.getPostList(lat,lng)
 
-    override suspend fun getPost(postId: Long): Response<PostItemResponse>  = apiService.getPost(postId)
+    override suspend fun getPost(postId: Long, lat: Double, lng: Double): Response<PostItemResponse>  = apiService.getPost(postId,lat, lng)
+    override suspend fun deletePost(postId: Long): Response<*>  = apiService.deletePost(postId)
 
     override suspend fun likePost(postId: Long): Response<*>  = apiService.likePost(postId)
     override suspend fun disLikePost(postId: Long): Response<*>  = apiService.disLikePost(postId)
-    override suspend fun getLikePostList(): Response<List<LikePostItem>> = apiService.getLikePostList()
+    override suspend fun getLikePostList(lat: Double,lng: Double): Response<List<LikePostItem>> = apiService.getLikePostList(lat,lng)
 
 }

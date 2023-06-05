@@ -29,17 +29,6 @@ class LoginViewModel @Inject constructor(
     private val _loginState = MutableLiveData<Boolean?>(null)
     val loginState get() = _loginState
 
-    init {
-        viewModelScope.launch {
-            kotlin.runCatching {
-                val res = searchMusicUseCase.searchMusicByArtist("엔믹스",10)
-                Log.d("parser test",res.toString())
-            }.onFailure {
-
-            }
-        }
-
-    }
 
     private val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
