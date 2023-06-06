@@ -17,6 +17,8 @@ import com.hearhere.domain.usecaseImpl.PatchPostUseCaseImpl
 import com.hearhere.domain.usecaseImpl.PatchUserInfoUseCaseImpl
 import com.hearhere.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -54,13 +56,17 @@ class MainViewModel @Inject constructor(
     val events = _events.asStateFlow()
 
     init {
-        _loading.postValue(true)
+        viewModelScope.launch {
+            val location = getPostUseCase.myLocation ?: getPostUseCase.getLocation()
+            if(location!=null) myLocation.postValue(LatLng(location.lat,location.lng))
+            Log.d("hyomk - location",location.toString())
+        }
+
     }
 
-    fun requestPins(lat:Double, lng: Double) {
+   fun requestPins(lat : Double, lng : Double) {
         viewModelScope.launch {
             _loading.postValue(true)
-            //val location = getPostUseCase.myLocation ?: getPostUseCase.getLocation()
             getPostUseCase.getPostList( lat,lng ).also {
                 when(it){
                     is ApiResponse.Success ->{
@@ -78,21 +84,17 @@ class MainViewModel @Inject constructor(
     }
 
     private fun fetchPins(list: List<PinState>) {
-        Log.d("hyom markers", list.toString())
-        if (list.isEmpty()) return
-        val newPinList = arrayListOf<PinState>()
-
-        list.forEach { item ->
-            if (item.pin.imageUrl.isNullOrEmpty()) newPinList.add(item)
-            else newPinList.add(item.copy(bitmap = loadUrlToBitmap(item.pin.imageUrl!!)))
+        CoroutineScope(Dispatchers.IO).launch {
+            if (list.isEmpty()) return@launch
+            val newPinList = arrayListOf<PinState>()
+            list.forEach { item ->
+                if (item.pin.imageUrl.isNullOrEmpty()) newPinList.add(item)
+                else newPinList.add(item.copy(bitmap = loadUrlToBitmap(item.pin.imageUrl!!)))
+            }
+            _pinStateList.postValue(newPinList)
+            _loading.postValue(false)
+            addEvent(PinEvent.OnCompletedLoad)
         }
-
-        _pinStateList.postValue(newPinList)
-
-        Log.d("hyom markers-pin", newPinList.toString())
-
-        addEvent(PinEvent.OnCompletedLoad)
-        _loading.postValue(false)
     }
 
     fun setSelectedPin(postId: Long?) {
@@ -121,26 +123,26 @@ class MainViewModel @Inject constructor(
 
     private fun loadUrlToBitmap(url: String): Bitmap? {
         var bitmap: Bitmap? = null
-        val uThread: Thread = object : Thread() {
-            override fun run() {
-                try {
-                    val conn = URL(url).openConnection() as HttpURLConnection
-                    conn.doInput = true
-                    conn.connect()
-                    val `is` = conn.inputStream
-                    bitmap = BitmapFactory.decodeStream(`is`)
-                } catch (e: MalformedURLException) {
-                    e.printStackTrace()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-            }
-        }
-        uThread.start()
+        val connection: HttpURLConnection?
 
         try {
-            uThread.join()
-        } catch (e: InterruptedException) {
+            val url = URL(url)
+            connection = url.openConnection() as HttpURLConnection
+
+            connection.requestMethod = "GET" // request 방식 설정
+            connection.connectTimeout = 10000 // 10초의 타임아웃
+            connection.doOutput = true // OutPutStream으로 데이터를 넘겨주겠다고 설정
+            connection.doInput = true // InputStream으로 데이터를 읽겠다는 설정
+            connection.useCaches = true // 캐싱 여부
+            connection.connect()
+
+            val resCode = connection.responseCode // 연결 상태 확인
+            if (resCode == HttpURLConnection.HTTP_OK) { // 200일때 bitmap으로 변경
+                val input = connection.inputStream
+                bitmap = BitmapFactory.decodeStream(input) // BitmapFactory의 메소드를 통해 InputStream으로부터 Bitmap을 만들어 준다.
+                connection.disconnect()
+            }
+        } catch (e: IOException) {
             e.printStackTrace()
         }
         return bitmap
