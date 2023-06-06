@@ -68,7 +68,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
     override fun onCreateView(savedInstanceState: Bundle?) {
         binding.viewModel = viewModel
-        viewModel.requestPins()
+
         if (hasPermission()) {
             initMap()
         } else {
@@ -83,8 +83,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     override fun onRestart() {
         super.onRestart()
         mMap?.let {
-            viewModel.requestPins()
-            initMap()
+//            val location = viewModel.myLocation.value?: getMyLocation()
+//            viewModel.requestPins(location.latitude,location.longitude)
+//            initMap()
+            //TODO 속도개선
         }
     }
 
@@ -129,7 +131,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             mMap?.let {
                 when (viewEvent) {
                     is MainViewModel.PinEvent.OnCompletedLoad -> {
-                        initMap()
+                        Toast.makeText(this,"completed load",Toast.LENGTH_SHORT).show()
+                        mMap?.let {
+                            createMarker()
+                        }
                     }
                     is MainViewModel.PinEvent.OnChangeSelectedPin -> {
                         viewModel.selectedPin.value?.let {
@@ -231,12 +236,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+
+        Log.d("hyom", "onMap Ready")
         mMap = googleMap
         setMyLocation()
-        createMarker()
+
         mMap?.setOnMarkerClickListener {
             setFocusMarker(it, true)
-
             if (it.tag != MYLOCATION_TAG) {
                 viewModel.setSelectedPin(it.tag as Long)
                 showMarkerDialog(it.tag as Long)
@@ -244,18 +250,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(it.position, DEFAULT_ZOOM_LEVEL))
             return@setOnMarkerClickListener true
         }
+
+
     }
 
     private fun initMap() {
+
+        var location: LatLng = DEFAULT_LOCATION
+        location = getMyLocation()
+
+        viewModel.requestPins(location.latitude,location.longitude)
+        viewModel.setMyLocation(location)
+
         binding.mapView.getMapAsync {
-            var location: LatLng = DEFAULT_LOCATION
             mMap = it
             it.uiSettings.isMyLocationButtonEnabled = false      // 현재 위치로 이동 button을 비활성화
             if (hasPermission()) {
                 try {
                     it.isMyLocationEnabled = true
-                    location = getMyLocation()
-                    viewModel.setMyLocation(location)
+
                     it.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
                 } catch (e: SecurityException) {
                 } catch (e: Resources.NotFoundException) {
@@ -264,10 +277,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             } else {
                 Toast.makeText(this, "접근 권한이 없습니다.", Toast.LENGTH_SHORT).show()
             }
-            it.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM_LEVEL))
 
+            mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM_LEVEL))
             onMapReady(mMap!!)
         }
+
+
+
+
+
     }
 
     private fun setCameraToMyLocation(location: LatLng?) {
