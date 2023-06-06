@@ -69,7 +69,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
     override fun onCreateView(savedInstanceState: Bundle?) {
         binding.viewModel = viewModel
-
+        initMap()
         if (hasPermission()) {
             initMap()
         } else {
@@ -79,6 +79,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
         binding.likeBtn.setOnClickListener {
             MarkerLikeActivity.start(this)
+        }
+        binding.recomandBtn.setOnClickListener {
+            RecomandActivity.start(this)
         }
     }
 
@@ -98,9 +101,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
     override fun observeViewModel() {
         viewModel.events.flowWithLifecycle(lifecycle).onEach(::handleEvent).launchIn(lifecycleScope)
-        viewModel.pinStateList.observe {
-            if(! it.isNullOrEmpty()) initMap()
-        }
     }
 
     override fun onRequestPermissionsResult(
@@ -195,7 +195,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     }
 
     private fun createMarker() {
-        Log.d("hyom map",viewModel.pinStateList.value.toString())
         val markers = ArrayList<Marker>()
         try {
             viewModel.pinStateList.value?.forEach {
@@ -268,6 +267,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
     }
 
+
     private fun initMap() {
 
         var location: LatLng = DEFAULT_LOCATION
@@ -278,6 +278,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
         binding.mapView.getMapAsync {
             mMap = it
+
             it.uiSettings.isMyLocationButtonEnabled = false      // 현재 위치로 이동 button을 비활성화
             if (hasPermission()) {
                 try {
@@ -357,10 +358,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         return DEFAULT_LOCATION
     }
 
-    companion object {
-        fun start(context: Context) {
+
+    companion object{
+        fun start(context: Context){
             val intent = Intent(context, MainActivity::class.java).apply {
-                flags = (Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             ContextCompat.startActivity(context, intent, null)
         }
