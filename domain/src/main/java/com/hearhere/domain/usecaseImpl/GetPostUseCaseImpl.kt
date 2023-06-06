@@ -4,6 +4,7 @@ import com.hearhere.domain.model.ApiResponse
 import com.hearhere.domain.model.LikeMusicPost
 import com.hearhere.domain.model.Location
 import com.hearhere.domain.model.MusicPost
+import com.hearhere.domain.model.MyMusicPost
 import com.hearhere.domain.model.Pin
 import com.hearhere.domain.repository.PostRepository
 import com.hearhere.domain.repository.PreferenceRepository
@@ -30,12 +31,12 @@ class GetPostUseCaseImpl @Inject constructor(
             getLocation()
         }
     }
-    suspend fun getLocation () : Location {
+    suspend fun getLocation () : Location? {
         if(myLocation == null){
             CoroutineScope(Dispatchers.IO).async {
                 myLocation = preferenceRepository.getLocation().first()
             }.await()
-            return myLocation!!
+            return myLocation
         }
         else return myLocation!!
     }
@@ -45,13 +46,18 @@ class GetPostUseCaseImpl @Inject constructor(
     }
 
     override suspend fun getPost(postId: Long): ApiResponse<MusicPost> {
-        val location = myLocation?:getLocation()
+        val location = myLocation?:getLocation() ?: return ApiResponse.Error("can not find location")
         return postRepository.getPost(postId,location.lat,location.lng).first()
     }
 
     override suspend fun getLikePostList(): ApiResponse<List<LikeMusicPost>> {
-        val location = myLocation?:getLocation()
+        val location = myLocation?:getLocation() ?: return ApiResponse.Error("can not find location")
         return postRepository.getLikePostList(location.lat,location.lng).first()
+    }
+
+    override suspend fun getMyPostList(): ApiResponse<List<MyMusicPost>> {
+        val location = myLocation?:getLocation() ?: return ApiResponse.Error("can not find location")
+        return postRepository.getMyPostList(location.lat,location.lng).first()
     }
 
 

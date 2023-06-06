@@ -24,7 +24,6 @@ class AuthRepositoryImpl @Inject constructor(
         safeApiCall {
             apiHelper.login(AuthRequest(id, email))
         }.collect {
-            Log.d("catch kakao",it.toString())
             when (it) {
                 is ApiResponse.Success -> {
                     emit(ApiResponse.Success(it.data!!.toDomain()))
@@ -33,6 +32,12 @@ class AuthRepositoryImpl @Inject constructor(
                     emit(ApiResponse.Error(it.message.toString(),it.throwable))
                 }
             }
+        }
+    }
+
+    override suspend fun setNickName(name: String): Flow<ApiResponse<*>> = flow{
+        safeApiCall { apiHelper.setNickName(name) }.collect{
+            emit(it)
         }
     }
 

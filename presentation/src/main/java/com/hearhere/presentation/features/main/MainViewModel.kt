@@ -43,7 +43,9 @@ class MainViewModel @Inject constructor(
 
     val markerList = MutableLiveData<List<Marker>>(emptyList())
 
-    var myLocation = MutableLiveData<LatLng>(null)
+    val _myLocation = MutableLiveData<LatLng>(null)
+
+    val myLocation get() = _myLocation
 
     var myLocationMarker = MutableLiveData<Marker>(null)
 
@@ -52,30 +54,23 @@ class MainViewModel @Inject constructor(
     val events = _events.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            val location = getPostUseCase.myLocation ?: getPostUseCase.getLocation()
-            myLocation.postValue(LatLng(location.lat,location.lng))
-            Log.d("hyomk - location",location.toString())
-        }
-
+        _loading.postValue(true)
     }
 
-    fun requestPins() {
+    fun requestPins(lat:Double, lng: Double) {
         viewModelScope.launch {
             _loading.postValue(true)
-            val location = getPostUseCase.myLocation ?: getPostUseCase.getLocation()
-            if(location!=null){
-                getPostUseCase.getPostList( location.lat,location.lng ).also {
-                    when(it){
-                        is ApiResponse.Success ->{
-                            val tempList = arrayListOf<PinState>()
-                            it.data?.forEach {
-                                tempList.add(PinState(it, null))
-                            }
-                            fetchPins(tempList)
+            //val location = getPostUseCase.myLocation ?: getPostUseCase.getLocation()
+            getPostUseCase.getPostList( lat,lng ).also {
+                when(it){
+                    is ApiResponse.Success ->{
+                        val tempList = arrayListOf<PinState>()
+                        it.data?.forEach {
+                            tempList.add(PinState(it, null))
                         }
-                        is ApiResponse.Error->{}
+                        fetchPins(tempList)
                     }
+                    is ApiResponse.Error->{}
                 }
             }
         }
@@ -83,19 +78,21 @@ class MainViewModel @Inject constructor(
     }
 
     private fun fetchPins(list: List<PinState>) {
+        Log.d("hyom markers", list.toString())
         if (list.isEmpty()) return
         val newPinList = arrayListOf<PinState>()
 
         list.forEach { item ->
             if (item.pin.imageUrl.isNullOrEmpty()) newPinList.add(item)
             else newPinList.add(item.copy(bitmap = loadUrlToBitmap(item.pin.imageUrl!!)))
-            Log.e("item", item.toString())
         }
 
         _pinStateList.postValue(newPinList)
-        _loading.postValue(false)
+
+        Log.d("hyom markers-pin", newPinList.toString())
 
         addEvent(PinEvent.OnCompletedLoad)
+        _loading.postValue(false)
     }
 
     fun setSelectedPin(postId: Long?) {
@@ -115,8 +112,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun setMyLocation(location: LatLng) {
-        myLocation.postValue(location)
         viewModelScope.launch {
+            _myLocation.postValue(location)
             patchUserInfoUseCase.updateLocation(location.latitude,location.longitude)
         }
     }

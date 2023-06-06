@@ -119,5 +119,7 @@ class MarkerLikeViewModel @Inject constructor(
         data class OnClickDetail(val postId: Long) : MarkerLikeEvent()
         data class ShowDialog(val postId: Long, val title: String) : MarkerLikeEvent()
         object DismissDialog : MarkerLikeEvent()
+
+        data class CopyTitle(val title : String) : MarkerLikeEvent()
     }
 }

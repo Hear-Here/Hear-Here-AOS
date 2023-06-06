@@ -49,7 +49,6 @@ class DetailViewModel @Inject constructor(
     }
 
     fun getMarkerDetail() {
-        Log.d("hyom",postId.toString())
         viewModelScope.launch {
             _loading.postValue(true)
             getPostUseCase.getPost(postId).also {
