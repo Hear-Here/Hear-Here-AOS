@@ -20,6 +20,10 @@ class LoginUseCaseImpl @Inject constructor(
         return repository.login(id,email).first()
     }
 
+    override suspend fun setNickName(name: String): ApiResponse<*> {
+        return repository.setNickName(name).first()
+    }
+
     suspend fun getToken() = preferenceRepository.getAuthToken()
 
     suspend fun updateToken(token: String) = preferenceRepository.updateToken(token)

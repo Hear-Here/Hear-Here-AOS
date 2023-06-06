@@ -2,6 +2,7 @@ package com.hearhere.presentation.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseActivity
@@ -19,9 +20,6 @@ class SetNickNameActivity : BaseActivity<ActivityNicknameBinding>(R.layout.activ
 
     override fun onCreateView(savedInstanceState: Bundle?) {
        binding.viewModel = viewModel
-       binding.startBtn.setOnClickListener {
-           navigateToMain()
-       }
     }
 
     private fun navigateToMain(){
@@ -31,7 +29,10 @@ class SetNickNameActivity : BaseActivity<ActivityNicknameBinding>(R.layout.activ
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
 
     override fun observeViewModel() {
-
+        viewModel.navigationToMain.observe {
+            Log.d("nav", "nick name submit")
+            navigateToMain()
+        }
     }
 }
 

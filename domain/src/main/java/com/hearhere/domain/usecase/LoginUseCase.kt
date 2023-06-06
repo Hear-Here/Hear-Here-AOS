@@ -6,4 +6,5 @@ import com.hearhere.domain.model.AuthToken
 
 interface LoginUseCase {
     suspend fun login(id : Long , email : String) : ApiResponse<AuthToken>
+    suspend fun setNickName(name:String) : ApiResponse<*>
 }

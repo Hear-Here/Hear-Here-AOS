@@ -11,18 +11,20 @@
     <activity android:name=".login.OnBoardingActivity"/>
     <activity android:name=".login.SetNickNameActivity"/>
 
-        <activity android:name=".features.main.MainActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".features.main.MarkerListActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".features.main.like.MarkerLikeActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".features.main.profile.MarkerMyPostingActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".features.detail.DetailActivity" android:screenOrientation="portrait"/>
         <activity
-            android:name=".post.PostActivity"
-            android:exported="true" />
-
+            android:name=".features.main.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".post.PostSelectOptionActivity"
-            android:exported="true"
-          />
+            android:name=".features.main.MarkerListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".features.main.like.MarkerLikeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".features.main.profile.MarkerMyPostingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".features.detail.DetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

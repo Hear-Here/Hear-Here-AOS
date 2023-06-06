@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.*
+import android.location.Location
 import android.graphics.Bitmap.createBitmap
 import android.location.LocationManager
 import android.os.Bundle
@@ -30,7 +31,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseActivity
 import com.hearhere.presentation.base.BaseViewModel
-import com.hearhere.presentation.common.component.MarkerImageView
 import com.hearhere.presentation.databinding.ActivityMainBinding
 import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.features.main.profile.MarkerMyPostingActivity
@@ -71,11 +71,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
     override fun onCreateView(savedInstanceState: Bundle?) {
         binding.viewModel = viewModel
-        viewModel.requestPins()
+
         if (hasPermission()) {
-            initMap()
+           initView()
         } else {
             ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_PERMISSION_CODE)
+            initView()
         }
 
         binding.likeBtn.setOnClickListener {
@@ -83,18 +84,36 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         }
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        mMap?.let {
-            viewModel.requestPins()
+    private fun initView(){
+        val location = getMyLocation()
+        viewModel.setMyLocation(location).
+        also {
+            viewModel.requestPins(location.latitude,location.longitude)
+        }.also {
             initMap()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("hyomk onResum", "resume")
+        initView()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        initView()
+    }
+
+
 
 
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
     override fun observeViewModel() {
         viewModel.events.flowWithLifecycle(lifecycle).onEach(::handleEvent).launchIn(lifecycleScope)
+        viewModel.pinStateList.observe {
+            if(! it.isNullOrEmpty()) initMap()
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -119,9 +138,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             MapsInitializer.Renderer.LATEST -> Log.d(
                 "MapsDemo", "The latest version of the renderer is used."
             )
+
             MapsInitializer.Renderer.LEGACY -> Log.d(
                 "MapsDemo", "The legacy version of the renderer is used."
             )
+
             else -> {}
         }
     }
@@ -132,23 +153,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             mMap?.let {
                 when (viewEvent) {
                     is MainViewModel.PinEvent.OnCompletedLoad -> {
-                        initMap()
+                        //initMap()
                     }
+
                     is MainViewModel.PinEvent.OnChangeSelectedPin -> {
                         viewModel.selectedPin.value?.let {
                             val pin = viewModel.getMarkerByPinState(it) ?: return
                             setFocusMarker(pin, false)
                         }
                     }
+
                     is MainViewModel.PinEvent.OnClickMyLocation -> {
                         setCameraToMyLocation(viewModel.myLocation.value)
                     }
+
                     is MainViewModel.PinEvent.OnClickList -> {
                         MarkerListActivity.start(this)
                     }
+
                     is MainViewModel.PinEvent.OnClickCreate -> {
                         showMarkerCreateDialog()
                     }
+
                     is MainViewModel.PinEvent.OnClickMyProfile -> {
                         MarkerMyPostingActivity.start(this)
                     }
@@ -179,6 +205,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     }
 
     private fun createMarker() {
+        Log.d("hyom map",viewModel.pinStateList.value.toString())
         val markers = ArrayList<Marker>()
         try {
             viewModel.pinStateList.value?.forEach {
@@ -222,7 +249,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                 )
             )
         }
-        viewModel.setMyLocation(location)
         viewModel.myLocationMarker.value?.let { it.remove() }
 
         val myLocationMarker = mMap!!.addMarker(option)
@@ -239,7 +265,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         createMarker()
         mMap?.setOnMarkerClickListener {
             setFocusMarker(it, true)
-
             if (it.tag != MYLOCATION_TAG) {
                 viewModel.setSelectedPin(it.tag as Long)
                 showMarkerDialog(it.tag as Long)
@@ -257,8 +282,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             if (hasPermission()) {
                 try {
                     it.isMyLocationEnabled = true
-                    location = getMyLocation()
-                    viewModel.setMyLocation(location)
                     it.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
                 } catch (e: SecurityException) {
                 } catch (e: Resources.NotFoundException) {
@@ -328,10 +351,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         return DEFAULT_LOCATION
     }
 
-    companion object{
-        fun start(context: Context){
+    companion object {
+        fun start(context: Context) {
             val intent = Intent(context, MainActivity::class.java).apply {
-                flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                flags = (Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
             ContextCompat.startActivity(context, intent, null)
         }
