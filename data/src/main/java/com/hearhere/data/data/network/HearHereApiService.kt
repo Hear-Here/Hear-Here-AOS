@@ -1,6 +1,7 @@
 package com.hearhere.data.data.network
 
 import com.hearhere.data.data.dto.request.AuthRequest
+import com.hearhere.data.data.dto.request.PostRequest
 import com.hearhere.data.data.dto.response.AuthResponse
 import com.hearhere.data.data.dto.response.LikePostItem
 import com.hearhere.data.data.dto.response.LikePostListResponse
@@ -74,6 +75,11 @@ interface HearHereApiService {
     @PATCH("/user/nickname/{nickname}")
     suspend fun setNickName(
         @Path("nickname") nickname : String
+    ):Response<*>
+
+    @POST("/post")
+    suspend fun postMusicPosting(
+        @Body body : PostRequest
     ):Response<*>
 }
 

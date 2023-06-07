@@ -42,6 +42,7 @@ class PostActivity : BaseActivity<ActivityPostBinding>(R.layout.activity_post) {
                 intent.putExtra("music_cover", music.cover)
                 intent.putExtra("music_artist", music.artist)
                 intent.putExtra("music_title", music.title)
+                intent.putExtra("music_songId", music.songId)
                 startActivity(intent)
 
             }

@@ -54,37 +54,63 @@
                 android:background="@drawable/basic_button_background_selector"
                 />
 
-            <com.hearhere.presentation.common.component.BasicButton
-                style="@style/button_selector"
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/soso_btn"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_margin="15dp"/>
+                android:layout_margin="15dp"
+                android:src="@drawable/soso"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:padding="8dp"
+                android:background="@drawable/basic_button_background_selector"
+                />
 
-
-            <com.hearhere.presentation.common.component.BasicButton
-                style="@style/button_selector"
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/sad_btn"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_margin="15dp"/>
-
-
-            <com.hearhere.presentation.common.component.BasicButton
-                style="@style/button_selector"
+                android:layout_margin="15dp"
+                android:src="@drawable/sad"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:padding="8dp"
+                android:background="@drawable/basic_button_background_selector"
+                />
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/funny_btn"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_margin="15dp"/>
-
-            <com.hearhere.presentation.common.component.BasicButton
-                style="@style/button_selector"
+                android:layout_margin="15dp"
+                android:src="@drawable/funny"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:padding="8dp"
+                android:background="@drawable/basic_button_background_selector"
+                />
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/heart_btn"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_margin="15dp"/>
-
-            <com.hearhere.presentation.common.component.BasicButton
-                style="@style/button_selector"
+                android:layout_margin="15dp"
+                android:src="@drawable/heart"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:padding="8dp"
+                android:background="@drawable/basic_button_background_selector"
+                />
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/angry_btn"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_margin="15dp"/>
+                android:layout_margin="15dp"
+                android:src="@drawable/angry"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:padding="8dp"
+                android:background="@drawable/basic_button_background_selector"
+                />
+
 
         </GridLayout>
 

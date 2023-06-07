@@ -29,6 +29,31 @@ class PostSelectWithFragment : BaseFragment<FragmentPostSelectWithBinding>(R.lay
         pageSlide()
     }
 
+    val onClickFriend = View.OnClickListener {
+        viewModel.with = WithType.FRIEND
+        pageSlide()
+    }
+
+    val onClickCouple = View.OnClickListener {
+        viewModel.with = WithType.COUPLE
+        pageSlide()
+    }
+
+    val onClickFamily = View.OnClickListener {
+        viewModel.with = WithType.FAMILY
+        pageSlide()
+    }
+
+    val onClickPet = View.OnClickListener {
+        viewModel.with = WithType.PET
+        pageSlide()
+    }
+
+    val onClickSomebody = View.OnClickListener {
+        viewModel.with = WithType.SOMEBODY
+        pageSlide()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

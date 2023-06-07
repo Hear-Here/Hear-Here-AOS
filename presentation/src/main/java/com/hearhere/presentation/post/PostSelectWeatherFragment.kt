@@ -21,10 +21,42 @@ class PostSelectWeatherFragment :
 
     override fun initView() {
         binding.context = this
+
         binding.sunnyBtn.setOnClickListener {
             it.isSelected = !it.isSelected
 
             viewModel.weather = WeatherType.SUNNY
+            pageSlide()
+        }
+
+        binding.normalBtn.setOnClickListener {
+            it.isSelected = !it.isSelected
+
+            viewModel.weather = WeatherType.NORMAL
+            pageSlide()
+        }
+        binding.cloudyBtn.setOnClickListener {
+            it.isSelected = !it.isSelected
+
+            viewModel.weather = WeatherType.CLOUDY
+            pageSlide()
+        }
+        binding.rainyBtn.setOnClickListener {
+            it.isSelected = !it.isSelected
+
+            viewModel.weather = WeatherType.RAINY
+            pageSlide()
+        }
+        binding.windyBtn.setOnClickListener {
+            it.isSelected = !it.isSelected
+
+            viewModel.weather = WeatherType.WINDY
+            pageSlide()
+        }
+        binding.snowyBtn.setOnClickListener {
+            it.isSelected = !it.isSelected
+
+            viewModel.weather = WeatherType.SNOWY
             pageSlide()
         }
 

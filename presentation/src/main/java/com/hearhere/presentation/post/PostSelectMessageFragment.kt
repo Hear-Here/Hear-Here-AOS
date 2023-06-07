@@ -25,17 +25,24 @@ class PostSelectMessageFragment
 
 
     }
-    val onClickPostMessage = View.OnClickListener {
 
+    val onClickPostMessage = View.OnClickListener {
         viewModel.message = binding.messageEt.text.toString()
         Log.d("옥채연", viewModel.message.toString())
+        viewModel.requestPost()
+        postSuccess()
     }
 
     val onClickPostWithoutMessage = View.OnClickListener {
         viewModel.message = null
         Log.d("옥채연", viewModel.message.toString())
+        viewModel.requestPost()
+        postSuccess()
     }
 
+    private fun postSuccess() {
+        (requireActivity() as PostSelectOptionActivity).startPostFinish()
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

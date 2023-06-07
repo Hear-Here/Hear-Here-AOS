@@ -8,7 +8,7 @@ data class PostListResponse (
     val cover : String?,
     val genre : String,
     val whoWith : String,
-    val temp : Double,
+    val temp : Int,
     val weather : String,
     val mood : String,
     val content : String?,

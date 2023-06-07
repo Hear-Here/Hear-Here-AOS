@@ -13,6 +13,7 @@ android {
 
     buildFeatures{
         dataBinding = true
+        viewBinding = true
     }
 
     defaultConfig {
@@ -36,7 +37,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = App.jvmTarget
+        jvmTarget = "1.8"
     }
 }
 
@@ -64,6 +65,8 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
     implementation("com.google.android.gms:play-services-fido:20.0.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.2")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.2")
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
 
     implementation ("com.google.android.gms:play-services-maps:${Dep.google_map}")

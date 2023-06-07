@@ -26,9 +26,50 @@ class PostSelectGenreFragment :
     }
 
     val onClickBallad = View.OnClickListener {
-
         Log.d("ok", "채연이")
         viewModel.genre = GenreType.BALLAD
+        pageSlide()
+    }
+
+    val onClickDance = View.OnClickListener {
+        Log.d("ok", "채연이")
+        viewModel.genre = GenreType.DANCE
+        pageSlide()
+
+    }
+    val onClickHiphop = View.OnClickListener {
+        Log.d("ok", "채연이")
+        viewModel.genre = GenreType.HIPHOP
+        pageSlide()
+
+    }
+    val onClickRB = View.OnClickListener {
+        Log.d("ok", "채연이")
+        viewModel.genre = GenreType.RB
+        pageSlide()
+
+    }
+    val onClickIndie = View.OnClickListener {
+        Log.d("ok", "채연이")
+        viewModel.genre = GenreType.INDIE
+        pageSlide()
+
+    }
+    val onClickPop = View.OnClickListener {
+        Log.d("ok", "채연이")
+        viewModel.genre = GenreType.POP
+        pageSlide()
+
+    }
+    val onClickBand = View.OnClickListener {
+        Log.d("ok", "채연이")
+        viewModel.genre = GenreType.BAND
+        pageSlide()
+
+    }
+    val onClickTrot = View.OnClickListener {
+        Log.d("ok", "채연이")
+        viewModel.genre = GenreType.TROT
         pageSlide()
 
     }

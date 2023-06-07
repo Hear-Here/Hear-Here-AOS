@@ -3,9 +3,11 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="context"
             type="com.hearhere.presentation.post.PostSelectGenreFragment" />
+
         <variable
             name="view"
             type="com.hearhere.presentation.post.PostSelectOptionViewModel" />
@@ -45,60 +47,73 @@
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:text="발라드"
                 android:onClick="@{context.onClickBallad}"
-                />
+                android:text="발라드" />
 
             <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/dance_btn"
                 style="@style/button_selector"
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
+                android:onClick="@{context.onClickDance}"
                 android:text="댄스" />
 
 
             <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/hiphop_btn"
                 style="@style/button_selector"
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
+                android:onClick="@{context.onClickHiphop}"
                 android:text="랩/힙합" />
 
 
             <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/rb_btn"
                 style="@style/button_selector"
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
+                android:onClick="@{context.onClickRB}"
                 android:text="@string/r_b" />
 
             <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/indie_btn"
                 style="@style/button_selector"
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
+                android:onClick="@{context.onClickIndie}"
                 android:text="인디" />
 
             <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/pop_btn"
                 style="@style/button_selector"
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
+                android:onClick="@{context.onClickPop}"
                 android:text="POP" />
 
             <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/band_btn"
                 style="@style/button_selector"
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
+                android:onClick="@{context.onClickBand}"
                 android:text="밴드" />
 
 
             <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/trot_btn"
                 style="@style/button_selector"
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
+                android:onClick="@{context.onClickTrot}"
                 android:text="트로트" />
 
         </GridLayout>

@@ -30,6 +30,41 @@ class PostSelectEmotionFragment : BaseFragment<FragmentPostSelectEmotionBinding>
             viewModel.emotion = EmotionType.SMILE
             pageSlide()
         }
+        binding.sosoBtn.setOnClickListener {
+            it.isSelected = !it.isSelected
+            Log.d("옥채연", it.isSelected.toString())
+
+            viewModel.emotion = EmotionType.SOSO
+            pageSlide()
+        }
+        binding.sadBtn.setOnClickListener {
+            it.isSelected = !it.isSelected
+            Log.d("옥채연", it.isSelected.toString())
+
+            viewModel.emotion = EmotionType.SAD
+            pageSlide()
+        }
+        binding.funnyBtn.setOnClickListener {
+            it.isSelected = !it.isSelected
+            Log.d("옥채연", it.isSelected.toString())
+
+            viewModel.emotion = EmotionType.FUNNY
+            pageSlide()
+        }
+        binding.heartBtn.setOnClickListener {
+            it.isSelected = !it.isSelected
+            Log.d("옥채연", it.isSelected.toString())
+
+            viewModel.emotion = EmotionType.HEART
+            pageSlide()
+        }
+        binding.angryBtn.setOnClickListener {
+            it.isSelected = !it.isSelected
+            Log.d("옥채연", it.isSelected.toString())
+
+            viewModel.emotion = EmotionType.ANGRY
+            pageSlide()
+        }
     }
 
 

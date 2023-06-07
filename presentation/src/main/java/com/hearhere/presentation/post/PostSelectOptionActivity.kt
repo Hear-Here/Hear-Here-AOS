@@ -1,5 +1,6 @@
 package com.hearhere.presentation.post
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -20,9 +21,16 @@ class PostSelectOptionActivity : BaseActivity<ActivityPostSelectOptionBinding>(R
 
     override fun onCreateView(savedInstanceState: Bundle?) {
 
+
         val coverUrl = intent.getStringExtra("music_cover")
         val artist = intent.getStringExtra("music_artist")
         val title = intent.getStringExtra("music_title")
+        val songId = intent.getLongExtra("music_songId", 0)
+
+        viewModel.cover = coverUrl
+        viewModel.artist = artist
+        viewModel.title = title
+        viewModel.songId = songId
         // intent.getStringExtra("전달했던 데이터의 이름표")
 
 //        binding.textViewTv.text = message
@@ -45,6 +53,14 @@ class PostSelectOptionActivity : BaseActivity<ActivityPostSelectOptionBinding>(R
     private fun setViewPager() {
         pagerAdapter = PostMusicViewPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
+    }
+
+    fun startPostFinish() {
+
+        Intent(this@PostSelectOptionActivity, PostFinishActivity::class.java).also {
+            it.putExtra("music", viewModel.posting)
+            startActivity(it)
+        }
     }
 
     fun slidePage() {
