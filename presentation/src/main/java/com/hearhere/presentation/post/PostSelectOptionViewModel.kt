@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostSelectOptionViewModel @Inject constructor(
-    val useCase: PostPostingUseCaseImpl
-    ) : BaseViewModel() {
+
+) : BaseViewModel() {
 
     var cover : String? = null
     var artist : String? = null
@@ -30,24 +30,20 @@ class PostSelectOptionViewModel @Inject constructor(
     var message : String? = null
     var posting : Posting?  =null
 
-    fun requestPost() {
-        viewModelScope.launch {
-            posting = Posting(
-                songId = songId!!,
-                title = title!!,
-                artist = artist!!,
-                cover = cover,
-                genreType = genre!!.name,
-                withType = with!!.name,
-                temp = temp,
-                weatherType = weather!!.name,
-                emotionType = emotion!!.name,
-                content = message,
-                longitude = null,
-                latitude = null)
+    fun postPosting() {
+        posting = Posting(
+            songId = songId!!,
+            title = title!!,
+            artist = artist!!,
+            cover = cover,
+            genreType = genre!!.name,
+            withType = with!!.name,
+            temp = temp,
+            weatherType = weather!!.name,
+            emotionType = emotion!!.name,
+            content = message,
+            longitude = null,
+            latitude = null)
 
-            useCase.postMusicPosting(posting!!)
-
-        }
     }
 }

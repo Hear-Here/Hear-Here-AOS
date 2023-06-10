@@ -56,8 +56,10 @@ class PostSelectOptionActivity : BaseActivity<ActivityPostSelectOptionBinding>(R
     }
 
     fun startPostFinish() {
-
         Intent(this@PostSelectOptionActivity, PostFinishActivity::class.java).also {
+
+            Log.d("옥채연/startPostFinish/message", viewModel.posting!!.content.toString())
+            Log.d("옥채연/startPostFinish", viewModel.posting.toString())
             it.putExtra("music", viewModel.posting)
             startActivity(it)
         }

@@ -54,12 +54,12 @@ class MainViewModel @Inject constructor(
     val events = _events.asStateFlow()
 
     init {
-        _loading.postValue(true)
+        //_loading.postValue(true)
     }
 
     fun requestPins(lat:Double, lng: Double) {
         viewModelScope.launch {
-            _loading.postValue(true)
+           // _loading.postValue(true)
             //val location = getPostUseCase.myLocation ?: getPostUseCase.getLocation()
             getPostUseCase.getPostList( lat,lng ).also {
                 when(it){

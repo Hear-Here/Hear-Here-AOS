@@ -19,21 +19,23 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class PostFinishViewModel @Inject constructor() : BaseViewModel() {
+class PostFinishViewModel @Inject constructor(
+    val useCase : PostPostingUseCaseImpl
+) : BaseViewModel() {
     private val _uiState = MutableLiveData<MarkerPostUiState>()
     val uiState: LiveData<MarkerPostUiState> get() = _uiState
 
     fun getDetail(posting: Posting) {
 
         val state = MarkerPostUiState(
-            title = posting!!.title,
-            artist = posting!!.artist,
-            cover = Uri.parse(posting!!.cover),
-            message = posting!!.content,
-            genreType = GenreType.valueOf(posting!!.genreType),
-            weatherType = WeatherType.valueOf(posting!!.weatherType),
-            withType = WithType.valueOf(posting!!.withType),
-            emotionType = EmotionType.valueOf(posting!!.emotionType)
+            title = posting.title,
+            artist = posting.artist,
+            cover = Uri.parse(posting.cover),
+            message = posting.content,
+            genreType = GenreType.valueOf(posting.genreType),
+            weatherType = WeatherType.valueOf(posting.weatherType),
+            withType = WithType.valueOf(posting.withType),
+            emotionType = EmotionType.valueOf(posting.emotionType)
         )
         _uiState.postValue(state)
 
@@ -51,4 +53,11 @@ class PostFinishViewModel @Inject constructor() : BaseViewModel() {
         val emotionType: EmotionType?
     )
 
+    fun requestPost(posting: Posting) {
+        Log.d("옥채연/requestPost", posting.toString())
+        viewModelScope.launch {
+            useCase.postMusicPosting(posting)
+
+        }
+    }
 }

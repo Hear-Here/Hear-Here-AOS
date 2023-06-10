@@ -15,7 +15,6 @@ import com.hearhere.presentation.databinding.FragmentPostSelectMessageBinding
 
 class PostSelectMessageFragment
     : BaseFragment<FragmentPostSelectMessageBinding>(R.layout.fragment_post_select_message) {
-
     private val viewModel: PostSelectOptionViewModel by activityViewModels()
 
     private lateinit var adapter: BaseAdapter
@@ -29,18 +28,17 @@ class PostSelectMessageFragment
     val onClickPostMessage = View.OnClickListener {
         viewModel.message = binding.messageEt.text.toString()
         Log.d("옥채연", viewModel.message.toString())
-        viewModel.requestPost()
         postSuccess()
     }
 
     val onClickPostWithoutMessage = View.OnClickListener {
         viewModel.message = null
         Log.d("옥채연", viewModel.message.toString())
-        viewModel.requestPost()
         postSuccess()
     }
 
     private fun postSuccess() {
+        viewModel.postPosting()
         (requireActivity() as PostSelectOptionActivity).startPostFinish()
     }
 
