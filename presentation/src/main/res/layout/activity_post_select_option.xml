@@ -33,6 +33,7 @@
 
                 <TextView
                     android:id="@+id/post_title_tv"
+                    style="@style/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="19dp"
@@ -40,6 +41,7 @@
 
                 <TextView
                     android:id="@+id/post_artist_tv"
+                    style="@style/body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -55,6 +57,7 @@
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/view_pager"
+                    android:paddingBottom="36dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>

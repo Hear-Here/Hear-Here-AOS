@@ -25,8 +25,8 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name="com.hearhere.presentation.post.PostActivity"
-            android:exported="true"
+            android:name="com.hearhere.presentation.login.SplashActivity"
+                  android:exported="true"
             android:screenOrientation="portrait">
 
             <intent-filter>

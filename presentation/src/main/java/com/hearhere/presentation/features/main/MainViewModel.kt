@@ -66,7 +66,7 @@ class MainViewModel @Inject constructor(
 
    fun requestPins(lat : Double, lng : Double) {
         viewModelScope.launch {
-            _loading.postValue(true)
+            //_loading.postValue(true)
             getPostUseCase.getPostList( lat,lng ).also {
                 when(it){
                     is ApiResponse.Success ->{
