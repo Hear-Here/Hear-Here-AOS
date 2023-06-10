@@ -1,6 +1,7 @@
 package com.hearhere.data.repositoryImpl
 
 import android.util.Log
+import com.hearhere.data.data.dto.request.PostRequest
 import com.hearhere.data.data.dto.response.LikePostItem
 import com.hearhere.data.data.dto.response.MyPostListResponse
 import com.hearhere.data.data.dto.response.PostItemResponse
@@ -11,6 +12,7 @@ import com.hearhere.domain.model.LikeMusicPost
 import com.hearhere.domain.model.MusicPost
 import com.hearhere.domain.model.MyMusicPost
 import com.hearhere.domain.model.Pin
+import com.hearhere.domain.model.Posting
 import com.hearhere.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -109,6 +111,33 @@ class PostRepositoryImpl @Inject constructor(
                     }
                 }
             }
+    }
+
+    override suspend fun postMusicPosting(posting: Posting): Flow<ApiResponse<*>> = flow {
+        safeApiCall { apiHelper.postMusicPosting(PostRequest(
+            songId = posting.songId,
+            title = posting.title,
+            artist = posting.artist,
+            cover = posting.cover,
+            genreType = posting.genreType,
+            withType = posting.withType,
+            temp = posting.temp,
+            weatherType = posting.weatherType,
+            emotionType = posting.emotionType,
+            content = posting.content?:"",
+            longitude = posting.longitude!!,
+            latitude = posting.latitude!!
+        )) }.collect {
+            when (it) {
+                is ApiResponse.Success -> {
+                    emit(it)
+                }
+
+                else -> {
+                    emit(it)
+                }
+            }
+        }
     }
 
 

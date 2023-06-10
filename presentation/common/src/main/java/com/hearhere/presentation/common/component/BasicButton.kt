@@ -6,6 +6,7 @@ import android.text.Editable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.hearhere.presentation.common.R
@@ -43,7 +44,9 @@ class BasicButton @JvmOverloads constructor(
         )
 
         binding.button.isEnabled = typedArray.getBoolean(R.styleable.BasicButton_android_enabled, true)
-
+        binding.button.layoutParams.apply{
+            height = typedArray.getLayoutDimension(R.styleable.BasicButton_android_layout_height,  ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
 
         typedArray.recycle()
     }
@@ -72,7 +75,7 @@ class BasicButton @JvmOverloads constructor(
             it.isSelected = !it.isSelected
         }
     }
-
+    @JvmName("basicbutton-listener")
     private fun setButtonClickListener(listener: ()->Unit) {
         binding.button.setOnClickListener{
             listener.invoke()

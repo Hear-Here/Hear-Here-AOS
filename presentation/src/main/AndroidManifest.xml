@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
+
         <activity android:name=".test.TestActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".login.SplashActivity" />
@@ -14,6 +15,10 @@
 
         <activity
             android:name=".features.main.MainActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".post.PostFinishActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".features.main.MarkerListActivity"
@@ -30,5 +35,12 @@
         <activity
             android:name=".features.main.RecomandActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".post.PostActivity"
+            android:exported="true" />
+        <activity
+            android:name=".post.PostSelectOptionActivity"
+            android:exported="true" />
+
     </application>
 </manifest>

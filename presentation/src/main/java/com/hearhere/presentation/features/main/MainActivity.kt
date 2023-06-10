@@ -7,9 +7,11 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.*
 import android.location.Location
+import android.graphics.Bitmap.createBitmap
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
@@ -29,9 +31,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseActivity
 import com.hearhere.presentation.base.BaseViewModel
+import com.hearhere.presentation.common.component.MarkerImageView
 import com.hearhere.presentation.databinding.ActivityMainBinding
 import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.features.main.profile.MarkerMyPostingActivity
+import com.hearhere.presentation.post.PostActivity
 import com.hearhere.presentation.util.createDrawableFromView
 import com.hearhere.presentation.util.getCircledBitmap
 import dagger.hilt.android.AndroidEntryPoint
@@ -335,7 +339,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
 
     private val markerCreateListener = object : MarkerCreateDialog.OnClickDialog {
         override fun onClickPositive() {
-            Toast.makeText(this@MainActivity, "yes", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this@MainActivity, "yes", Toast.LENGTH_SHORT).show()
+            Intent(this@MainActivity,PostActivity::class.java).also {
+                startActivity(it)
+            }
         }
 
         override fun onClickNegative() {

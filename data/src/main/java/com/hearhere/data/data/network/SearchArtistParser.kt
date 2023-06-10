@@ -28,7 +28,7 @@ object SearchArtistParser  {
                     when (parser.name) {
                         "item" -> artist = ArtistResult()
                         "title" -> {
-                           nowTag ="title"
+                            nowTag ="title"
                         }
                         "release"->{
                             nowTag="release"
@@ -64,7 +64,7 @@ object SearchArtistParser  {
                         "song"->{
                             if (artist != null) {
                                 songList.add(SongResult(songId,songName,artist.release,cover=null))
-                               // artist.songList.add(SongResult(songId,songName,artist.release))
+                                // artist.songList.add(SongResult(songId,songName,artist.release))
                             }
                         }
                     }

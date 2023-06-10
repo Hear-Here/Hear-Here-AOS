@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.hearhere.presentation.post.PostFinishViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/marker_bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_top_corner">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="40dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="25dp">
+
+                <com.hearhere.presentation.common.component.RecordImageView
+                    android:id="@+id/record_iv"
+                    holeColor="ffffff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@{viewModel.uiState.cover}"
+                    app:type='@{"small"}' />
+
+                <TextView
+                    android:id="@+id/music_title_tv"
+                    style="@style/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@{viewModel.uiState.title}" />
+
+                <TextView
+                    android:id="@+id/music_artist_tv"
+                    style="@style/body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@{viewModel.uiState.artist}"
+                    android:textColor="@color/gray70" />
+
+                <TextView
+                    android:id="@+id/music_message_tv"
+                    style="@style/sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@{viewModel.uiState.message}"
+                    android:textColor="@color/gray90"
+
+                    android:visibility="@{viewModel.uiState.message==null? View.GONE: View.VISIBLE}" />
+
+
+                <GridLayout
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:columnCount="2"
+                    android:rowCount="2">
+
+                    <com.hearhere.presentation.common.component.EmojiButton
+                        android:id="@+id/genre_emoji"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:emoji="@{viewModel.uiState.genreType}" />
+
+                    <com.hearhere.presentation.common.component.EmojiButton
+                        android:id="@+id/weather_emoji"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:emoji="@{viewModel.uiState.weatherType}" />
+
+                    <com.hearhere.presentation.common.component.EmojiButton
+                        android:id="@+id/emotion_emoji"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:emoji="@{viewModel.uiState.emotionType}" />
+
+                    <com.hearhere.presentation.common.component.EmojiButton
+                        android:id="@+id/with_emoji"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:emoji="@{viewModel.uiState.withType}" />
+
+                </GridLayout>
+            </LinearLayout>
+
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/post_finish_btn"
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:gravity="center"
+            android:background="@drawable/bg_post_finish"
+            android:text="작성완료"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
+</layout>
