@@ -47,7 +47,7 @@ fun setCoverImage(imageview: ImageView, url: String?){
     url?.let {
         Glide.with(imageview)
             .load(it)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            //.diskCacheStrategy(DiskCacheStrategy.ALL)
             .fitCenter()
             .placeholder(com.hearhere.presentation.common.R.drawable.outframe)
             .error(

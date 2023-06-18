@@ -1,5 +1,7 @@
 package com.hearhere.presentation.features.main.profile
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +22,7 @@ import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.features.main.like.MarkerLikeDialog
 import com.hearhere.presentation.features.main.like.MarkerLikeViewModel
 import com.hearhere.presentation.util.ConvertDPtoPX
+import com.hearhere.presentation.util.CopyOnClipboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -45,6 +48,11 @@ class MarkerMyPostingActivity :
 
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getMarkerList()
+    }
+
     override fun observeViewModel() {
         viewModel.binder.observe {
             adapter.submitList(it)
@@ -67,13 +75,22 @@ class MarkerMyPostingActivity :
                     dismissDialog()
                 }
                 is MarkerMyPostingViewModel.MarkerMyPostingEvent.OnClickDetail -> {
-                    Toast.makeText(this, "아이템 상세보기", Toast.LENGTH_SHORT).show()
                     DetailActivity.start(this,event.postId.toLong())
+                }
+                is MarkerMyPostingViewModel.MarkerMyPostingEvent.CopyTitle ->{
+                    onCopy(event.title)
+                    dismissDialog()
                 }
             }
             viewModel.consumeViewEvent(event)
         }
     }
+
+    private fun onCopy(text: String){
+        this.CopyOnClipboard(text)
+    }
+
+
 
     private fun showDialog(postId: Long, title: String) {
         if (::dialog.isInitialized && dialog.isAdded) {

@@ -1,14 +1,18 @@
 package com.hearhere.data.repositoryImpl
 
 import android.util.Log
+import com.hearhere.data.data.dto.request.PostRequest
 import com.hearhere.data.data.dto.response.LikePostItem
+import com.hearhere.data.data.dto.response.MyPostListResponse
 import com.hearhere.data.data.dto.response.PostItemResponse
 import com.hearhere.data.data.dto.response.PostListResponse
 import com.hearhere.data.data.network.ApiHelperImpl
 import com.hearhere.domain.model.ApiResponse
 import com.hearhere.domain.model.LikeMusicPost
 import com.hearhere.domain.model.MusicPost
+import com.hearhere.domain.model.MyMusicPost
 import com.hearhere.domain.model.Pin
+import com.hearhere.domain.model.Posting
 import com.hearhere.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -92,8 +96,52 @@ class PostRepositoryImpl @Inject constructor(
             }
     }
 
+    override suspend fun getMyPostList(
+        lat: Double,
+        lng: Double
+    ): Flow<ApiResponse<List<MyMusicPost>>> = flow {
+        safeApiCall { apiHelper.getMyPostList(lat, lng) }
+            .collect{
+                when(it){
+                    is ApiResponse.Success ->{
+                        emit(it.data!!.mapToDomain())
+                    }
+                    is ApiResponse.Error ->{
+                        emit(ApiResponse.Error(it.message.toString(), it.throwable))
+                    }
+                }
+            }
+    }
 
-    @JvmName("loadPostList")
+    override suspend fun postMusicPosting(posting: Posting): Flow<ApiResponse<*>> = flow {
+        safeApiCall { apiHelper.postMusicPosting(PostRequest(
+            songId = posting.songId,
+            title = posting.title,
+            artist = posting.artist,
+            cover = posting.cover,
+            genreType = posting.genreType,
+            withType = posting.withType,
+            temp = posting.temp,
+            weatherType = posting.weatherType,
+            emotionType = posting.emotionType,
+            content = posting.content?:"",
+            longitude = posting.longitude!!,
+            latitude = posting.latitude!!
+        )) }.collect {
+            when (it) {
+                is ApiResponse.Success -> {
+                    emit(it)
+                }
+
+                else -> {
+                    emit(it)
+                }
+            }
+        }
+    }
+
+
+    @JvmName("loadLikePostList")
     fun List<PostItemResponse>.mapToDomain(): ApiResponse<List<Pin>> {
         val temp = ArrayList<Pin>()
         this.forEach {
@@ -111,7 +159,22 @@ class PostRepositoryImpl @Inject constructor(
         }
         return ApiResponse.Success(temp)
     }
-
+    @JvmName("loadMyPostList")
+    fun List<MyPostListResponse>.mapToDomain(): ApiResponse<List<MyMusicPost>> {
+        val temp = ArrayList<MyMusicPost>()
+        this?.forEach {
+            val post = MyMusicPost(
+                postId = it.postId?:-1,
+                coverPath = it.cover,
+                artist = it.artist,
+                title = it.title,
+                distance = it.distance,
+                writer = it.writer
+            )
+            temp.add(post)
+        }
+        return ApiResponse.Success(temp)
+    }
     fun List<LikePostItem>.mapToDomain() : ApiResponse<List<LikeMusicPost>>{
         val temp = ArrayList<LikeMusicPost>()
         this?.forEach {
@@ -120,30 +183,14 @@ class PostRepositoryImpl @Inject constructor(
                 coverPath = it.cover,
                 artist = it.artist,
                 title = it.title,
-                distance = it.distance
+                distance = it.distance,
+                writer = it.writer
             )
             temp.add(post)
         }
         return ApiResponse.Success(temp)
     }
-/**
- * val postId : Long,
-    val writer : String,
-    val title : String,
-    val artist : String,
-    val cover : String?,
-    val genreType : String,
-    val whoWithTy : String,
-    val temp : Double,
-    val weather : String,
-    val mood : String,
-    val content : String?,
-    val longitude : Double,
-    val latitude : Double,
-    val distance : Double,
-    val likeCount : Int,
-    val isLike : Boolean
-    **/
+
     fun PostItemResponse.maptoDomain(): ApiResponse<MusicPost> {
         val post = MusicPost(
             postId = postId,

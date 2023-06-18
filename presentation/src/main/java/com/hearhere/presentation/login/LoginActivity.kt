@@ -34,7 +34,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     override fun observeViewModel() {
         viewModel.loginState.observe {
-            Toast.makeText(this,it.toString(),Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this,it.toString(),Toast.LENGTH_SHORT).show()
             if(it == true) {
                 Intent(this,OnBoardingActivity::class.java).also {
                     intent -> startActivity(intent)

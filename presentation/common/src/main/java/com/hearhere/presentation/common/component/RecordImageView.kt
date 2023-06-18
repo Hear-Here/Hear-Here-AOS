@@ -69,7 +69,7 @@ class RecordImageView @JvmOverloads constructor(
 
             Glide.with(this)
                 .load(it)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                //.diskCacheStrategy(DiskCacheStrategy.ALL)
                 .fitCenter()
                 .placeholder(
                     ContextCompat.getDrawable(

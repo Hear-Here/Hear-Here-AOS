@@ -50,7 +50,8 @@ class MarkerLikeViewModel @Inject constructor(
                             artist = it.artist,
                             title = it.title,
                             coverPath = it.coverPath,
-                            distance = it.distance
+                            distance = it.distance,
+                            writer = it.writer
                         )
                         val binder = MarkerLikeItemBinder(
                             ::onClickDetail,
@@ -88,8 +89,11 @@ class MarkerLikeViewModel @Inject constructor(
         //delete api 위치
         viewModelScope.launch {
             patchPostUseCase.disLikePost(postId)
+                .also {
+                addEvent(MarkerLikeEvent.Delete)
+            }
         }
-        addEvent(MarkerLikeEvent.DismissDialog)
+
     }
 
     fun onClickItemCopy(title: String) {
@@ -113,11 +117,16 @@ class MarkerLikeViewModel @Inject constructor(
         val artist: String,
         val coverPath: String? = "",
         val distance: Double,
+        val writer : String ?=""
     )
 
     sealed class MarkerLikeEvent() {
         data class OnClickDetail(val postId: Long) : MarkerLikeEvent()
         data class ShowDialog(val postId: Long, val title: String) : MarkerLikeEvent()
         object DismissDialog : MarkerLikeEvent()
+
+        object Delete : MarkerLikeEvent()
+
+        data class CopyTitle(val title : String) : MarkerLikeEvent()
     }
 }

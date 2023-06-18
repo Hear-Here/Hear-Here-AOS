@@ -87,8 +87,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginTop="20dp"
+                    android:onClick="@{viewModel.setNickName}"
                     android:enabled="@{viewModel.nickname.isEnabled}"
                     android:text="시작하기"
+                    hint="닉네임"
                     />
             </RelativeLayout>
 

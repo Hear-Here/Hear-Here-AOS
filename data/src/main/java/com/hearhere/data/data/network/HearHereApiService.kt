@@ -1,9 +1,11 @@
 package com.hearhere.data.data.network
 
 import com.hearhere.data.data.dto.request.AuthRequest
+import com.hearhere.data.data.dto.request.PostRequest
 import com.hearhere.data.data.dto.response.AuthResponse
 import com.hearhere.data.data.dto.response.LikePostItem
 import com.hearhere.data.data.dto.response.LikePostListResponse
+import com.hearhere.data.data.dto.response.MyPostListResponse
 import com.hearhere.data.data.dto.response.PostItemResponse
 import com.hearhere.data.data.dto.response.PostListResponse
 import com.hearhere.domain.model.ApiResponse
@@ -12,6 +14,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -62,6 +65,22 @@ interface HearHereApiService {
         @Query("latitude") latitude : Double,
         @Query("longitude") longitude : Double,
     ):Response<List<LikePostItem>>
+
+    @GET("/post/my/list")
+    suspend fun getMyPostList(
+        @Query("latitude") latitude : Double,
+        @Query("longitude") longitude : Double,
+    ):Response<List<MyPostListResponse>>
+
+    @PATCH("/user/nickname/{nickname}")
+    suspend fun setNickName(
+        @Path("nickname") nickname : String
+    ):Response<*>
+
+    @POST("/post")
+    suspend fun postMusicPosting(
+        @Body body : PostRequest
+    ):Response<*>
 }
 
 

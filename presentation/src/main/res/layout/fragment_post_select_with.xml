@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="context"
+            type="com.hearhere.presentation.post.PostSelectWithFragment" />
+
+        <variable
+            name="view"
+            type="com.hearhere.presentation.post.PostSelectOptionViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".post.PostSelectGenreFragment">
+
+        <TextView
+            android:id="@+id/title_tv"
+            style="@style/body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="58dp"
+            android:text="누구와 함께 듣고 있나요?"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:columnCount="2"
+            android:rowCount="3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_tv">
+
+            <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/alone_btn"
+                style="@style/button_selector"
+                android:layout_width="149dp"
+                android:layout_height="67dp"
+                android:layout_margin="5dp"
+                android:onClick="@{context.onClickAlone}"
+                android:text="나 혼자" />
+
+            <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/friend_btn"
+                style="@style/button_selector"
+                android:layout_width="149dp"
+                android:layout_height="67dp"
+                android:layout_margin="5dp"
+                android:onClick="@{context.onClickFriend}"
+                android:text="친구" />
+
+            <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/couple_btn"
+                style="@style/button_selector"
+                android:layout_width="149dp"
+                android:layout_height="67dp"
+                android:layout_margin="5dp"
+                android:onClick="@{context.onClickCouple}"
+                android:text="연인" />
+
+            <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/family_btn"
+                style="@style/button_selector"
+                android:layout_width="149dp"
+                android:layout_height="67dp"
+                android:layout_margin="5dp"
+                android:onClick="@{context.onClickFamily}"
+                android:text="가족" />
+
+            <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/pet_btn"
+                style="@style/button_selector"
+                android:layout_width="149dp"
+                android:layout_height="67dp"
+                android:layout_margin="5dp"
+                android:onClick="@{context.onClickPet}"
+                android:text="반려동물" />
+
+
+
+            <com.hearhere.presentation.common.component.BasicButton
+                android:id="@+id/somebody_btn"
+                style="@style/button_selector"
+                android:layout_width="149dp"
+                android:layout_height="67dp"
+                android:layout_margin="5dp"
+                android:onClick="@{context.onClickSomebody}"
+                android:text="누군가" />
+        </GridLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

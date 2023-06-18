@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository  {
     suspend fun login(id: Long, email : String) : Flow<ApiResponse<AuthToken>>
+
+    suspend fun setNickName(name : String) : Flow<ApiResponse<*>>
 }

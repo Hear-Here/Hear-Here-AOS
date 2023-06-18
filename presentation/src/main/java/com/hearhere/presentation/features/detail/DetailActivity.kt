@@ -38,6 +38,9 @@ class DetailActivity  : BaseActivity<ActivityDetailBinding>(R.layout.activity_de
 
     override fun onCreateView(savedInstanceState: Bundle?) {
         binding.viewModel =  viewModel
+        binding.backBtn.setOnClickListener {
+            this.finish()
+        }
     }
 
     override fun onRestart() {

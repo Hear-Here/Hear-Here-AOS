@@ -10,11 +10,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageButton
+            android:id="@+id/recomand_btn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/recomand_btn"
+            android:background="@android:color/transparent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="20dp"
+            android:layout_marginTop="40dp"
+            android:elevation="1dp"
+            />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/map_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/layout_navigator">
+
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/map_view"

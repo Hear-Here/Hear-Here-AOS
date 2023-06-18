@@ -49,7 +49,6 @@ class DetailViewModel @Inject constructor(
     }
 
     fun getMarkerDetail() {
-        Log.d("hyom",postId.toString())
         viewModelScope.launch {
             _loading.postValue(true)
             getPostUseCase.getPost(postId).also {
@@ -58,7 +57,7 @@ class DetailViewModel @Inject constructor(
                         val res = it.data!!
                         val state =  PostingDetailUiState(
                             postId = res.postId,
-                            writer = res.writer + postId.toString(),
+                            writer = res.writer ,
                             title = res.title,
                             artist = res.artist,
                             cover = Uri.parse(res.cover),

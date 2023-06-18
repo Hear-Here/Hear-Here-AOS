@@ -17,6 +17,7 @@ import com.hearhere.presentation.common.util.MarginItemDecoration
 import com.hearhere.presentation.databinding.ActivityMarkerLikeBinding
 import com.hearhere.presentation.features.detail.DetailActivity
 import com.hearhere.presentation.util.ConvertDPtoPX
+import com.hearhere.presentation.util.CopyOnClipboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -68,13 +69,25 @@ class MarkerLikeActivity  : BaseActivity<ActivityMarkerLikeBinding>(R.layout.act
                     dismissDialog()
                 }
                 is MarkerLikeViewModel.MarkerLikeEvent.OnClickDetail -> {
-                    Log.d("hyom-like",event.postId.toString())
                     DetailActivity.start(this@MarkerLikeActivity ,event.postId.toLong())
+                }
+                is MarkerLikeViewModel.MarkerLikeEvent.CopyTitle->{
+                    onCopy(event.title)
+                    dismissDialog()
+                }
+                is MarkerLikeViewModel.MarkerLikeEvent.Delete->{
+                    viewModel.getMarkerList()
+                    dismissDialog()
                 }
             }
             viewModel.consumeViewEvent(event)
         }
     }
+
+    private fun onCopy(text: String){
+        this.CopyOnClipboard(text)
+    }
+
 
     private fun showDialog(postId: Long , title: String) {
         if (::dialog.isInitialized && dialog.isAdded) {

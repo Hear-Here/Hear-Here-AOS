@@ -56,7 +56,7 @@ class MarkerDetailViewModel @Inject constructor(
                         val res = it.data!!
                         val state = MarkerDetailUiState(
                             postId = res.postId,
-                            writer = res.writer + postId.toString(),
+                            writer = res.writer,
                             title = res.title,
                             artist = res.artist,
                             cover = Uri.parse(res.cover),
