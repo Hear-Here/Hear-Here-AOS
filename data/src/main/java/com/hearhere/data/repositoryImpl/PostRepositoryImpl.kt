@@ -168,7 +168,8 @@ class PostRepositoryImpl @Inject constructor(
                 coverPath = it.cover,
                 artist = it.artist,
                 title = it.title,
-                distance = it.distance
+                distance = it.distance,
+                writer = it.writer
             )
             temp.add(post)
         }
@@ -182,7 +183,8 @@ class PostRepositoryImpl @Inject constructor(
                 coverPath = it.cover,
                 artist = it.artist,
                 title = it.title,
-                distance = it.distance
+                distance = it.distance,
+                writer = it.writer
             )
             temp.add(post)
         }

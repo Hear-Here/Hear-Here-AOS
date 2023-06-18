@@ -46,6 +46,7 @@ class MarkerCreateDialog : BottomSheetDialogFragment() {
                 height = (screenHeight * 0.25).toInt()
             }
         }
+
     }
 
     fun onClickPositive() {

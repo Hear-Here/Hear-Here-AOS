@@ -37,6 +37,7 @@ class SearchTitleFragment :
         binding.markerListRv.adapter = adapter
         viewModel.titleBinder.observe(requireActivity()) {
             adapter.submitList(it)
+            binding.charector.visibility = if(it.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
             Log.d("binder", it.toString())
         }
 

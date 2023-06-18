@@ -56,12 +56,13 @@ class MarkerDetailBottomSheet : BottomSheetDialogFragment() {
         }
 
         viewModel.uiState.observe(this, Observer {
-            Toast.makeText(requireContext(), it.isLiked.toString(), Toast.LENGTH_SHORT).show()
+
         })
         viewModel.loading.observe(this, Observer {
             if(it == true) binding.root.visibility = View.INVISIBLE
             else binding.root.visibility = View.VISIBLE
         })
+        
     }
 
 

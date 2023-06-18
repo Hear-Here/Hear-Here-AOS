@@ -75,6 +75,10 @@ class MarkerLikeActivity  : BaseActivity<ActivityMarkerLikeBinding>(R.layout.act
                     onCopy(event.title)
                     dismissDialog()
                 }
+                is MarkerLikeViewModel.MarkerLikeEvent.Delete->{
+                    viewModel.getMarkerList()
+                    dismissDialog()
+                }
             }
             viewModel.consumeViewEvent(event)
         }

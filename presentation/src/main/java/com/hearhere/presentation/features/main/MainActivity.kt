@@ -6,18 +6,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.*
-import android.location.Location
-import android.graphics.Bitmap.createBitmap
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.view.ContentInfoCompat.Flags
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -31,7 +27,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseActivity
 import com.hearhere.presentation.base.BaseViewModel
-import com.hearhere.presentation.common.component.MarkerImageView
 import com.hearhere.presentation.databinding.ActivityMainBinding
 import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.features.main.profile.MarkerMyPostingActivity
@@ -41,6 +36,7 @@ import com.hearhere.presentation.util.getCircledBitmap
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.runBlocking
 
 
 @AndroidEntryPoint
@@ -87,24 +83,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         binding.recomandBtn.setOnClickListener {
             RecomandActivity.start(this)
         }
+
     }
 
     override fun onRestart() {
         super.onRestart()
         mMap?.let {
-//            val location = viewModel.myLocation.value?: getMyLocation()
-//            viewModel.requestPins(location.latitude,location.longitude)
-//            initMap()
+            val location = viewModel.myLocation.value?: getMyLocation()
+            viewModel.requestPins(location.latitude,location.longitude)
+            initMap()
             //TODO 속도개선
         }
     }
 
 
 
-
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
     override fun observeViewModel() {
         viewModel.events.flowWithLifecycle(lifecycle).onEach(::handleEvent).launchIn(lifecycleScope)
+
     }
 
     override fun onRequestPermissionsResult(
@@ -144,17 +141,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
             mMap?.let {
                 when (viewEvent) {
                     is MainViewModel.PinEvent.OnCompletedLoad -> {
-                        Toast.makeText(this,"completed load",Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this,"completed load",Toast.LENGTH_SHORT).show()
                         mMap?.let {
-                            createMarker()
+                            createMarkerOne(viewEvent.pin)
                         }
                     }
 
                     is MainViewModel.PinEvent.OnChangeSelectedPin -> {
-                        viewModel.selectedPin.value?.let {
-                            val pin = viewModel.getMarkerByPinState(it) ?: return
-                            setFocusMarker(pin, false)
-                        }
+
                     }
 
                     is MainViewModel.PinEvent.OnClickMyLocation -> {
@@ -181,7 +175,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     private fun setFocusMarker(marker: Marker, isFocused: Boolean) {
         if (mMap == null) return
         val pin = viewModel.getPinStateByMarker(marker) ?: return
-
         marker.apply {
             zIndex = 1F
             setIcon(
@@ -222,7 +215,38 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                 markers.add(marker!!)
             }
 
-            viewModel.markerList.postValue(markers)
+            viewModel._markerList.postValue(markers)
+
+        } catch (e: Error) {
+            Log.e("bitmap error", e.toString())
+        }
+    }
+
+
+    private fun createMarkerOne(posting: MainViewModel.PinState) {
+        val markers = ArrayList<Marker>()
+        markers.addAll(viewModel.markerList.value ?: emptyList())
+
+        try {
+            val markerOptions = MarkerOptions().apply {
+                position(LatLng(posting.pin.latitude, posting.pin.longitude))
+                icon(
+                    BitmapDescriptorFactory.fromBitmap(
+                        this@MainActivity.createDrawableFromView(
+                            (posting.bitmap ?: BitmapFactory.decodeResource(
+                                resources,
+                                com.hearhere.presentation.common.R.drawable.headphones
+                            )).getCircledBitmap(),
+                            false
+                        )
+                    )
+                )
+
+            }
+            val marker = mMap!!.addMarker(markerOptions)
+            marker?.tag = posting.pin.postId
+            markers.add(marker!!)
+            viewModel._markerList.postValue(markers)
 
         } catch (e: Error) {
             Log.e("bitmap error", e.toString())
@@ -259,11 +283,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         setMyLocation()
 
         mMap?.setOnMarkerClickListener {
-            setFocusMarker(it, true)
-            if (it.tag != MYLOCATION_TAG) {
-                viewModel.setSelectedPin(it.tag as Long)
-                showMarkerDialog(it.tag as Long)
+            runBlocking {
+                viewModel.markerList.value?.forEach { marker ->
+                    setFocusMarker(marker, false)
+
+                }
             }
+            if(it.tag != MYLOCATION_TAG) setFocusMarker(it, true)
+            if(it.tag != MYLOCATION_TAG) showMarkerDialog(it.tag as Long)
+
             mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(it.position, DEFAULT_ZOOM_LEVEL))
             return@setOnMarkerClickListener true
         }
@@ -277,7 +305,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         var location: LatLng = DEFAULT_LOCATION
         location = getMyLocation()
 
-        viewModel.requestPins(location.latitude,location.longitude)
+        viewModel.requestPins(location.latitude, location.longitude)
         viewModel.setMyLocation(location)
 
         binding.mapView.getMapAsync {
@@ -294,16 +322,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
                 }
 
             } else {
-                Toast.makeText(this, "접근 권한이 없습니다.", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "접근 권한이 없습니다.", Toast.LENGTH_SHORT).show()
             }
 
             mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM_LEVEL))
             onMapReady(mMap!!)
         }
-
-
-
-
 
     }
 
@@ -326,6 +350,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
         }
     }
 
+    fun colorPin(id : Long){
+
+        val marker = viewModel.getMarkerById(id)
+        //Toast.makeText(this,"resume dialog"+id.toString(),Toast.LENGTH_SHORT).show()
+        marker?.let{
+            Log.d("resum dialog marker", (marker.tag as Long).toString())
+            setFocusMarker(marker,true)
+        }
+    }
+
     private fun showMarkerCreateDialog() {
         if (::markerCreateDialog.isInitialized && markerCreateDialog.isAdded) {
             markerCreateDialog.dismiss()
@@ -340,7 +374,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     private val markerCreateListener = object : MarkerCreateDialog.OnClickDialog {
         override fun onClickPositive() {
             //Toast.makeText(this@MainActivity, "yes", Toast.LENGTH_SHORT).show()
-            Intent(this@MainActivity,PostActivity::class.java).also {
+            Intent(this@MainActivity, PostActivity::class.java).also {
                 startActivity(it)
             }
         }
@@ -366,8 +400,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main),
     }
 
 
-    companion object{
-        fun start(context: Context){
+    companion object {
+        fun start(context: Context) {
             val intent = Intent(context, MainActivity::class.java).apply {
                 flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }

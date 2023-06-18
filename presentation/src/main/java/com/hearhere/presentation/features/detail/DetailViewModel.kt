@@ -57,7 +57,7 @@ class DetailViewModel @Inject constructor(
                         val res = it.data!!
                         val state =  PostingDetailUiState(
                             postId = res.postId,
-                            writer = res.writer + postId.toString(),
+                            writer = res.writer ,
                             title = res.title,
                             artist = res.artist,
                             cover = Uri.parse(res.cover),

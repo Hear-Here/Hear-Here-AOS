@@ -41,7 +41,6 @@ class TestActivity : BaseActivity<ActivityTestBinding>(R.layout.activity_test){
     override fun observeViewModel() {
         viewModel.list.observe {
             adapter.submitList(it)
-            Toast.makeText(this,adapter.itemCount.toString(),Toast.LENGTH_SHORT).show()
         }
     }
 

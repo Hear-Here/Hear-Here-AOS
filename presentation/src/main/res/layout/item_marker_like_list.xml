@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 style="sub"
                 android:textColor="@color/gray50"
-                android:text="@{@string/pin_name(binder.marker.distance)}"
+                android:text="@{@string/pin_name(binder.marker.writer)}"
                 />
         </LinearLayout>
 

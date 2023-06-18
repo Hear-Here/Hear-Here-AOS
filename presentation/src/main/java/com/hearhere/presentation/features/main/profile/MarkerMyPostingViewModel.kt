@@ -49,7 +49,8 @@ class MarkerMyPostingViewModel @Inject constructor(
                             artist = it.artist,
                             title = it.title,
                             coverPath = it.coverPath,
-                            distance = it.distance
+                            distance = it.distance,
+                            writer = it.writer
                         )
                         temp.add(post)
                         val binder = MarkerMyListItemBinder(
@@ -114,6 +115,7 @@ class MarkerMyPostingViewModel @Inject constructor(
         val artist: String,
         val coverPath: String? = "",
         val distance: Double,
+        val writer : String ?=""
     )
 
     sealed class MarkerMyPostingEvent() {
