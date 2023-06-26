@@ -1,10 +1,8 @@
 package com.hearhere.data.repositoryImpl
 
 import android.content.Context
-import android.util.Log
 import com.hearhere.data.data.dto.request.AuthRequest
 import com.hearhere.data.data.dto.response.AuthResponse
-import com.hearhere.data.data.network.ApiHelper
 import com.hearhere.data.data.network.ApiHelperImpl
 import com.hearhere.domain.model.ApiResponse
 import com.hearhere.domain.model.AuthToken
@@ -19,8 +17,7 @@ class AuthRepositoryImpl @Inject constructor(
     private val apiHelper: ApiHelperImpl
 ) : BaseRepository(), AuthRepository {
 
-
-    override suspend fun login(id: Long, email: String): Flow<ApiResponse<AuthToken>> = flow{
+    override suspend fun login(id: Long, email: String): Flow<ApiResponse<AuthToken>> = flow {
         safeApiCall {
             apiHelper.login(AuthRequest(id, email))
         }.collect {
@@ -29,18 +26,17 @@ class AuthRepositoryImpl @Inject constructor(
                     emit(ApiResponse.Success(it.data!!.toDomain()))
                 }
                 else -> {
-                    emit(ApiResponse.Error(it.message.toString(),it.throwable))
+                    emit(ApiResponse.Error(it.message.toString(), it.throwable))
                 }
             }
         }
     }
 
-    override suspend fun setNickName(name: String): Flow<ApiResponse<*>> = flow{
-        safeApiCall { apiHelper.setNickName(name) }.collect{
+    override suspend fun setNickName(name: String): Flow<ApiResponse<*>> = flow {
+        safeApiCall { apiHelper.setNickName(name) }.collect {
             emit(it)
         }
     }
 
     fun AuthResponse.toDomain() = AuthToken(this.accessToken)
-
 }

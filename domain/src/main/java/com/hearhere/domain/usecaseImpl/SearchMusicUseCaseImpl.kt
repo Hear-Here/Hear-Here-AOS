@@ -9,7 +9,7 @@ class SearchMusicUseCaseImpl @Inject constructor(
     private val repository: SearchMusicRepository
 ) : SearchMusicUseCase {
     override suspend fun searchMusicBySong(keyword: String, display: Int?) =
-        repository.searchMusicBySong(keyword, display?: 10)
+        repository.searchMusicBySong(keyword, display ?: 10)
 
     override suspend fun searchMusicByArtist(keyword: String, display: Int?): Result<List<SearchedMusic>> =
         repository.searchMusicByArtist(keyword, display)

@@ -29,9 +29,6 @@ class TestRepositoryImpl @Inject constructor(
             preferences[HearHerePrefKeys.ACCESS_TOKEN] = token
         }
     }
-
-
 }
 
 fun TestPref.mapToDomain(): TestModel = TestModel(this.value)
-

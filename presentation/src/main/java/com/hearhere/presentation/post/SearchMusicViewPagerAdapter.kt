@@ -22,6 +22,4 @@ class SearchMusicViewPagerAdapter(fragment: FragmentActivity) : FragmentStateAda
             else -> SearchSingerFragment()
         }
     }
-
-
 }

@@ -5,10 +5,9 @@ import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.base.BaseViewHolder
 import com.hearhere.presentation.databinding.ItemTestBinding
 
-
 class TestViewHolder(
     private val binding: ViewDataBinding,
-    ) : BaseViewHolder(binding) {
+) : BaseViewHolder(binding) {
     override fun bind(binder: BaseItemBinder) {
         super.bind(binder)
         binder as TestBinder
@@ -18,5 +17,4 @@ class TestViewHolder(
             binder.onClickItem()
         }
     }
-
 }

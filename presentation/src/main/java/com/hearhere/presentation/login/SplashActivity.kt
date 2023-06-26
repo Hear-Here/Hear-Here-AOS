@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_splash) {
 
-    private val viewModel : RoutingViewModel by viewModels()
+    private val viewModel: RoutingViewModel by viewModels()
 
     override fun onCreateView(savedInstanceState: Bundle?) {
         lifecycleScope.launch {
@@ -28,13 +28,13 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
 
     override fun observeViewModel() {
-        viewModel.navigateToLoginEvent.observe{
-            Intent(this,LoginActivity::class.java).also {
+        viewModel.navigateToLoginEvent.observe {
+            Intent(this, LoginActivity::class.java).also {
                 startActivity(it)
             }
         }
 
-        viewModel.navigateToMainEvent.observe{
+        viewModel.navigateToMainEvent.observe {
             MainActivity.start(this)
         }
     }

@@ -1,7 +1,5 @@
 package com.hearhere.data.di
 
-
-import com.hearhere.data.data.network.SearchArtistParser
 import com.hearhere.data.repositoryImpl.AuthRepositoryImpl
 import com.hearhere.data.repositoryImpl.PostRepositoryImpl
 import com.hearhere.data.repositoryImpl.PreferenceRepositoryImpl
@@ -27,13 +25,11 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindMusicSearchRepository(repository: SearchMusicRepositoryImpl): SearchMusicRepository
 
-
     @Binds
     abstract fun bindAuthRepository(repository: AuthRepositoryImpl): AuthRepository
 
     @Binds
     abstract fun bindPrefRepository(repository: PreferenceRepositoryImpl): PreferenceRepository
     @Binds
-    abstract fun bindPostRepository(repositoryImpl: PostRepositoryImpl) : PostRepository
-
+    abstract fun bindPostRepository(repositoryImpl: PostRepositoryImpl): PostRepository
 }

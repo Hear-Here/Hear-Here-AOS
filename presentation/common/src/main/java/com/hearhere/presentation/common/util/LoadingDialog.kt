@@ -1,6 +1,5 @@
 package com.hearhere.presentation.common.util
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -12,7 +11,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieDrawable
 import com.hearhere.presentation.common.R
 
-class LoadingDialog: DialogFragment(){
+class LoadingDialog : DialogFragment() {
 
     companion object {
         fun newInstance() = LoadingDialog()
@@ -37,7 +36,7 @@ class LoadingDialog: DialogFragment(){
         }
         isCancelable = false
 
-        try{
+        try {
             context?.let {
                 val layout = LinearLayout(it)
                 val progress = LottieAnimationView(it)
@@ -50,13 +49,10 @@ class LoadingDialog: DialogFragment(){
 
                 return layout
             }
-        }catch (e: OutOfMemoryError) {
-
+        } catch (e: OutOfMemoryError) {
         } catch (e: Exception) {
-
         }
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
-
 }

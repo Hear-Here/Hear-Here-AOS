@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SetNickNameViewModel @Inject constructor(
     private val authUseCase: LoginUseCaseImpl
-) : BaseViewModel(){
+) : BaseViewModel() {
 
     private val _nickname = MutableLiveData<NickNameState>(NickNameState(""))
     val nickname get() = _nickname
@@ -23,36 +23,31 @@ class SetNickNameViewModel @Inject constructor(
     private val _navigationToMain = SingleLiveEvent<Any>()
     val navigationToMain get() = _navigationToMain
 
-
-
     init {
-       viewModelScope.launch {
-           val token =  authUseCase.getToken()
-           Log.d("pref",token.accessToken)
-       }
+        viewModelScope.launch {
+            val token = authUseCase.getToken()
+            Log.d("pref", token.accessToken)
+        }
     }
 
-    val nicknameHandler = object : BasicTextField.OnTextChanged{
+    val nicknameHandler = object : BasicTextField.OnTextChanged {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             _nickname.postValue(nickname.value?.copy(s.toString()))
         }
-
     }
 
-    fun setNickName(){
+    fun setNickName() {
         viewModelScope.launch {
             val res = authUseCase.setNickName(nickname.value?.nickname.toString())
             _navigationToMain.call()
-            if(res is ApiResponse.Success){
-
-            }else{
-                Log.d("hyom nickname error",res.message.toString())
+            if (res is ApiResponse.Success) {
+            } else {
+                Log.d("hyom nickname error", res.message.toString())
             }
         }
     }
 
-    data class NickNameState(val nickname : String){
-        val isEnabled =  !nickname.isNullOrBlank()
+    data class NickNameState(val nickname: String) {
+        val isEnabled = !nickname.isNullOrBlank()
     }
-
 }

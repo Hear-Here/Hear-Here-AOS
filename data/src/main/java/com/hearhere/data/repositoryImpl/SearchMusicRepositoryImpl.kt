@@ -21,13 +21,14 @@ class SearchMusicRepositoryImpl @Inject constructor(
 
     private val parser: SearchArtistParser = SearchArtistParser
     override suspend fun searchMusicBySong(
-        keyword: String, display: Int?
+        keyword: String,
+        display: Int?
     ): Result<List<SearchedMusic>> {
         safeApiCall<SearchBySongResponse> {
             parsingHelperImpl.searchMusicBySong(
                 keyword = keyword, display = display
             )
-        }.first().let{ it ->
+        }.first().let { it ->
             when (it) {
                 is ApiResponse.Success -> {
                     return(Result.success(it.data?.mapToDomain() ?: emptyList()))
@@ -42,13 +43,12 @@ class SearchMusicRepositoryImpl @Inject constructor(
         return Result.failure<List<SearchedMusic>>(error("parsing fail"))
     }
 
-
     override suspend fun searchMusicByArtist(keyword: String, display: Int?): Result<List<SearchedMusic>> {
         safeApiCall<ResponseBody> {
             parsingHelperImpl.searchMusicByArtist(
                 keyword = keyword, display = display
             )
-        }.first().let{ response ->
+        }.first().let { response ->
             when (response) {
                 is ApiResponse.Success -> {
                     response.data?.let {
@@ -63,7 +63,6 @@ class SearchMusicRepositoryImpl @Inject constructor(
         }
         return Result.failure<List<SearchedMusic>>(error("parsing fail"))
     }
-
 
     fun SearchBySongResponse.mapToDomain(): List<SearchedMusic> {
         val list = ArrayList<SearchedMusic>()
@@ -84,7 +83,6 @@ class SearchMusicRepositoryImpl @Inject constructor(
         list.sortByDescending { it.pubYear }
         return list
     }
-
 
     fun SearchByArtistResponse.mapToDomain(keyword: String): List<SearchedMusic> {
         val list = ArrayList<SearchedMusic>()
@@ -143,4 +141,3 @@ class SearchMusicRepositoryImpl @Inject constructor(
         return year.toString()
     }
 }
-

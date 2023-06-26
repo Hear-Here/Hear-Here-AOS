@@ -10,18 +10,17 @@ import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
     suspend fun getPostList(lat: Double, lng: Double): Flow<ApiResponse<List<Pin>>>
-    suspend fun getPost(postId : Long,lat: Double, lng: Double) :Flow<ApiResponse<MusicPost>>
+    suspend fun getPost(postId: Long, lat: Double, lng: Double): Flow<ApiResponse<MusicPost>>
 
-    suspend fun deletePost(postId: Long) :Flow<ApiResponse<*>>
+    suspend fun deletePost(postId: Long): Flow<ApiResponse<*>>
 
     suspend fun likePost(postId: Long)
 
     suspend fun disLikePost(postId: Long)
 
-    suspend fun getLikePostList(lat: Double,lng: Double) : Flow<ApiResponse<List<LikeMusicPost>>>
+    suspend fun getLikePostList(lat: Double, lng: Double): Flow<ApiResponse<List<LikeMusicPost>>>
 
-    suspend fun postMusicPosting(posting: Posting) : Flow<ApiResponse<*>>
+    suspend fun postMusicPosting(posting: Posting): Flow<ApiResponse<*>>
 
-    suspend fun getMyPostList(lat: Double,lng: Double) : Flow<ApiResponse<List<MyMusicPost>>>
-
+    suspend fun getMyPostList(lat: Double, lng: Double): Flow<ApiResponse<List<MyMusicPost>>>
 }

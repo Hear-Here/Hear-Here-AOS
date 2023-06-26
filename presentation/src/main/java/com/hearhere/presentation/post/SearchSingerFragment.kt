@@ -1,14 +1,8 @@
 package com.hearhere.presentation.post
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseAdapter
 import com.hearhere.presentation.base.BaseFragment
@@ -18,13 +12,12 @@ class SearchSingerFragment : BaseFragment<FragmentSearchSingerBinding>(R.layout.
 
     private val viewModel: PostViewModel by activityViewModels()
 
-    private lateinit var adapter : BaseAdapter
+    private lateinit var adapter: BaseAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         adapter = BaseAdapter.build()
-
     }
     override fun initView() {
 
@@ -33,7 +26,5 @@ class SearchSingerFragment : BaseFragment<FragmentSearchSingerBinding>(R.layout.
             adapter.submitList(it)
             Log.d("binder", it.toString())
         }
-
     }
-
 }

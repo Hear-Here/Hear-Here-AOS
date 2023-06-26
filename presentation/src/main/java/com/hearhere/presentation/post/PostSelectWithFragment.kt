@@ -1,10 +1,7 @@
 package com.hearhere.presentation.post
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseAdapter
@@ -21,7 +18,6 @@ class PostSelectWithFragment : BaseFragment<FragmentPostSelectWithBinding>(R.lay
     override fun initView() {
 
         binding.context = this
-
     }
 
     val onClickAlone = View.OnClickListener {
@@ -58,13 +54,9 @@ class PostSelectWithFragment : BaseFragment<FragmentPostSelectWithBinding>(R.lay
         super.onCreate(savedInstanceState)
 
         adapter = BaseAdapter.build()
-
     }
 
     private fun pageSlide() {
         (requireActivity() as PostSelectOptionActivity).slidePage()
     }
-
-
-
 }

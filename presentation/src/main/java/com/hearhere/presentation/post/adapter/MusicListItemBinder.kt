@@ -9,19 +9,16 @@ import androidx.lifecycle.MutableLiveData
 import com.hearhere.presentation.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.request.transition.Transition
 import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.common.util.createRandomId
 import com.hearhere.presentation.post.PostViewModel
 
 class MusicListItemBinder(
-    val onClickItem : (PostViewModel.MusicListItemState) ->Unit
-): BaseItemBinder {
+    val onClickItem: (PostViewModel.MusicListItemState) -> Unit
+) : BaseItemBinder {
     override var itemId: Long = createRandomId()
     override var itemLayoutId: Int = R.layout.item_music_list
 
@@ -40,25 +37,25 @@ class MusicListItemBinder(
         return true
     }
 
-    fun onClick(){
-        music.value?.let{
+    fun onClick() {
+        music.value?.let {
             onClickItem(it)
         }
     }
-
 }
 
 @BindingAdapter("cover")
-fun setCoverImage(imageview: ImageView, url: String?){
-    Log.d("url -옥",url.toString())
-    if(url.isNullOrBlank()) return
+fun setCoverImage(imageview: ImageView, url: String?) {
+    Log.d("url -옥", url.toString())
+    if (url.isNullOrBlank()) return
     url?.let {
         Glide.with(imageview.context)
             .load(url)
             .centerCrop()
             .placeholder(com.hearhere.presentation.common.R.drawable.outframe)
             .error(
-                com.hearhere.presentation.common.R.drawable.outframe)
+                com.hearhere.presentation.common.R.drawable.outframe
+            )
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
@@ -66,7 +63,7 @@ fun setCoverImage(imageview: ImageView, url: String?){
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d("glide-heare","===${e}")
+                    Log.d("glide-heare", "===$e")
                     return false
                 }
                 override fun onResourceReady(
@@ -80,5 +77,5 @@ fun setCoverImage(imageview: ImageView, url: String?){
                 }
             })
             .into(imageview)
-            }
+    }
 }

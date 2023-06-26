@@ -1,7 +1,5 @@
 package com.hearhere.presentation.features.main
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -18,16 +16,12 @@ import com.hearhere.presentation.common.component.emojiButton.WeatherType
 import com.hearhere.presentation.common.component.emojiButton.WithType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
 import javax.inject.Inject
 
 @HiltViewModel
 class MarkerDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val getPostUseCase : GetPostUseCaseImpl,
+    private val getPostUseCase: GetPostUseCaseImpl,
     private val patchPostUseCase: PatchPostUseCaseImpl
 ) : BaseViewModel() {
 
@@ -47,12 +41,12 @@ class MarkerDetailViewModel @Inject constructor(
 
     private fun getMarkerDetail() {
         _loading.postValue(true)
-        //TODO
+        // TODO
 
         viewModelScope.launch {
             getPostUseCase.getPost(postId).also {
-                when(it){
-                    is ApiResponse.Success->{
+                when (it) {
+                    is ApiResponse.Success -> {
                         val res = it.data!!
                         val state = MarkerDetailUiState(
                             postId = res.postId,
@@ -72,8 +66,7 @@ class MarkerDetailViewModel @Inject constructor(
                         _uiState.postValue(state)
                         _loading.postValue(false)
                     }
-                    else ->{
-
+                    else -> {
                     }
                 }
             }
@@ -97,28 +90,25 @@ class MarkerDetailViewModel @Inject constructor(
             )
         }
 
-        //디바운스 처리
+        // 디바운스 처리
         toggleJob?.cancel()
         toggleJob = viewModelScope.launch {
             delay(500)
-            //API
+            // API
             Log.d("bottom toggle", uiState.value?.isLiked.toString())
             sendLikeState()
-
         }
     }
 
-    fun sendLikeState(){
+    fun sendLikeState() {
         viewModelScope.launch {
-            if(uiState.value?.isLiked == true){
+            if (uiState.value?.isLiked == true) {
                 patchPostUseCase.likePost(uiState.value!!.postId)
-            }else{
+            } else {
                 patchPostUseCase.disLikePost(uiState.value!!.postId)
             }
         }
     }
-
-
 
     data class MarkerDetailUiState(
         val postId: Long,
@@ -138,5 +128,4 @@ class MarkerDetailViewModel @Inject constructor(
         val distanceStr = distance.toString()
         val likeCntStr = likeCnt.toString()
     }
-
 }

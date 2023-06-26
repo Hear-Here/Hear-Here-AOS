@@ -42,4 +42,5 @@ object Dep {
     const val google_map = "18.1.0"
     const val google_location = "21.0.1"
     const val google_map_gradle = "2.0.0"
+    const val google_map_plugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin"
 }

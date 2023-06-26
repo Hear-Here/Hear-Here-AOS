@@ -29,8 +29,8 @@ import kotlin.concurrent.thread
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-   private val getPostUseCase: GetPostUseCaseImpl,
-   private val patchUserInfoUseCase: PatchUserInfoUseCaseImpl
+    private val getPostUseCase: GetPostUseCaseImpl,
+    private val patchUserInfoUseCase: PatchUserInfoUseCaseImpl
 ) : BaseViewModel() {
 
     private val _pinStateList = MutableLiveData<List<PinState>>(emptyList())
@@ -39,7 +39,7 @@ class MainViewModel @Inject constructor(
 
     private val _selectedPin = MutableLiveData<PinState>(null)
 
-    var selectedPin : PinState?=null
+    var selectedPin: PinState? = null
 
     val _markerList = MutableLiveData<List<Marker>>(emptyList())
     val markerList get() = _markerList
@@ -50,50 +50,46 @@ class MainViewModel @Inject constructor(
 
     var myLocationMarker = MutableLiveData<Marker>(null)
 
-
     private val _events = MutableStateFlow<List<PinEvent>>(emptyList())
     val events = _events.asStateFlow()
 
-    var isFetching : Job? = null
+    var isFetching: Job? = null
 
     init {
         viewModelScope.launch {
             val location = getPostUseCase.myLocation ?: getPostUseCase.getLocation()
-            if(location!=null) myLocation.postValue(LatLng(location.lat,location.lng))
-            Log.d("hyomk - location",location.toString())
+            if (location != null) myLocation.postValue(LatLng(location.lat, location.lng))
+            Log.d("hyomk - location", location.toString())
         }
 
         viewModelScope.launch {
             delay(4000)
             _loading.postValue(false)
         }
-
-
     }
 
-   fun requestPins(lat : Double, lng : Double) {
-       // if(isFetching != null) isFetching?.cancel()
-       viewModelScope.launch {
-           _loading.postValue(true)
-           delay(3000)
-           _loading.postValue(false)
-       }
+    fun requestPins(lat: Double, lng: Double) {
+        // if(isFetching != null) isFetching?.cancel()
+        viewModelScope.launch {
+            _loading.postValue(true)
+            delay(3000)
+            _loading.postValue(false)
+        }
         isFetching = viewModelScope.launch {
-           // _loading.postValue(true)
-            getPostUseCase.getPostList( lat,lng ).also {
-                when(it){
-                    is ApiResponse.Success ->{
+            // _loading.postValue(true)
+            getPostUseCase.getPostList(lat, lng).also {
+                when (it) {
+                    is ApiResponse.Success -> {
                         val tempList = arrayListOf<PinState>()
                         it.data?.reversed()?.forEach {
                             tempList.add(PinState(it, null))
                         }
                         fetchPins(tempList)
                     }
-                    is ApiResponse.Error->{}
+                    is ApiResponse.Error -> {}
                 }
             }
         }
-
     }
 
     private fun fetchPins(list: List<PinState>) {
@@ -102,34 +98,32 @@ class MainViewModel @Inject constructor(
             if (list.isEmpty()) return@launch
             val newPinList = arrayListOf<PinState>()
             list.forEach { item ->
-                Log.d("hyom item",item.toString())
+                Log.d("hyom item", item.toString())
 
                 val pin = if (item.pin.imageUrl.isNullOrEmpty()) item
                 else item.copy(bitmap = loadBitmapFromUrl(item.pin.imageUrl!!))
 
                 newPinList.add(pin)
-                Log.d("hyom item-after",pin.toString())
+                Log.d("hyom item-after", pin.toString())
                 _pinStateList.postValue(newPinList)
 
-                Log.d("hyom-list",list.toString())
+                Log.d("hyom-list", list.toString())
                 addEvent(PinEvent.OnCompletedLoad(pin))
             }
-
         }
     }
 
     fun setSelectedPin(postId: Long?) {
-        pinStateList.value?.filter{ it.pin.postId == postId }
-        .also {
-            Log.d("pin state",it.toString())
-            it?.first()?.let { pin ->
-                _selectedPin.postValue(pin)
-                selectedPin = pin
-                val marker = getMarkerByPinState(pin)
-                addEvent(PinEvent.OnChangeSelectedPin(marker?:return))
+        pinStateList.value?.filter { it.pin.postId == postId }
+            .also {
+                Log.d("pin state", it.toString())
+                it?.first()?.let { pin ->
+                    _selectedPin.postValue(pin)
+                    selectedPin = pin
+                    val marker = getMarkerByPinState(pin)
+                    addEvent(PinEvent.OnChangeSelectedPin(marker ?: return))
+                }
             }
-
-        }
     }
 
     fun getPinStateByMarker(marker: Marker): PinState? {
@@ -139,42 +133,36 @@ class MainViewModel @Inject constructor(
 
     fun getMarkerByPinState(pinState: PinState): Marker? {
         val marker = markerList.value?.firstOrNull() { it.tag as Long == pinState.pin.postId }
-        Log.d("select marker by pin ",marker.toString())
+        Log.d("select marker by pin ", marker.toString())
         return marker
     }
 
-    fun getMarkerById(id : Long): Marker? {
+    fun getMarkerById(id: Long): Marker? {
         val marker = markerList.value?.firstOrNull() { it.tag as Long == id }
-        Log.d("find marker",marker?.tag.toString())
+        Log.d("find marker", marker?.tag.toString())
         return marker
     }
-
 
     fun setMyLocation(location: LatLng) {
         viewModelScope.launch {
             _myLocation.postValue(location)
-            patchUserInfoUseCase.updateLocation(location.latitude,location.longitude)
+            patchUserInfoUseCase.updateLocation(location.latitude, location.longitude)
         }
     }
 
-
     private fun loadUrlToBitmap(url: String): Bitmap? {
         thread {
-
-
-
         }
 
         return null
     }
-
 
     fun loadBitmapFromUrl(url: String): Bitmap? = runBlocking {
         var bitmap: Bitmap? = null
         var connection: HttpURLConnection? = null
 
         try {
-            bitmap =  Picasso.get().load(url).get()
+            bitmap = Picasso.get().load(url).get()
 //            val urlConnection = URL(url)
 //            connection = urlConnection.openConnection() as HttpURLConnection
 //
@@ -191,7 +179,6 @@ class MainViewModel @Inject constructor(
 //                bitmap = BitmapFactory.decodeStream(input) // BitmapFactory의 메소드를 통해 InputStream으로부터 Bitmap을 만들어 준다.
 //                connection.disconnect()
 //            }
-
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
@@ -227,7 +214,7 @@ class MainViewModel @Inject constructor(
 
     data class PinState(val pin: Pin, var bitmap: Bitmap?)
     sealed class PinEvent {
-        data class OnCompletedLoad(val pin : PinState): PinEvent()
+        data class OnCompletedLoad(val pin: PinState) : PinEvent()
         data class OnChangeSelectedPin(val marker: Marker) : PinEvent()
 
         object OnClickMyLocation : PinEvent()

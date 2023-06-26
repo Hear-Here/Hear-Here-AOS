@@ -1,3 +1,3 @@
 package com.hearhere.domain.model
 
-data class Location (val lat : Double, val lng  : Double)
+data class Location(val lat: Double, val lng: Double)

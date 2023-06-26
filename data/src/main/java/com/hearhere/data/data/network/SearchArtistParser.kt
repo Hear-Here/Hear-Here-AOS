@@ -1,13 +1,12 @@
 package com.hearhere.data.data.network
 
-import android.util.Log
 import com.hearhere.data.data.dto.response.ArtistResult
 import com.hearhere.data.data.dto.response.SongResult
 import okhttp3.ResponseBody
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 
-object SearchArtistParser  {
+object SearchArtistParser {
     fun parse(responseBody: ResponseBody): List<ArtistResult> {
         val factory = XmlPullParserFactory.newInstance()
         val parser = factory.newPullParser()
@@ -20,7 +19,7 @@ object SearchArtistParser  {
         var songName = ""
         val songList = ArrayList<SongResult>()
 
-        var nowTag : String? = null
+        var nowTag: String? = null
 
         while (eventType != XmlPullParser.END_DOCUMENT) {
             when (eventType) {
@@ -28,10 +27,10 @@ object SearchArtistParser  {
                     when (parser.name) {
                         "item" -> artist = ArtistResult()
                         "title" -> {
-                            nowTag ="title"
+                            nowTag = "title"
                         }
-                        "release"->{
-                            nowTag="release"
+                        "release" -> {
+                            nowTag = "release"
                         }
                         "link" -> {
                             val link = parser.text
@@ -42,46 +41,45 @@ object SearchArtistParser  {
                         "image" -> {
                             nowTag = "image"
                         }
-                        "id"->{
+                        "id" -> {
                             nowTag = "id"
                         }
-                        "name"->{
-                            if(nowTag==null || nowTag!=="artist") nowTag ="name"
-                            if(nowTag == "artist") nowTag="artist_name"
+                        "name" -> {
+                            if (nowTag == null || nowTag !== "artist") nowTag = "name"
+                            if (nowTag == "artist") nowTag = "artist_name"
                         }
-                        "maniadb:artist"->{
-                            nowTag ="artist"
+                        "maniadb:artist" -> {
+                            nowTag = "artist"
                         }
-                        "maniadb:tracklist"->{
+                        "maniadb:tracklist" -> {
                             nowTag = "albumtrack"
                         }
-
                     }
                 }
                 XmlPullParser.END_TAG -> {
                     when (parser.name) {
-                        "item" ->   artistList.add(artist!!)
-                        "song"->{
+                        "item" -> artistList.add(artist!!)
+                        "song" -> {
                             if (artist != null) {
-                                songList.add(SongResult(songId,songName,artist.release,cover=null))
+                                songList.add(SongResult(songId, songName, artist.release, cover = null))
                                 // artist.songList.add(SongResult(songId,songName,artist.release))
                             }
                         }
                     }
                 }
-                XmlPullParser.TEXT ->{
-                    when(nowTag){
-                        "id"->{
+                XmlPullParser.TEXT -> {
+                    when (nowTag) {
+                        "id" -> {
                             songId = parser.text.trim()
                             nowTag = null
                         }
-                        "name"->{
+                        "name" -> {
                             val filter = parser.text.toString().indexOf("&nbsp")
-                            songName = if(filter != -1) parser.text.trim().substring(0,filter)
+                            songName = if (filter != -1) parser.text.trim().substring(0, filter)
                             else parser.text.trim()
                             nowTag = null
                         }
-                        "image"->{
+                        "image" -> {
                             if (artist != null && songList.isNotEmpty()) {
                                 val image = parser.text.trim()
                                 songList.forEach { it.cover = image }
@@ -91,21 +89,20 @@ object SearchArtistParser  {
 
                             nowTag = null
                         }
-                        "release"->{
+                        "release" -> {
                             if (artist != null) {
                                 artist.release = parser.text.trim()
                             }
                             nowTag = null
                         }
-                        "artist_name"->{
+                        "artist_name" -> {
                             if (artist != null) {
-                                artist.title= parser.text.trim()
+                                artist.title = parser.text.trim()
                             }
                             nowTag = null
                         }
                     }
                 }
-
             }
             eventType = parser.next()
         }

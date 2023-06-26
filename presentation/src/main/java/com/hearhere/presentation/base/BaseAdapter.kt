@@ -16,7 +16,7 @@ class BaseAdapter(
         val binding: ViewDataBinding = DataBindingUtil
             .inflate(LayoutInflater.from(parent.context), viewType, parent, false)
 
-        return getVHDataBindingById(binding,viewType)
+        return getVHDataBindingById(binding, viewType)
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
@@ -28,11 +28,9 @@ class BaseAdapter(
         return currentList[position].itemLayoutId
     }
 
-
     override fun getItemCount(): Int {
         return currentList.size
     }
-
 
     /**
      * 특정 위치의 Item 삭제
@@ -97,7 +95,6 @@ class BaseAdapter(
         submitList(tempList)
     }
 
-
     /**
      * 특정 위치에 Item List를 추가
      **/
@@ -124,13 +121,13 @@ class BaseAdapter(
             }
         }
 
-        fun build() : BaseAdapter {
-           return BaseAdapter(baseDiffUtil)
+        fun build(): BaseAdapter {
+            return BaseAdapter(baseDiffUtil)
         }
     }
 }
 
-//class BaseAdapter private constructor(diffCallback: DiffUtil.ItemCallback<BaseItemBinder>): ListAdapter<BaseItemBinder, BaseViewHolder>(diffCallback) {
+// class BaseAdapter private constructor(diffCallback: DiffUtil.ItemCallback<BaseItemBinder>): ListAdapter<BaseItemBinder, BaseViewHolder>(diffCallback) {
 //
 //    /*************** builder 영역 *****************/
 //
@@ -258,4 +255,4 @@ class BaseAdapter(
 //    }
 //
 //    /** ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
-//}
+// }

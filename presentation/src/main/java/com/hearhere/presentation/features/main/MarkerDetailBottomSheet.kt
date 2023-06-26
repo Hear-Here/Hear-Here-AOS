@@ -1,11 +1,9 @@
 package com.hearhere.presentation.features.main
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -19,7 +17,6 @@ class MarkerDetailBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentMarkerdetailBottomBinding
     private val viewModel: MarkerDetailViewModel by viewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,16 +52,19 @@ class MarkerDetailBottomSheet : BottomSheetDialogFragment() {
             }
         }
 
-        viewModel.uiState.observe(this, Observer {
-
-        })
-        viewModel.loading.observe(this, Observer {
-            if(it == true) binding.root.visibility = View.INVISIBLE
-            else binding.root.visibility = View.VISIBLE
-        })
-        
+        viewModel.uiState.observe(
+            this,
+            Observer {
+            }
+        )
+        viewModel.loading.observe(
+            this,
+            Observer {
+                if (it == true) binding.root.visibility = View.INVISIBLE
+                else binding.root.visibility = View.VISIBLE
+            }
+        )
     }
-
 
     companion object {
         fun newInstance(postId: Long): MarkerDetailBottomSheet {

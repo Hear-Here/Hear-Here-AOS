@@ -10,7 +10,7 @@ android {
     namespace = "com.hearhere.presentation.common"
     compileSdk = App.targetSdk
 
-    buildFeatures{
+    buildFeatures {
         dataBinding = true
     }
 
@@ -25,8 +25,8 @@ android {
             isMinifyEnabled = false
             extra["enableCrashlytics"] = false
             proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -53,7 +53,7 @@ dependencies {
     implementation("com.airbnb.android:lottie:${Dep.lottie}")
 
     // glide
-   implementation("com.github.bumptech.glide:glide:${Dep.glide}")
+    implementation("com.github.bumptech.glide:glide:${Dep.glide}")
 
     // flex box layout manager
     implementation("com.google.android.flexbox:flexbox:${Dep.flexbox}")

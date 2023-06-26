@@ -26,5 +26,4 @@ fun Context.createDrawableFromView(bitmap: Bitmap, isSelected: Boolean): Bitmap 
     customView.draw(canvas)
 
     return bmp
-
 }

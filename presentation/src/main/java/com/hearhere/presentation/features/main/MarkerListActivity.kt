@@ -3,7 +3,6 @@ package com.hearhere.presentation.features.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat.startActivity
 import com.hearhere.presentation.R
@@ -14,7 +13,6 @@ import com.hearhere.presentation.common.util.MarginItemDecoration
 import com.hearhere.presentation.databinding.ActivityMarkerListBinding
 import com.hearhere.presentation.features.detail.DetailActivity
 import com.hearhere.presentation.util.ConvertDPtoPX
-import com.hearhere.presentation.util.dpToPx
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,15 +36,13 @@ class MarkerListActivity : BaseActivity<ActivityMarkerListBinding>(R.layout.acti
     override fun observeViewModel() {
         viewModel.binder.observe {
             adapter.submitList(it)
-
         }
 
         viewModel.uiState.observe {
-
         }
 
         viewModel.navigateToDetails.observe {
-          if(it !==null )  DetailActivity.start(this,it)
+            if (it !== null) DetailActivity.start(this, it)
         }
     }
 

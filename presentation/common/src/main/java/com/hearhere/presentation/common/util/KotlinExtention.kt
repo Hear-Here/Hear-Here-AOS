@@ -22,8 +22,6 @@ val Float.dpToPx
         this * dm.density
     } ?: 0f
 
-
-
 fun Int.toConcurrency(): String {
     return DecimalFormat("#,###").format(this)
 }

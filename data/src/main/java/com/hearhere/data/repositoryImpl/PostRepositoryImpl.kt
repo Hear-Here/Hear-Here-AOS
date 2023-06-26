@@ -5,7 +5,6 @@ import com.hearhere.data.data.dto.request.PostRequest
 import com.hearhere.data.data.dto.response.LikePostItem
 import com.hearhere.data.data.dto.response.MyPostListResponse
 import com.hearhere.data.data.dto.response.PostItemResponse
-import com.hearhere.data.data.dto.response.PostListResponse
 import com.hearhere.data.data.network.ApiHelperImpl
 import com.hearhere.domain.model.ApiResponse
 import com.hearhere.domain.model.LikeMusicPost
@@ -37,14 +36,14 @@ class PostRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun getPost(postId: Long, lat: Double, lng: Double)=  flow<ApiResponse<MusicPost>> {
-        safeApiCall { apiHelper.getPost(postId,lat , lng) }
-            .collect{
-                when(it){
-                    is ApiResponse.Success ->{
+    override suspend fun getPost(postId: Long, lat: Double, lng: Double) = flow<ApiResponse<MusicPost>> {
+        safeApiCall { apiHelper.getPost(postId, lat, lng) }
+            .collect {
+                when (it) {
+                    is ApiResponse.Success -> {
                         emit(it.data!!.maptoDomain())
                     }
-                    is ApiResponse.Error ->{
+                    is ApiResponse.Error -> {
                         emit(ApiResponse.Error(it.message.toString(), it.throwable))
                     }
                 }
@@ -55,41 +54,41 @@ class PostRepositoryImpl @Inject constructor(
         return safeApiCall { apiHelper.deletePost(postId) }
     }
 
-    override suspend fun likePost(postId: Long){
-        safeApiCall { apiHelper.likePost(postId) }.collect{
-            when(it){
-                is ApiResponse.Success ->{
-                    Log.d( "api", "like Post ${postId} success")
+    override suspend fun likePost(postId: Long) {
+        safeApiCall { apiHelper.likePost(postId) }.collect {
+            when (it) {
+                is ApiResponse.Success -> {
+                    Log.d("api", "like Post $postId success")
                 }
-                else-> {
-                    Log.d( "api", "like Post ${postId} false")
+                else -> {
+                    Log.d("api", "like Post $postId false")
                 }
             }
         }
     }
 
-    override suspend fun disLikePost(postId: Long){
+    override suspend fun disLikePost(postId: Long) {
         safeApiCall { apiHelper.disLikePost(postId) }.collect {
             when (it) {
                 is ApiResponse.Success -> {
-                    Log.d("api", "like Post ${postId} success")
+                    Log.d("api", "like Post $postId success")
                 }
 
                 else -> {
-                    Log.d("api", "like Post ${postId} false")
+                    Log.d("api", "like Post $postId false")
                 }
             }
         }
     }
 
-    override suspend fun getLikePostList(lat: Double,lng: Double)= flow<ApiResponse<List<LikeMusicPost>>> {
+    override suspend fun getLikePostList(lat: Double, lng: Double) = flow<ApiResponse<List<LikeMusicPost>>> {
         safeApiCall { apiHelper.getLikePostList(lat, lng) }
-            .collect{
-                when(it){
-                    is ApiResponse.Success ->{
+            .collect {
+                when (it) {
+                    is ApiResponse.Success -> {
                         emit(it.data!!.mapToDomain())
                     }
-                    is ApiResponse.Error ->{
+                    is ApiResponse.Error -> {
                         emit(ApiResponse.Error(it.message.toString(), it.throwable))
                     }
                 }
@@ -101,12 +100,12 @@ class PostRepositoryImpl @Inject constructor(
         lng: Double
     ): Flow<ApiResponse<List<MyMusicPost>>> = flow {
         safeApiCall { apiHelper.getMyPostList(lat, lng) }
-            .collect{
-                when(it){
-                    is ApiResponse.Success ->{
+            .collect {
+                when (it) {
+                    is ApiResponse.Success -> {
                         emit(it.data!!.mapToDomain())
                     }
-                    is ApiResponse.Error ->{
+                    is ApiResponse.Error -> {
                         emit(ApiResponse.Error(it.message.toString(), it.throwable))
                     }
                 }
@@ -114,20 +113,24 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postMusicPosting(posting: Posting): Flow<ApiResponse<*>> = flow {
-        safeApiCall { apiHelper.postMusicPosting(PostRequest(
-            songId = posting.songId,
-            title = posting.title,
-            artist = posting.artist,
-            cover = posting.cover,
-            genreType = posting.genreType,
-            withType = posting.withType,
-            temp = posting.temp,
-            weatherType = posting.weatherType,
-            emotionType = posting.emotionType,
-            content = posting.content?:"",
-            longitude = posting.longitude!!,
-            latitude = posting.latitude!!
-        )) }.collect {
+        safeApiCall {
+            apiHelper.postMusicPosting(
+                PostRequest(
+                    songId = posting.songId,
+                    title = posting.title,
+                    artist = posting.artist,
+                    cover = posting.cover,
+                    genreType = posting.genreType,
+                    withType = posting.withType,
+                    temp = posting.temp,
+                    weatherType = posting.weatherType,
+                    emotionType = posting.emotionType,
+                    content = posting.content ?: "",
+                    longitude = posting.longitude!!,
+                    latitude = posting.latitude!!
+                )
+            )
+        }.collect {
             when (it) {
                 is ApiResponse.Success -> {
                     emit(it)
@@ -139,7 +142,6 @@ class PostRepositoryImpl @Inject constructor(
             }
         }
     }
-
 
     @JvmName("loadLikePostList")
     fun List<PostItemResponse>.mapToDomain(): ApiResponse<List<Pin>> {
@@ -164,7 +166,7 @@ class PostRepositoryImpl @Inject constructor(
         val temp = ArrayList<MyMusicPost>()
         this?.forEach {
             val post = MyMusicPost(
-                postId = it.postId?:-1,
+                postId = it.postId ?: -1,
                 coverPath = it.cover,
                 artist = it.artist,
                 title = it.title,
@@ -175,11 +177,11 @@ class PostRepositoryImpl @Inject constructor(
         }
         return ApiResponse.Success(temp)
     }
-    fun List<LikePostItem>.mapToDomain() : ApiResponse<List<LikeMusicPost>>{
+    fun List<LikePostItem>.mapToDomain(): ApiResponse<List<LikeMusicPost>> {
         val temp = ArrayList<LikeMusicPost>()
         this?.forEach {
             val post = LikeMusicPost(
-                postId = it.postId?:-1,
+                postId = it.postId ?: -1,
                 coverPath = it.cover,
                 artist = it.artist,
                 title = it.title,
@@ -204,11 +206,11 @@ class PostRepositoryImpl @Inject constructor(
             weather = weatherType,
             mood = emotionType,
             content = content,
-            longitude= longitude,
-            latitude= latitude,
+            longitude = longitude,
+            latitude = latitude,
             distance = distance,
             likeCount = likeCount,
-            isLike= isLiked
+            isLike = isLiked
         )
         return ApiResponse.Success(post)
     }

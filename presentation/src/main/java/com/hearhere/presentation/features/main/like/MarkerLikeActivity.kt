@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.flowWithLifecycle
@@ -23,18 +22,18 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class MarkerLikeActivity  : BaseActivity<ActivityMarkerLikeBinding>(R.layout.activity_marker_like){
-    private lateinit var adapter : BaseAdapter
-    private val viewModel : MarkerLikeViewModel by viewModels()
+class MarkerLikeActivity : BaseActivity<ActivityMarkerLikeBinding>(R.layout.activity_marker_like) {
+    private lateinit var adapter: BaseAdapter
+    private val viewModel: MarkerLikeViewModel by viewModels()
 
-    private lateinit var dialog : MarkerLikeDialog
+    private lateinit var dialog: MarkerLikeDialog
 
     override fun onCreateView(savedInstanceState: Bundle?) {
         binding.lifecycleOwner = this
         adapter = BaseAdapter.build()
-        binding.markerListRv.let{
-            it.adapter=adapter
-            it.addItemDecoration(MarginItemDecoration(ConvertDPtoPX(this,8)))
+        binding.markerListRv.let {
+            it.adapter = adapter
+            it.addItemDecoration(MarginItemDecoration(ConvertDPtoPX(this, 8)))
         }
         binding.backBtn.setOnClickListener { finish() }
     }
@@ -49,11 +48,11 @@ class MarkerLikeActivity  : BaseActivity<ActivityMarkerLikeBinding>(R.layout.act
     override fun observeViewModel() {
         viewModel.binder.observe {
             adapter.submitList(it)
-            Log.d("binder",it.toString())
+            Log.d("binder", it.toString())
         }
 
         viewModel.uiState.observe {
-            Log.d("state",it.toString())
+            Log.d("state", it.toString())
         }
 
         viewModel.events.flowWithLifecycle(lifecycle).onEach(::handleEvent).launchIn(lifecycleScope)
@@ -69,13 +68,13 @@ class MarkerLikeActivity  : BaseActivity<ActivityMarkerLikeBinding>(R.layout.act
                     dismissDialog()
                 }
                 is MarkerLikeViewModel.MarkerLikeEvent.OnClickDetail -> {
-                    DetailActivity.start(this@MarkerLikeActivity ,event.postId.toLong())
+                    DetailActivity.start(this@MarkerLikeActivity, event.postId.toLong())
                 }
-                is MarkerLikeViewModel.MarkerLikeEvent.CopyTitle->{
+                is MarkerLikeViewModel.MarkerLikeEvent.CopyTitle -> {
                     onCopy(event.title)
                     dismissDialog()
                 }
-                is MarkerLikeViewModel.MarkerLikeEvent.Delete->{
+                is MarkerLikeViewModel.MarkerLikeEvent.Delete -> {
                     viewModel.getMarkerList()
                     dismissDialog()
                 }
@@ -84,12 +83,11 @@ class MarkerLikeActivity  : BaseActivity<ActivityMarkerLikeBinding>(R.layout.act
         }
     }
 
-    private fun onCopy(text: String){
+    private fun onCopy(text: String) {
         this.CopyOnClipboard(text)
     }
 
-
-    private fun showDialog(postId: Long , title: String) {
+    private fun showDialog(postId: Long, title: String) {
         if (::dialog.isInitialized && dialog.isAdded) {
             dialog.dismiss()
         }
@@ -105,8 +103,8 @@ class MarkerLikeActivity  : BaseActivity<ActivityMarkerLikeBinding>(R.layout.act
         }
     }
 
-    companion object{
-        fun start(context : Context){
+    companion object {
+        fun start(context: Context) {
             val intent = Intent(context, MarkerLikeActivity::class.java)
             ContextCompat.startActivity(context, intent, null)
         }

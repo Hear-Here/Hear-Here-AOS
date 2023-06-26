@@ -9,7 +9,6 @@ import com.hearhere.data.repositoryImpl.PreferenceRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,13 +25,11 @@ object NetworkModule {
     @Retention(AnnotationRetention.BINARY)
     annotation class api
 
-
-
     private val BASE_URL = BuildConfig.BASE_URL
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(interceptor: APIInterceptor) = if (BuildConfig.DEBUG){
+    fun provideOkHttpClient(interceptor: APIInterceptor) = if (BuildConfig.DEBUG) {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         OkHttpClient.Builder()
@@ -42,7 +39,7 @@ object NetworkModule {
             .addInterceptor(loggingInterceptor)
             .addInterceptor(interceptor)
             .build()
-    }else{
+    } else {
         OkHttpClient
             .Builder()
             .connectTimeout(3, TimeUnit.SECONDS)
@@ -60,19 +57,16 @@ object NetworkModule {
         .client(okHttpClient)
         .build()
 
-
-
     @Singleton
     @Provides
     @api
-    fun provideApiService( @api retrofit: Retrofit) = retrofit.create(HearHereApiService::class.java)
+    fun provideApiService(@api retrofit: Retrofit) = retrofit.create(HearHereApiService::class.java)
 
     @Provides
     @Singleton
     fun provideApiHelper(apiHelper: ApiHelperImpl): ApiHelper = apiHelper
 
-
     @Provides
     @Singleton
-    fun provideAuthIntercepter(repository : PreferenceRepositoryImpl) = APIInterceptor(repository)
+    fun provideAuthIntercepter(repository: PreferenceRepositoryImpl) = APIInterceptor(repository)
 }

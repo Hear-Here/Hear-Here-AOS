@@ -10,5 +10,5 @@ class ParsingHelperImpl @Inject constructor(
         parser.searchBySong(keyword, display = display)
 
     override suspend fun searchMusicByArtist(keyword: String, display: Int?) =
-        parser.searchByArtistWithXml(keyword,display = display)
+        parser.searchByArtistWithXml(keyword, display = display)
 }

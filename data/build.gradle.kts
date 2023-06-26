@@ -23,8 +23,7 @@ android {
 
         buildConfigField("String", "encrypted_pref", getLocalKey("encrypted_pref"))
         buildConfigField("String", "PREF_KEY", getLocalKey("pref_key"))
-        buildConfigField("String", "BASE_URL",   "\"${getLocalKey("BASE_URL")}\"" )
-
+        buildConfigField("String", "BASE_URL", "\"${getLocalKey("BASE_URL")}\"")
     }
 
     buildTypes {
@@ -49,16 +48,15 @@ android {
 dependencies {
     implementation(project(path = ":domain"))
 
-
     implementation("org.jetbrains.kotlin:kotlin-serialization:${Dep.kotlin}")
-    implementation( "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")
     implementation("androidx.appcompat:appcompat:${Dep.androidx_appCompat}")
 
-    //pref
+    // pref
     implementation("androidx.datastore:datastore:${Dep.data_store}")
     implementation("androidx.datastore:datastore-preferences:${Dep.data_store}")
     implementation("androidx.datastore:datastore-rxjava2:${Dep.data_store}")
@@ -70,9 +68,5 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-jackson:${Dep.retrofit_converter_jackson}")
     implementation("com.squareup.okhttp3:logging-interceptor:${Dep.logging_interceptor}")
 
-    implementation ("com.squareup.retrofit2:converter-simplexml:2.1.0")
-
-
-
-
+    implementation("com.squareup.retrofit2:converter-simplexml:2.1.0")
 }

@@ -14,6 +14,6 @@ class HearHereApplication : Application() {
         super.onCreate()
         KakaoSdk.init(this, KAKAO_KEY)
         val key = Utility.getKeyHash(this)
-        Log.d("ok hash",key)
+        Log.d("ok hash", key)
     }
 }
