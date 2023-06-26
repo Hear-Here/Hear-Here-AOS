@@ -1,4 +1,4 @@
-package com.hearhere.presentation.post
+package com.hearhere.presentation.features.post
 
 import com.hearhere.presentation.base.BaseViewModel
 

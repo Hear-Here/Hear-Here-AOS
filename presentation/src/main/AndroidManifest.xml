@@ -8,10 +8,10 @@
     <application>
 
         <activity android:name=".test.TestActivity" />
-        <activity android:name=".login.LoginActivity" />
-        <activity android:name=".login.SplashActivity" />
-        <activity android:name=".login.OnBoardingActivity" />
-        <activity android:name=".login.SetNickNameActivity" />
+        <activity android:name=".features.login.LoginActivity" />
+        <activity android:name=".features.login.SplashActivity" />
+        <activity android:name=".features.login.OnBoardingActivity" />
+        <activity android:name=".features.login.SetNickNameActivity" />
 
         <activity
             android:name=".features.main.MainActivity"
@@ -20,7 +20,7 @@
             />
 
         <activity
-            android:name=".post.PostFinishActivity"
+            android:name=".features.post.PostFinishActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".features.main.MarkerListActivity"
@@ -38,10 +38,10 @@
             android:name=".features.main.RecomandActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".post.PostActivity"
+            android:name=".features.post.PostActivity"
             android:exported="true" />
         <activity
-            android:name=".post.PostSelectOptionActivity"
+            android:name=".features.post.PostSelectOptionActivity"
             android:exported="true" />
 
     </application>

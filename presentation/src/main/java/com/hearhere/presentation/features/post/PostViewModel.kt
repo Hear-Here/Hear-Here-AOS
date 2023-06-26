@@ -1,4 +1,4 @@
-package com.hearhere.presentation.post
+package com.hearhere.presentation.features.post
 
 import android.util.Log
 import android.view.View
@@ -8,7 +8,7 @@ import com.hearhere.domain.usecaseImpl.SearchMusicUseCaseImpl
 import com.hearhere.domain.usecaseImpl.TestUseCaseImpl
 import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.base.BaseViewModel
-import com.hearhere.presentation.post.adapter.MusicListItemBinder
+import com.hearhere.presentation.features.post.adapter.MusicListItemBinder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

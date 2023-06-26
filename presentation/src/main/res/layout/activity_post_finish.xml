@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.hearhere.presentation.post.PostFinishViewModel" />
+            type="com.hearhere.presentation.features.post.PostFinishViewModel" />
 
     </data>
 

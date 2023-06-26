@@ -1,4 +1,4 @@
-package com.hearhere.presentation.login
+package com.hearhere.presentation.features.login
 
 import android.content.Intent
 import android.os.Bundle

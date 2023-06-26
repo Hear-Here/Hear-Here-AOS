@@ -7,13 +7,13 @@
         <import type="android.view.View"/>
         <variable
             name="viewmodel"
-            type="com.hearhere.presentation.post.PostViewModel" />
+            type="com.hearhere.presentation.features.post.PostViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".post.SearchTitleFragment">
+        tools:context=".features.post.SearchTitleFragment">
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/charector"

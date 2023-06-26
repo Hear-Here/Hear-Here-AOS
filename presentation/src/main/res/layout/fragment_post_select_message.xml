@@ -6,11 +6,11 @@
 
         <variable
             name="context"
-            type="com.hearhere.presentation.post.PostSelectMessageFragment" />
+            type="com.hearhere.presentation.features.post.PostSelectMessageFragment" />
 
         <variable
             name="view"
-            type="com.hearhere.presentation.post.PostSelectOptionViewModel" />
+            type="com.hearhere.presentation.features.post.PostSelectOptionViewModel" />
     </data>
 
 
@@ -18,7 +18,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".post.PostSelectGenreFragment">
+        tools:context=".features.post.PostSelectGenreFragment">
 
 
         <TextView
@@ -31,7 +31,7 @@
             android:text="한줄 메세지를 남길까요?"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        
+
         <com.hearhere.presentation.common.component.BasicTextField
             android:id="@+id/message_et"
             android:layout_width="331dp"

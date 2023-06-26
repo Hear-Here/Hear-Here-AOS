@@ -1,4 +1,4 @@
-package com.hearhere.presentation.post
+package com.hearhere.presentation.features.post
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

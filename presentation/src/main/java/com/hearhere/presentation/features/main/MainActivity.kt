@@ -30,7 +30,7 @@ import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.databinding.ActivityMainBinding
 import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.features.main.profile.MarkerMyPostingActivity
-import com.hearhere.presentation.post.PostActivity
+import com.hearhere.presentation.features.post.PostActivity
 import com.hearhere.presentation.util.createDrawableFromView
 import com.hearhere.presentation.util.getCircledBitmap
 import dagger.hilt.android.AndroidEntryPoint

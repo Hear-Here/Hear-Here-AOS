@@ -1,4 +1,4 @@
-package com.hearhere.presentation.post.adapter
+package com.hearhere.presentation.features.post.adapter
 
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -14,7 +14,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.common.util.createRandomId
-import com.hearhere.presentation.post.PostViewModel
+import com.hearhere.presentation.features.post.PostViewModel
 
 class MusicListItemBinder(
     val onClickItem: (PostViewModel.MusicListItemState) -> Unit
