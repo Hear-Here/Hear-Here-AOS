@@ -9,4 +9,5 @@ data class Pin(
     val title: String? = "",
     val distance: Double? = 0.0,
     val writer: String? = "",
+    val genreType: String
 )

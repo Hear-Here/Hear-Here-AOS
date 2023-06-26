@@ -155,7 +155,8 @@ class PostRepositoryImpl @Inject constructor(
                 distance = it.distance,
                 writer = it.writer,
                 title = it.title,
-                artist = it.artist
+                artist = it.artist,
+                genreType = it.genreType
             )
             temp.add(pin)
         }
@@ -171,7 +172,7 @@ class PostRepositoryImpl @Inject constructor(
                 artist = it.artist,
                 title = it.title,
                 distance = it.distance,
-                writer = it.writer
+                writer = it.writer,
             )
             temp.add(post)
         }

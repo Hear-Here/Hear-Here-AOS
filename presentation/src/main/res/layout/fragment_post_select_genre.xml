@@ -3,6 +3,7 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="com.hearhere.presentation.common.component.emojiButton.GenreType"/>
 
         <variable
             name="context"
@@ -41,23 +42,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_tv">
 
-            <com.hearhere.presentation.common.component.BasicButton
+            <com.hearhere.presentation.common.component.emojiButton.WideEmojiButton
                 android:id="@+id/ballad_btn"
                 style="@style/button_selector"
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
                 android:onClick="@{context.onClickBallad}"
-                android:text="발라드" />
+                emoji="@{GenreType.BALLAD}"
+                />
 
-            <com.hearhere.presentation.common.component.BasicButton
+            <com.hearhere.presentation.common.component.emojiButton.WideEmojiButton
                 android:id="@+id/dance_btn"
                 style="@style/button_selector"
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
                 android:onClick="@{context.onClickDance}"
-                android:text="댄스" />
+                emoji="@{GenreType.DANCE}"
+                />
 
 
             <com.hearhere.presentation.common.component.BasicButton

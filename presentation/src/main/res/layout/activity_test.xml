@@ -21,25 +21,25 @@
             android:orientation="vertical"
             >
 
-            <com.hearhere.presentation.common.component.EmojiButton
+            <com.hearhere.presentation.common.component.emojiButton.EmojiButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 app:emoji="@{viewmodel.type1}" />
 
-            <com.hearhere.presentation.common.component.EmojiButton
+            <com.hearhere.presentation.common.component.emojiButton.EmojiButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 app:emoji="@{viewmodel.type2}" />
 
-            <com.hearhere.presentation.common.component.EmojiButton
+            <com.hearhere.presentation.common.component.emojiButton.EmojiButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 app:emoji="@{viewmodel.type3}" />
 
-            <com.hearhere.presentation.common.component.EmojiButton
+            <com.hearhere.presentation.common.component.emojiButton.EmojiButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
