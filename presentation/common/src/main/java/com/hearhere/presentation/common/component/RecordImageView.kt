@@ -1,32 +1,23 @@
 package com.hearhere.presentation.common.component
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.hearhere.presentation.common.R
 import com.hearhere.presentation.common.databinding.LayoutRecordImageViewBinding
 import com.hearhere.presentation.util.ConvertDPtoPX
-import com.hearhere.presentation.util.dp
-import com.hearhere.presentation.util.dpToPx
 
 class RecordImageView @JvmOverloads constructor(
     context: Context,
@@ -34,16 +25,17 @@ class RecordImageView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private val binding : LayoutRecordImageViewBinding = LayoutRecordImageViewBinding.inflate(
-        LayoutInflater.from(context), this , true )
+    private val binding: LayoutRecordImageViewBinding = LayoutRecordImageViewBinding.inflate(
+        LayoutInflater.from(context), this, true
+    )
 
-    var uri : Uri? = null
+    var uri: Uri? = null
         set(value) {
-           uri = value
+            uri = value
         }
 
     init {
-        val rotateAnimation = AnimationUtils.loadAnimation(context,R.anim.rotate).apply {
+        val rotateAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate).apply {
             this.repeatMode = Animation.RESTART
             this.repeatCount = Animation.INFINITE
             this.duration = 2000L
@@ -53,23 +45,21 @@ class RecordImageView @JvmOverloads constructor(
             context.obtainStyledAttributes(attrs, R.styleable.DefaultView)
 
         typedArray.recycle()
-
     }
 
-  fun setImageCover(uri : Uri?){
+    fun setImageCover(uri: Uri?) {
         uri?.let {
-            if(it.path.isNullOrBlank()) {
+            if (it.path.isNullOrBlank()) {
                 binding.recordInnerLayout.visibility = View.INVISIBLE
-                binding.recordInnerframeIv.setImageDrawable(ContextCompat.getDrawable(context,  R.drawable.outframe))
+                binding.recordInnerframeIv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.outframe))
                 return
-            }
-            else{
+            } else {
                 binding.recordHoleLayout.visibility = View.VISIBLE
             }
 
             Glide.with(this)
                 .load(it)
-                //.diskCacheStrategy(DiskCacheStrategy.ALL)
+                // .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .fitCenter()
                 .placeholder(
                     ContextCompat.getDrawable(
@@ -77,7 +67,7 @@ class RecordImageView @JvmOverloads constructor(
                         R.drawable.outframe
                     )
                 )
-                .error(ContextCompat.getDrawable(context,  R.drawable.outframe))
+                .error(ContextCompat.getDrawable(context, R.drawable.outframe))
                 .into(object : CustomTarget<Drawable>() {
                     override fun onResourceReady(
                         resource: Drawable,
@@ -90,23 +80,22 @@ class RecordImageView @JvmOverloads constructor(
                     override fun onLoadCleared(placeholder: Drawable?) {}
                 })
         }
-
     }
-    private fun setFillHoleColor(hex:String){
-        binding.recordFrameHoleIv.background = ContextCompat.getDrawable(context,  R.drawable.innerframe)
+    private fun setFillHoleColor(hex: String) {
+        binding.recordFrameHoleIv.background = ContextCompat.getDrawable(context, R.drawable.innerframe)
     }
 
-    private fun setRecordType(type: String){
-        when(type){
-            "small"->{
+    private fun setRecordType(type: String) {
+        when (type) {
+            "small" -> {
                 binding.recordFrameLayout.layoutParams.apply {
-                    width = ConvertDPtoPX(context,145)
-                    height = ConvertDPtoPX(context,145)
+                    width = ConvertDPtoPX(context, 145)
+                    height = ConvertDPtoPX(context, 145)
                 }
 
                 binding.recordHoleLayout.layoutParams.apply {
-                    width = ConvertDPtoPX(context,40)
-                    height = ConvertDPtoPX(context,40)
+                    width = ConvertDPtoPX(context, 40)
+                    height = ConvertDPtoPX(context, 40)
                 }
 
 //                binding.recordInnerLayout.layoutParams.apply {
@@ -117,20 +106,17 @@ class RecordImageView @JvmOverloads constructor(
         }
     }
 
-
-    companion object{
+    companion object {
         @JvmStatic
         @BindingAdapter("android:src")
-        fun setOutframe(view : RecordImageView ,uri : Uri?){
+        fun setOutframe(view: RecordImageView, uri: Uri?) {
             view.setImageCover(uri)
         }
 
         @JvmStatic
         @BindingAdapter("type")
-        fun setRecordType(view : RecordImageView ,type : String){
+        fun setRecordType(view: RecordImageView, type: String) {
             view.setRecordType(type)
         }
-
     }
-
 }

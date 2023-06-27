@@ -1,12 +1,9 @@
 package com.hearhere.presentation.features.main.profile
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.flowWithLifecycle
@@ -18,9 +15,6 @@ import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.util.MarginItemDecoration
 import com.hearhere.presentation.databinding.ActivityMarkerMyPostingBinding
 import com.hearhere.presentation.features.detail.DetailActivity
-import com.hearhere.presentation.features.main.like.MarkerLikeActivity
-import com.hearhere.presentation.features.main.like.MarkerLikeDialog
-import com.hearhere.presentation.features.main.like.MarkerLikeViewModel
 import com.hearhere.presentation.util.ConvertDPtoPX
 import com.hearhere.presentation.util.CopyOnClipboard
 import dagger.hilt.android.AndroidEntryPoint
@@ -75,9 +69,9 @@ class MarkerMyPostingActivity :
                     dismissDialog()
                 }
                 is MarkerMyPostingViewModel.MarkerMyPostingEvent.OnClickDetail -> {
-                    DetailActivity.start(this,event.postId.toLong())
+                    DetailActivity.start(this, event.postId.toLong())
                 }
-                is MarkerMyPostingViewModel.MarkerMyPostingEvent.CopyTitle ->{
+                is MarkerMyPostingViewModel.MarkerMyPostingEvent.CopyTitle -> {
                     onCopy(event.title)
                     dismissDialog()
                 }
@@ -86,11 +80,9 @@ class MarkerMyPostingActivity :
         }
     }
 
-    private fun onCopy(text: String){
+    private fun onCopy(text: String) {
         this.CopyOnClipboard(text)
     }
-
-
 
     private fun showDialog(postId: Long, title: String) {
         if (::dialog.isInitialized && dialog.isAdded) {

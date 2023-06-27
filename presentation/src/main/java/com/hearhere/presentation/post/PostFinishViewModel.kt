@@ -12,15 +12,13 @@ import com.hearhere.presentation.common.component.emojiButton.EmotionType
 import com.hearhere.presentation.common.component.emojiButton.GenreType
 import com.hearhere.presentation.common.component.emojiButton.WeatherType
 import com.hearhere.presentation.common.component.emojiButton.WithType
-import com.hearhere.presentation.features.main.MarkerDetailViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class PostFinishViewModel @Inject constructor(
-    val useCase : PostPostingUseCaseImpl
+    val useCase: PostPostingUseCaseImpl
 ) : BaseViewModel() {
     private val _uiState = MutableLiveData<MarkerPostUiState>()
     val uiState: LiveData<MarkerPostUiState> get() = _uiState
@@ -57,7 +55,6 @@ class PostFinishViewModel @Inject constructor(
         Log.d("옥채연/requestPost", posting.toString())
         viewModelScope.launch {
             useCase.postMusicPosting(posting)
-
         }
     }
 }

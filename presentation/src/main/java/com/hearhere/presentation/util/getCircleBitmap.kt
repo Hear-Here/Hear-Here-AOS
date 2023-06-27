@@ -26,6 +26,4 @@ fun Bitmap.getCircledBitmap(): Bitmap {
     canvas.drawBitmap(this, left, top, paint)
     // this.recycle()
     return dstBitmap
-
-
 }

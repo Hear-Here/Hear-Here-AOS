@@ -9,9 +9,8 @@ import javax.inject.Inject
 class PatchPostUseCaseImpl @Inject constructor(
     private val postRepository: PostRepository
 ) : PatchPostUseCase {
-    override suspend fun deletePost(postId: Long): ApiResponse<*>  = postRepository.deletePost(postId).first()
-    override suspend fun likePost(postId: Long)  = postRepository.likePost(postId)
+    override suspend fun deletePost(postId: Long): ApiResponse<*> = postRepository.deletePost(postId).first()
+    override suspend fun likePost(postId: Long) = postRepository.likePost(postId)
 
     override suspend fun disLikePost(postId: Long) = postRepository.disLikePost(postId)
-
 }

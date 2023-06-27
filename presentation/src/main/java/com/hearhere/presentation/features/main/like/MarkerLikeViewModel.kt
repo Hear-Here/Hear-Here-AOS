@@ -4,11 +4,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hearhere.domain.model.ApiResponse
-import com.hearhere.domain.usecase.GetPostUseCase
 import com.hearhere.domain.usecaseImpl.GetPostUseCaseImpl
 import com.hearhere.domain.usecaseImpl.PatchPostUseCaseImpl
 import com.hearhere.presentation.base.BaseViewModel
-import com.hearhere.presentation.features.main.MainViewModel
 import com.hearhere.presentation.features.main.adapter.MarkerLikeItemBinder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,16 +30,16 @@ class MarkerLikeViewModel @Inject constructor(
     val binder get() = _binder
 
     init {
-        //call API
+        // call API
         getMarkerList()
     }
 
-   fun getMarkerList() {
+    fun getMarkerList() {
         viewModelScope.launch {
             val res = getPostUseCase.getLikePostList()
 
-            when(res){
-                is ApiResponse.Success->{
+            when (res) {
+                is ApiResponse.Success -> {
                     val temp = arrayListOf<MarkerLikeItemState>()
                     val binders = arrayListOf<MarkerLikeItemBinder>()
                     res.data?.forEach {
@@ -65,42 +63,37 @@ class MarkerLikeViewModel @Inject constructor(
                         _uiState.postValue(temp)
                         _binder.postValue(binders)
                     }
-
                 }
-                else->{
-                    Log.d("hyom",res.message.toString())
+                else -> {
+                    Log.d("hyom", res.message.toString())
                 }
             }
         }
-
     }
 
     private fun onClickDetail(postId: Long) {
-        //delete api 위치
+        // delete api 위치
         addEvent(MarkerLikeEvent.OnClickDetail(postId))
     }
-
 
     private fun onClickItemMenu(postId: Long, title: String) {
         addEvent(MarkerLikeEvent.ShowDialog(postId, title))
     }
 
     fun onClickItemDelete(postId: Long) {
-        //delete api 위치
+        // delete api 위치
         viewModelScope.launch {
             patchPostUseCase.disLikePost(postId)
                 .also {
-                addEvent(MarkerLikeEvent.Delete)
-            }
+                    addEvent(MarkerLikeEvent.Delete)
+                }
         }
-
     }
 
     fun onClickItemCopy(title: String) {
-        //copy logic
+        // copy logic
         addEvent(MarkerLikeEvent.DismissDialog)
     }
-
 
     private fun addEvent(event: MarkerLikeEvent) {
         _events.update { it + event }
@@ -110,14 +103,13 @@ class MarkerLikeViewModel @Inject constructor(
         _events.update { it - event }
     }
 
-
     data class MarkerLikeItemState(
         val postId: Long,
         val title: String,
         val artist: String,
         val coverPath: String? = "",
         val distance: Double,
-        val writer : String ?=""
+        val writer: String ? = ""
     )
 
     sealed class MarkerLikeEvent() {
@@ -127,6 +119,6 @@ class MarkerLikeViewModel @Inject constructor(
 
         object Delete : MarkerLikeEvent()
 
-        data class CopyTitle(val title : String) : MarkerLikeEvent()
+        data class CopyTitle(val title: String) : MarkerLikeEvent()
     }
 }

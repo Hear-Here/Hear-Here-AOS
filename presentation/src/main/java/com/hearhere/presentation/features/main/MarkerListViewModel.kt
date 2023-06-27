@@ -1,6 +1,5 @@
 package com.hearhere.presentation.features.main
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -15,8 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MarkerListViewModel @Inject constructor(
-    private val getPostUseCase : GetPostUseCaseImpl
-):  BaseViewModel(){
+    private val getPostUseCase: GetPostUseCaseImpl
+) : BaseViewModel() {
 
     private val _uiState = MutableLiveData<List<MarkerListItemState>>(emptyList())
     val uiState get() = _uiState
@@ -26,11 +25,11 @@ class MarkerListViewModel @Inject constructor(
 
     private val _navigateToDetails = SingleLiveEvent<Long?>()
 
-    val navigateToDetails : LiveData<Long?>
+    val navigateToDetails: LiveData<Long?>
         get() = _navigateToDetails
 
     init {
-        //call API
+        // call API
         requestPins()
     }
 
@@ -38,24 +37,26 @@ class MarkerListViewModel @Inject constructor(
         viewModelScope.launch {
             _loading.postValue(true)
             val location = getPostUseCase.myLocation ?: getPostUseCase.getLocation()
-            if(location!=null){
-                getPostUseCase.getPostList( location.lat,location.lng ).also {
-                    when(it){
-                        is ApiResponse.Success ->{
+            if (location != null) {
+                getPostUseCase.getPostList(location.lat, location.lng).also {
+                    when (it) {
+                        is ApiResponse.Success -> {
                             val tempList = arrayListOf<MarkerListItemState>()
                             it.data?.forEach {
-                                tempList.add( MarkerListItemState(
-                                    postId =  it.postId,
-                                    coverPath = it.imageUrl,
-                                    artist = it.artist?:"",
-                                    title = it.title?:"",
-                                    distance = it.distance?:0.0,
-                                    writer = it.writer?:""
-                                ))
+                                tempList.add(
+                                    MarkerListItemState(
+                                        postId = it.postId,
+                                        coverPath = it.imageUrl,
+                                        artist = it.artist ?: "",
+                                        title = it.title ?: "",
+                                        distance = it.distance ?: 0.0,
+                                        writer = it.writer ?: ""
+                                    )
+                                )
                             }
                             _uiState.postValue(tempList)
                             val binders = arrayListOf<MarkerListItemBinder>()
-                            tempList.forEach{
+                            tempList.forEach {
                                 val binder = MarkerListItemBinder(::onClickItem)
                                 binder.setMarker(it)
                                 binders.add(binder)
@@ -64,26 +65,24 @@ class MarkerListViewModel @Inject constructor(
                             }
                             _loading.postValue(false)
                         }
-                        is ApiResponse.Error->{}
+                        is ApiResponse.Error -> {}
                     }
                 }
             }
         }
-
     }
 
-    fun onClickItem(postId: Long){
+    fun onClickItem(postId: Long) {
         _navigateToDetails.value = postId
         _navigateToDetails.call()
     }
 
-
     data class MarkerListItemState(
-        val postId : Long,
-        val title : String,
-        val artist : String,
-        val coverPath : String?="",
-        val distance : Double,
-        val writer : String
+        val postId: Long,
+        val title: String,
+        val artist: String,
+        val coverPath: String? = "",
+        val distance: Double,
+        val writer: String
     )
 }

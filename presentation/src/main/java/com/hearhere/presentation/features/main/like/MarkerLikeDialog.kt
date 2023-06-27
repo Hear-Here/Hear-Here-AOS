@@ -16,7 +16,6 @@ class MarkerLikeDialog : BottomSheetDialogFragment() {
 
     private lateinit var binding: DialogLikeMenuBinding
 
-
     private val viewModel: MarkerLikeViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -58,7 +57,6 @@ class MarkerLikeDialog : BottomSheetDialogFragment() {
             }
         }
     }
-
 
     companion object {
         fun newInstance(postId: Long, title: String): MarkerLikeDialog {

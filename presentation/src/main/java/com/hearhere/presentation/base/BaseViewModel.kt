@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-//TODO 추후 Hilt로 Context 주입
+// TODO 추후 Hilt로 Context 주입
 abstract class BaseViewModel() : ViewModel() {
 
     val _loading = MutableLiveData<Boolean>()

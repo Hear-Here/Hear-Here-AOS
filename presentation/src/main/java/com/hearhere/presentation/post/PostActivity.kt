@@ -11,12 +11,11 @@ import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.databinding.ActivityPostBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class PostActivity : BaseActivity<ActivityPostBinding>(R.layout.activity_post) {
 
     private val viewModel: PostViewModel by viewModels()
-    private lateinit var adapter : BaseAdapter
+    private lateinit var adapter: BaseAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -34,17 +33,16 @@ class PostActivity : BaseActivity<ActivityPostBinding>(R.layout.activity_post) {
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
 
     override fun observeViewModel() {
-        viewModel.selectedMusic.observe{
-            if(it != null){
+        viewModel.selectedMusic.observe {
+            if (it != null) {
                 val music = it
-                //이 값을 받아서 start activity
+                // 이 값을 받아서 start activity
                 val intent = Intent(this@PostActivity, PostSelectOptionActivity::class.java)
                 intent.putExtra("music_cover", music.cover)
                 intent.putExtra("music_artist", music.artist)
                 intent.putExtra("music_title", music.title)
                 intent.putExtra("music_songId", music.songId)
                 startActivity(intent)
-
             }
         }
     }
@@ -52,11 +50,10 @@ class PostActivity : BaseActivity<ActivityPostBinding>(R.layout.activity_post) {
     private fun setViewPager() {
         val pagerAdapter = SearchMusicViewPagerAdapter(this)
         val tabName = listOf("Title", "Artist")
-            binding.viewPager.adapter = pagerAdapter
+        binding.viewPager.adapter = pagerAdapter
 
-            TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             tab.text = (tabName[position])
         }.attach()
     }
-
 }

@@ -51,5 +51,4 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:${Dep.okhttp}")
     implementation("com.squareup.retrofit2:converter-jackson:${Dep.retrofit_converter_jackson}")
     implementation("com.squareup.okhttp3:logging-interceptor:${Dep.logging_interceptor}")
-
 }

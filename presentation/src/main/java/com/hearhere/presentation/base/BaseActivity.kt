@@ -1,7 +1,6 @@
 package com.hearhere.presentation.base
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -12,10 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.hearhere.presentation.common.util.LoadingDialog
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-
 
 abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) :
     AppCompatActivity() {
@@ -23,7 +20,7 @@ abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) 
     private var _binding: T? = null
     protected val binding get() = _binding!!
 
-    private var loadingDiaolog : LoadingDialog? = null
+    private var loadingDiaolog: LoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +31,6 @@ abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) 
 
         observeViewModel()
         observeLoadingState()
-
-
     }
 
     abstract fun onCreateView(savedInstanceState: Bundle?)
@@ -60,10 +55,10 @@ abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) 
     }
 
     private fun showLoading() {
-        if(loadingDiaolog!==null) return
+        if (loadingDiaolog !== null) return
 
         loadingDiaolog = LoadingDialog.newInstance()
-        loadingDiaolog?.show(supportFragmentManager,"dialog")
+        loadingDiaolog?.show(supportFragmentManager, "dialog")
     }
 
     private fun dismissLoading() {
@@ -73,13 +68,15 @@ abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutRes: Int) 
 
     override fun onDestroy() {
         super.onDestroy()
-       // _binding = null
+        // _binding = null
     }
 
     protected infix fun <T> LiveData<T>.observe(block: (T) -> Unit) {
-        this.observe(this@BaseActivity, Observer {
-            block(it)
-        })
+        this.observe(
+            this@BaseActivity,
+            Observer {
+                block(it)
+            }
+        )
     }
-
 }

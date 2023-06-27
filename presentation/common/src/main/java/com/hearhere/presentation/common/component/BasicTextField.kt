@@ -3,13 +3,10 @@ package com.hearhere.presentation.common.component
 import android.content.Context
 import android.content.res.TypedArray
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
-import android.widget.EditText
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
@@ -27,14 +24,12 @@ class BasicTextField @JvmOverloads constructor(
     private val binding: LayoutBasicTextFieldBinding =
         LayoutBasicTextFieldBinding.inflate(LayoutInflater.from(context), this, true)
 
-
     var text: Editable
         get() {
             return binding.edittext.text
-        }set(value) {
-            binding.edittext.text = value
-        }
-
+        } set(value) {
+        binding.edittext.text = value
+    }
 
     var placeholderText: CharSequence
         get() {
@@ -55,8 +50,7 @@ class BasicTextField @JvmOverloads constructor(
     init {
         binding.inputFieldStroke.visibility = INVISIBLE
         setStrokeListener()
-        if(attrs != null) initAttr(attrs)
-
+        if (attrs != null) initAttr(attrs)
     }
 
     interface AfterTextChanged {
@@ -71,8 +65,8 @@ class BasicTextField @JvmOverloads constructor(
         fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int)
     }
 
-    private fun initAttr(attrs : AttributeSet){
-        if(attrs != null){
+    private fun initAttr(attrs: AttributeSet) {
+        if (attrs != null) {
             val typedArray: TypedArray =
                 context.obtainStyledAttributes(attrs, R.styleable.TextField)
 
@@ -85,7 +79,7 @@ class BasicTextField @JvmOverloads constructor(
         }
     }
 
-    private fun setStrokeListener(){
+    private fun setStrokeListener() {
         binding.edittext.setOnFocusChangeListener { v, hasFocus ->
             binding.inputFieldStroke.visibility = if (hasFocus) {
                 VISIBLE
@@ -93,10 +87,9 @@ class BasicTextField @JvmOverloads constructor(
                 INVISIBLE
             }
         }
-
     }
 
-    fun setText(text : String){
+    fun setText(text: String) {
         binding.edittext.setText(text)
     }
 
@@ -104,13 +97,12 @@ class BasicTextField @JvmOverloads constructor(
         binding.edittext.setOnEditorActionListener(onEditorActionListener)
     }
 
-
     private fun setTextFieldType(type: String) {
-        when(type){
-            "password" ->{
+        when (type) {
+            "password" -> {
                 binding.edittext.setTransformationMethod(PasswordTransformationMethod())
             }
-            else ->{}
+            else -> {}
         }
     }
 
@@ -141,7 +133,6 @@ class BasicTextField @JvmOverloads constructor(
         ) {
             textField.binding.edittext.setOnEditorActionListener(onEditorActionListener)
         }
-
 
         @JvmStatic
         @BindingAdapter(
@@ -195,7 +186,6 @@ class BasicTextField @JvmOverloads constructor(
                 textField.binding.edittext.removeTextChangedListener(it)
             }
             newValue?.let { textField.binding.edittext.addTextChangedListener(it) }
-
         }
     }
 }

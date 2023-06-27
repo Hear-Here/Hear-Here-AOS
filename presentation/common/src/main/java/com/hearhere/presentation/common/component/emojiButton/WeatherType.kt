@@ -16,4 +16,3 @@ fun WeatherType.getResource(): Int {
         WeatherType.SNOWY -> R.drawable.snowy
     }
 }
-

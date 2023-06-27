@@ -1,3 +1,3 @@
 package com.hearhere.domain.model
 
-data class AuthToken(val accessToken : String)
+data class AuthToken(val accessToken: String)

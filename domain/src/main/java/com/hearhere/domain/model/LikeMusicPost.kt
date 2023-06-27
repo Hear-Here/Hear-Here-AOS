@@ -6,5 +6,5 @@ data class LikeMusicPost(
     val artist: String,
     val coverPath: String? = "",
     val distance: Double,
-    val writer : String?=""
+    val writer: String? = ""
 )

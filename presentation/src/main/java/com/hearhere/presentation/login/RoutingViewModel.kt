@@ -11,22 +11,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RoutingViewModel @Inject constructor(
-   private val preferenceRepository: PreferenceRepository
-) : BaseViewModel(){
+    private val preferenceRepository: PreferenceRepository
+) : BaseViewModel() {
 
     val navigateToMainEvent = SingleLiveEvent<Any>()
     val navigateToLoginEvent = SingleLiveEvent<Any>()
     val navigateToOnBoardEvent = SingleLiveEvent<Any>()
 
-
-    fun checkToken(){
+    fun checkToken() {
         viewModelScope.launch {
             val token = preferenceRepository.getAuthToken()
-            Log.d("pref token",token.accessToken)
-            if(token.accessToken.isNullOrBlank()){
+            Log.d("pref token", token.accessToken)
+            if (token.accessToken.isNullOrBlank()) {
                 navigateToLoginEvent.call()
-            }else navigateToMainEvent.call()
+            } else navigateToMainEvent.call()
         }
     }
-
 }

@@ -2,15 +2,11 @@ package com.hearhere.presentation.post
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseAdapter
 import com.hearhere.presentation.base.BaseFragment
-import com.hearhere.presentation.common.component.BasicButton
 import com.hearhere.presentation.common.component.emojiButton.GenreType
 import com.hearhere.presentation.databinding.FragmentPostSelectGenreBinding
 
@@ -35,43 +31,36 @@ class PostSelectGenreFragment :
         Log.d("ok", "채연이")
         viewModel.genre = GenreType.DANCE
         pageSlide()
-
     }
     val onClickHiphop = View.OnClickListener {
         Log.d("ok", "채연이")
         viewModel.genre = GenreType.HIPHOP
         pageSlide()
-
     }
     val onClickRB = View.OnClickListener {
         Log.d("ok", "채연이")
         viewModel.genre = GenreType.RB
         pageSlide()
-
     }
     val onClickIndie = View.OnClickListener {
         Log.d("ok", "채연이")
         viewModel.genre = GenreType.INDIE
         pageSlide()
-
     }
     val onClickPop = View.OnClickListener {
         Log.d("ok", "채연이")
         viewModel.genre = GenreType.POP
         pageSlide()
-
     }
     val onClickBand = View.OnClickListener {
         Log.d("ok", "채연이")
         viewModel.genre = GenreType.BAND
         pageSlide()
-
     }
     val onClickTrot = View.OnClickListener {
         Log.d("ok", "채연이")
         viewModel.genre = GenreType.TROT
         pageSlide()
-
     }
 
     private fun pageSlide() {
@@ -82,7 +71,5 @@ class PostSelectGenreFragment :
         super.onCreate(savedInstanceState)
 
         adapter = BaseAdapter.build()
-
     }
-
 }

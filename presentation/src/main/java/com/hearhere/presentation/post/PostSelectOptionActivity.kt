@@ -16,11 +16,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class PostSelectOptionActivity : BaseActivity<ActivityPostSelectOptionBinding>(R.layout.activity_post_select_option) {
 
     private val viewModel: PostSelectOptionViewModel by viewModels()
-    private lateinit var adapter : BaseAdapter
-    private lateinit var pagerAdapter : PostMusicViewPagerAdapter
+    private lateinit var adapter: BaseAdapter
+    private lateinit var pagerAdapter: PostMusicViewPagerAdapter
 
     override fun onCreateView(savedInstanceState: Bundle?) {
-
 
         val coverUrl = intent.getStringExtra("music_cover")
         val artist = intent.getStringExtra("music_artist")
@@ -40,9 +39,7 @@ class PostSelectOptionActivity : BaseActivity<ActivityPostSelectOptionBinding>(R
         binding.postTitleTv.text = title
         binding.postArtistTv.text = artist
 
-
         setViewPager()
-
     }
 
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
@@ -67,15 +64,13 @@ class PostSelectOptionActivity : BaseActivity<ActivityPostSelectOptionBinding>(R
 
     fun slidePage() {
 
-
         val current = binding.viewPager.currentItem
 
-        binding.viewPager.setCurrentItem(current + 1,false)
+        binding.viewPager.setCurrentItem(current + 1, false)
 
         Log.d("옥채연", viewModel.genre.toString())
         Log.d("옥채연", viewModel.with.toString())
         Log.d("옥채연", viewModel.weather.toString())
         Log.d("옥채연", viewModel.emotion.toString())
     }
-
 }

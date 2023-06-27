@@ -20,7 +20,7 @@ data class ArtistChannel @JvmOverloads constructor(
 @Root(name = "item", strict = false)
 data class ArtistItem @JvmOverloads constructor(
     @field:Attribute(required = false)
-    var id: String="",
+    var id: String = "",
 
     @field:Element(name = "title", required = false)
     var title: String = "",
@@ -30,7 +30,6 @@ data class ArtistItem @JvmOverloads constructor(
 
     @field:Element(name = "image", required = false)
     var image: String = "",
-
 
     @field:Element(name = "maniadb:majorsongs", required = false)
     var majorsongs: MajorSongs? = null,
@@ -44,7 +43,6 @@ data class MajorSongs @JvmOverloads constructor(
     var songs: List<Song> = listOf()
 )
 
-
 @Root(name = "song", strict = false)
 data class Song@JvmOverloads constructor(
     @field:Element(name = "id", required = false)
@@ -53,8 +51,6 @@ data class Song@JvmOverloads constructor(
     @field:Element(name = "name", required = false)
     var name: String = "",
 )
-
-
 
 data class ArtistResult(
     var title: String? = null,
@@ -65,12 +61,8 @@ data class ArtistResult(
 )
 
 data class SongResult(
-    var id: String?=null,
-    var name: String?=null,
-    var release : String?=null,
-    var cover : String?=null
+    var id: String? = null,
+    var name: String? = null,
+    var release: String? = null,
+    var cover: String? = null
 )
-
-
-
-

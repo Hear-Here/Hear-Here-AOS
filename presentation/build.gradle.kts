@@ -11,7 +11,7 @@ android {
     namespace = "com.hearhere.presentation"
     compileSdk = App.targetSdk
 
-    buildFeatures{
+    buildFeatures {
         dataBinding = true
         viewBinding = true
     }
@@ -44,11 +44,10 @@ android {
 dependencies {
     implementation(project(path = ":domain"))
     api(project(path = ":presentation:common"))
-    
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Dep.kotlin}")
     implementation("androidx.appcompat:appcompat:${Dep.androidx_appCompat}")
     implementation("com.google.android.flexbox:flexbox:${Dep.flexbox}")
-
 
     // androidx
     implementation("androidx.core:core-ktx:${Dep.coreKtx}")
@@ -61,7 +60,7 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:${Dep.fragment_ktx}")
     implementation("androidx.annotation:annotation:${Dep.androidx_annotation}")
     implementation("com.google.android.material:material:${Dep.material}")
-    implementation( "androidx.security:security-crypto:${Dep.security}")
+    implementation("androidx.security:security-crypto:${Dep.security}")
 
     implementation("com.google.dagger:hilt-android:${Dep.hilt}")
     implementation("com.google.android.gms:play-services-fido:20.0.1")
@@ -69,21 +68,17 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.5.2")
     kapt("com.google.dagger:hilt-android-compiler:${Dep.hilt_androidx_compiler}")
 
-    implementation ("com.google.android.gms:play-services-maps:${Dep.google_map}")
-    implementation ("com.google.android.gms:play-services-location:${Dep.google_location}")
+    implementation("com.google.android.gms:play-services-maps:${Dep.google_map}")
+    implementation("com.google.android.gms:play-services-location:${Dep.google_location}")
 
     implementation("com.github.bumptech.glide:glide:${Dep.glide}")
 
     implementation("androidx.constraintlayout:constraintlayout:${Dep.constraintLayout}")
     implementation("com.airbnb.android:lottie:${Dep.lottie}")
 
-    implementation ("com.kakao.sdk:v2-all:2.13.0") // 전체 모듈 설치, 2.11.0 버전부터 지원
-    implementation ("com.kakao.sdk:v2-user:2.13.0") // 카카오 로그인
+    implementation("com.kakao.sdk:v2-all:2.13.0") // 전체 모듈 설치, 2.11.0 버전부터 지원
+    implementation("com.kakao.sdk:v2-user:2.13.0") // 카카오 로그인
     implementation("com.github.bumptech.glide:glide:${Dep.glide}")
 
-    implementation ("com.squareup.picasso:picasso:2.71828")
-
-
-
-
+    implementation("com.squareup.picasso:picasso:2.71828")
 }

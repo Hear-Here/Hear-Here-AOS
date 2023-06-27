@@ -1,14 +1,9 @@
 package com.hearhere.data.data.dto.response
 
-
-import okhttp3.ResponseBody
 import org.simpleframework.xml.Attribute
-import org.simpleframework.xml.Root
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.ElementList
-import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserFactory
-
+import org.simpleframework.xml.Root
 
 @Root(name = "rss", strict = false)
 data class SearchBySongResponse(
@@ -25,7 +20,7 @@ data class SongChannel @JvmOverloads constructor(
 @Root(name = "item", strict = false)
 data class SongItem @JvmOverloads constructor(
     @field:Attribute(required = false)
-    var id: String="",
+    var id: String = "",
 
     @field:Element(name = "title", required = false)
     var title: String = "",
@@ -46,7 +41,7 @@ data class SongItem @JvmOverloads constructor(
 @Root(name = "album", strict = false)
 data class Album @JvmOverloads constructor(
     @field:Attribute(required = false)
-    var id: String="",
+    var id: String = "",
 
     @field:Element(name = "title")
     var title: String = "",

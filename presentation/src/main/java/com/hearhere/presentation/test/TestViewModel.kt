@@ -21,7 +21,7 @@ import javax.inject.Inject
 class TestViewModel @Inject constructor(
     private val testUseCase: TestUseCaseImpl,
     private val searchMusicUseCase: SearchMusicUseCaseImpl
-) : BaseViewModel(){
+) : BaseViewModel() {
 
     private val _list = MutableLiveData<List<BaseItemBinder>>()
     val list get() = _list
@@ -37,63 +37,62 @@ class TestViewModel @Inject constructor(
         searchMusic("아이유")
     }
 
-    private fun searchMusic(keyword : String){
+    private fun searchMusic(keyword: String) {
         viewModelScope.launch {
-            kotlin.runCatching{
-                val res = searchMusicUseCase.searchMusicBySong("Kitsch",10)
-                Log.d("search Music by song result",res.toString())
+            kotlin.runCatching {
+                val res = searchMusicUseCase.searchMusicBySong("Kitsch", 10)
+                Log.d("search Music by song result", res.toString())
                 res.onSuccess {
-                    it.forEach{
-
+                    it.forEach {
                     }
                 }
             }.onFailure {
-                Log.d("search Music result fail... ",it.toString())
+                Log.d("search Music result fail... ", it.toString())
             }
 
-
-            kotlin.runCatching{
-                val res = searchMusicUseCase.searchMusicByArtist(keyword,30)
-                Log.d("search Music result",res.toString())
+            kotlin.runCatching {
+                val res = searchMusicUseCase.searchMusicByArtist(keyword, 30)
+                Log.d("search Music result", res.toString())
             }.onFailure {
-                Log.d("search Music result fail... ",it.toString())
+                Log.d("search Music result fail... ", it.toString())
             }
         }
     }
 
     val onClick = View.OnClickListener {
-        Log.d("record"," success ")
+        Log.d("record", " success ")
     }
 
-    private fun setList(){
+    private fun setList() {
         val listItems = arrayListOf<TestBinder>()
-        for(i in 0 until 10){
-            listItems.add(createBinder().apply {
-                this.text.set(i.toString())
-            })
+        for (i in 0 until 10) {
+            listItems.add(
+                createBinder().apply {
+                    this.text.set(i.toString())
+                }
+            )
         }
         _list.postValue(listItems)
     }
 
-    private fun createBinder() : TestBinder{
-        return TestBinder(createRandomId(),::onClickItem)
+    private fun createBinder(): TestBinder {
+        return TestBinder(createRandomId(), ::onClickItem)
     }
 
-    fun test(){
-
+    fun test() {
     }
 
-    fun onClickItem(id: Long){
-        //클릭 이벤트 시 binder 에서 호출됨
+    fun onClickItem(id: Long) {
+        // 클릭 이벤트 시 binder 에서 호출됨
     }
 
-    private fun getToken(){
+    private fun getToken() {
         viewModelScope.launch {
             val token = testUseCase.getAccessToken()
             Log.d("token", token.toString())
         }
     }
-    private fun setToken(){
+    private fun setToken() {
         viewModelScope.launch {
             testUseCase.updateAccessToken("new token here")
         }

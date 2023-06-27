@@ -3,14 +3,14 @@ package com.hearhere.presentation.post
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import kotlin.collections.ArrayList
 
 class PostMusicViewPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {
 
-    var list: ArrayList<Fragment> = arrayListOf(PostSelectGenreFragment(), PostSelectWithFragment(),
-        PostSelectWeatherFragment(), PostSelectEmotionFragment(), PostSelectMessageFragment())
-
+    var list: ArrayList<Fragment> = arrayListOf(
+        PostSelectGenreFragment(), PostSelectWithFragment(),
+        PostSelectWeatherFragment(), PostSelectEmotionFragment(), PostSelectMessageFragment()
+    )
 
     override fun getItemCount(): Int = 5
 
@@ -28,7 +28,4 @@ class PostMusicViewPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapt
             else -> PostSelectMessageFragment()
         }
     }
-
-
-
 }
