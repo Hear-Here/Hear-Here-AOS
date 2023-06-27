@@ -29,7 +29,9 @@
                 <com.hearhere.presentation.common.component.RecordImageView
                     android:id="@+id/post_music_cover_iv"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    holeColor='@{"#151515"}'
+                    />
 
                 <TextView
                     android:id="@+id/post_title_tv"

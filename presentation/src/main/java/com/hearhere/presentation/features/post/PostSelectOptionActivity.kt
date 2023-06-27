@@ -30,10 +30,7 @@ class PostSelectOptionActivity : BaseActivity<ActivityPostSelectOptionBinding>(R
         viewModel.artist = artist
         viewModel.title = title
         viewModel.songId = songId
-        // intent.getStringExtra("전달했던 데이터의 이름표")
 
-//        binding.textViewTv.text = message
-//        binding.postMusicCoverIv.setImageURI(cover_url?.toUri())
         val uri = Uri.parse(coverUrl)
         binding.postMusicCoverIv.setImageCover(uri)
         binding.postTitleTv.text = title
