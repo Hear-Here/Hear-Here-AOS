@@ -45,8 +45,6 @@
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/ballad_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
                 android:onClick="@{context.onClickGenreBtn}"
                 emoji="@{GenreType.BALLAD}"
@@ -55,8 +53,6 @@
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/dance_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
                 android:onClick="@{context.onClickGenreBtn}"
                 emoji="@{GenreType.DANCE}"
@@ -64,8 +60,6 @@
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/hiphop_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
                 android:onClick="@{context.onClickGenreBtn}"
                 emoji="@{GenreType.HIPHOP}"
@@ -74,8 +68,6 @@
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/rb_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
                 android:onClick="@{context.onClickGenreBtn}"
                 emoji="@{GenreType.RB}"
@@ -86,8 +78,6 @@
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/indie_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
                 android:onClick="@{context.onClickGenreBtn}"
                 emoji="@{GenreType.INDIE}"
@@ -96,8 +86,6 @@
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/pop_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
                 android:onClick="@{context.onClickGenreBtn}"
                 emoji="@{GenreType.POP}"
@@ -106,8 +94,6 @@
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/band_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
                 android:onClick="@{context.onClickGenreBtn}"
                 emoji="@{GenreType.BAND}"
@@ -115,8 +101,6 @@
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/trot_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
                 android:onClick="@{context.onClickGenreBtn}"
                 emoji="@{GenreType.TROT}"
