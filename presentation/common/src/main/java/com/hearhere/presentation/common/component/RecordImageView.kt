@@ -82,7 +82,8 @@ class RecordImageView @JvmOverloads constructor(
         }
     }
     private fun setFillHoleColor(hex: String) {
-        binding.recordFrameHoleIv.background = ContextCompat.getDrawable(context, R.drawable.innerframe)
+        binding.recordFrameHoleIv.setBackgroundColor(ContextCompat.getColor(context, R.color.gray90))
+        binding.recordInnerframeIv.setBackgroundColor(ContextCompat.getColor(context, R.color.gray90))
     }
 
     private fun setRecordType(type: String) {
@@ -117,6 +118,12 @@ class RecordImageView @JvmOverloads constructor(
         @BindingAdapter("type")
         fun setRecordType(view: RecordImageView, type: String) {
             view.setRecordType(type)
+        }
+
+        @JvmStatic
+        @BindingAdapter("holeColor")
+        fun setRecordHoleColor(view: RecordImageView, color: String) {
+            view.setFillHoleColor(color)
         }
     }
 }

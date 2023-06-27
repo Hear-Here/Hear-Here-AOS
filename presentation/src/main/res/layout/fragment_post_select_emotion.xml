@@ -6,11 +6,11 @@
 
         <variable
             name="context"
-            type="com.hearhere.presentation.post.PostSelectEmotionFragment" />
+            type="com.hearhere.presentation.features.post.PostSelectEmotionFragment" />
 
         <variable
             name="view"
-            type="com.hearhere.presentation.post.PostSelectOptionViewModel" />
+            type="com.hearhere.presentation.features.post.PostSelectOptionViewModel" />
     </data>
 
 
@@ -18,7 +18,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".post.PostSelectGenreFragment">
+        tools:context=".features.post.PostSelectGenreFragment">
 
         <TextView
             android:id="@+id/title_tv"

@@ -3,21 +3,22 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="com.hearhere.presentation.common.component.emojiButton.GenreType"/>
 
         <variable
             name="context"
-            type="com.hearhere.presentation.post.PostSelectGenreFragment" />
+            type="com.hearhere.presentation.features.post.PostSelectGenreFragment" />
 
         <variable
             name="view"
-            type="com.hearhere.presentation.post.PostSelectOptionViewModel" />
+            type="com.hearhere.presentation.features.post.PostSelectOptionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".post.PostSelectGenreFragment">
+        tools:context=".features.post.PostSelectGenreFragment">
 
         <TextView
             android:id="@+id/title_tv"
@@ -41,80 +42,69 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_tv">
 
-            <com.hearhere.presentation.common.component.BasicButton
+            <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/ballad_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickBallad}"
-                android:text="발라드" />
+                android:onClick="@{context.onClickGenreBtn}"
+                emoji="@{GenreType.BALLAD}"
+                />
 
-            <com.hearhere.presentation.common.component.BasicButton
+            <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/dance_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickDance}"
-                android:text="댄스" />
-
-
-            <com.hearhere.presentation.common.component.BasicButton
+                android:onClick="@{context.onClickGenreBtn}"
+                emoji="@{GenreType.DANCE}"
+                />
+            <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/hiphop_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickHiphop}"
-                android:text="랩/힙합" />
+                android:onClick="@{context.onClickGenreBtn}"
+                emoji="@{GenreType.HIPHOP}"
+                />
 
-
-            <com.hearhere.presentation.common.component.BasicButton
+            <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/rb_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickRB}"
-                android:text="@string/r_b" />
+                android:onClick="@{context.onClickGenreBtn}"
+                emoji="@{GenreType.RB}"
+                />
 
-            <com.hearhere.presentation.common.component.BasicButton
+
+
+            <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/indie_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickIndie}"
-                android:text="인디" />
+                android:onClick="@{context.onClickGenreBtn}"
+                emoji="@{GenreType.INDIE}"
+                />
 
-            <com.hearhere.presentation.common.component.BasicButton
+            <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/pop_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickPop}"
-                android:text="POP" />
+                android:onClick="@{context.onClickGenreBtn}"
+                emoji="@{GenreType.POP}"
+                />
 
-            <com.hearhere.presentation.common.component.BasicButton
+            <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/band_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickBand}"
-                android:text="밴드" />
-
-
-            <com.hearhere.presentation.common.component.BasicButton
+                android:onClick="@{context.onClickGenreBtn}"
+                emoji="@{GenreType.BAND}"
+                />
+            <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/trot_btn"
                 style="@style/button_selector"
-                android:layout_width="149dp"
-                android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickTrot}"
-                android:text="트로트" />
+                android:onClick="@{context.onClickGenreBtn}"
+                emoji="@{GenreType.TROT}"
+                />
 
         </GridLayout>
 

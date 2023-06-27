@@ -27,12 +27,13 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseActivity
 import com.hearhere.presentation.base.BaseViewModel
+import com.hearhere.presentation.common.component.emojiButton.GenreType
+import com.hearhere.presentation.common.component.emojiButton.getResource
 import com.hearhere.presentation.databinding.ActivityMainBinding
 import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.features.main.profile.MarkerMyPostingActivity
-import com.hearhere.presentation.post.PostActivity
+import com.hearhere.presentation.features.post.PostActivity
 import com.hearhere.presentation.util.createDrawableFromView
-import com.hearhere.presentation.util.getCircledBitmap
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -50,7 +51,8 @@ class MainActivity :
     private val DEFAULT_LOCATION = CITY_HALL
     private val MYLOCATION_TAG = "myLocation"
     private val PERMISSIONS = arrayOf(
-        Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION
     )
 
     private val viewModel: MainViewModel by viewModels()
@@ -97,12 +99,19 @@ class MainActivity :
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
     override fun observeViewModel() {
         viewModel.events.flowWithLifecycle(lifecycle).onEach(::handleEvent).launchIn(lifecycleScope)
+        viewModel.pinStateList.observe { list ->
+            if (list.isNotEmpty()) {
+                mMap?.let {
+                    createMarker(list)
+                }
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         initMap()
@@ -118,11 +127,13 @@ class MainActivity :
     override fun onMapsSdkInitialized(renderer: MapsInitializer.Renderer) {
         when (renderer) {
             MapsInitializer.Renderer.LATEST -> Log.d(
-                "MapsDemo", "The latest version of the renderer is used."
+                "MapsDemo",
+                "The latest version of the renderer is used."
             )
 
             MapsInitializer.Renderer.LEGACY -> Log.d(
-                "MapsDemo", "The legacy version of the renderer is used."
+                "MapsDemo",
+                "The legacy version of the renderer is used."
             )
 
             else -> {}
@@ -134,10 +145,9 @@ class MainActivity :
             mMap?.let {
                 when (viewEvent) {
                     is MainViewModel.PinEvent.OnCompletedLoad -> {
-                        // Toast.makeText(this,"completed load",Toast.LENGTH_SHORT).show()
-                        mMap?.let {
-                            createMarkerOne(viewEvent.pin)
-                        }
+//                        // Toast.makeText(this,"completed load",Toast.LENGTH_SHORT).show()
+//                        mMap?.let {
+//                            createMarker(viewEvent.pin) //                      }
                     }
 
                     is MainViewModel.PinEvent.OnChangeSelectedPin -> {
@@ -168,16 +178,16 @@ class MainActivity :
         if (mMap == null) return
         val pin = viewModel.getPinStateByMarker(marker) ?: return
         marker.apply {
-            zIndex = 1F
+            zIndex = if (isFocused) 1F else 0F
             setIcon(
                 BitmapDescriptorFactory.fromBitmap(
                     this@MainActivity.createDrawableFromView(
                         (
                             pin.bitmap ?: BitmapFactory.decodeResource(
                                 resources,
-                                com.hearhere.presentation.common.R.drawable.headphones
+                                GenreType.valueOf(pin.pin.genreType).getResource()
                             )
-                            ).getCircledBitmap(),
+                            ),
                         isFocused
                     )
                 )
@@ -185,10 +195,10 @@ class MainActivity :
         }
     }
 
-    private fun createMarker() {
+    private fun createMarker(list: List<MainViewModel.PinState>) {
         val markers = ArrayList<Marker>()
         try {
-            viewModel.pinStateList.value?.forEach {
+            list.forEach {
                 val markerOptions = MarkerOptions().apply {
                     position(LatLng(it.pin.latitude, it.pin.longitude))
                     icon(
@@ -197,9 +207,9 @@ class MainActivity :
                                 (
                                     it.bitmap ?: BitmapFactory.decodeResource(
                                         resources,
-                                        com.hearhere.presentation.common.R.drawable.headphones
+                                        GenreType.valueOf(it.pin.genreType).getResource()
                                     )
-                                    ).getCircledBitmap(),
+                                    ),
                                 false
                             )
                         )
@@ -216,35 +226,36 @@ class MainActivity :
         }
     }
 
-    private fun createMarkerOne(posting: MainViewModel.PinState) {
-        val markers = ArrayList<Marker>()
-        markers.addAll(viewModel.markerList.value ?: emptyList())
-
-        try {
-            val markerOptions = MarkerOptions().apply {
-                position(LatLng(posting.pin.latitude, posting.pin.longitude))
-                icon(
-                    BitmapDescriptorFactory.fromBitmap(
-                        this@MainActivity.createDrawableFromView(
-                            (
-                                posting.bitmap ?: BitmapFactory.decodeResource(
-                                    resources,
-                                    com.hearhere.presentation.common.R.drawable.headphones
-                                )
-                                ).getCircledBitmap(),
-                            false
-                        )
-                    )
-                )
-            }
-            val marker = mMap!!.addMarker(markerOptions)
-            marker?.tag = posting.pin.postId
-            markers.add(marker!!)
-            viewModel._markerList.postValue(markers)
-        } catch (e: Error) {
-            Log.e("bitmap error", e.toString())
-        }
-    }
+//    private fun createMarkerOne(posting: MainViewModel.PinState) {
+//        val markers = ArrayList<Marker>()
+//        markers.addAll(viewModel.markerList.value ?: emptyList())
+//
+//        try {
+//            val icon = GenreType.valueOf(posting.pin.genreType).getResource()
+//            val markerOptions = MarkerOptions().apply {
+//                position(LatLng(posting.pin.latitude, posting.pin.longitude))
+//                icon(
+//                    BitmapDescriptorFactory.fromBitmap(
+//                        this@MainActivity.createDrawableFromView(
+//                            (
+//                                posting.bitmap ?: BitmapFactory.decodeResource(
+//                                    resources,
+//                                    GenreType.valueOf(posting.pin.genreType).getResource()
+//                                )
+//                                ).getCircledBitmap(),
+//                            false
+//                        )
+//                    )
+//                )
+//            }
+//            val marker = mMap!!.addMarker(markerOptions)
+//            marker?.tag = posting.pin.postId
+//            markers.add(marker!!)
+//            viewModel._markerList.postValue(markers)
+//        } catch (e: Error) {
+//            Log.e("bitmap error", e.toString())
+//        }
+//    }
 
     private fun setMyLocation() {
         val location = getMyLocation()
@@ -269,7 +280,6 @@ class MainActivity :
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-
         Log.d("hyom", "onMap Ready")
         mMap = googleMap
         setMyLocation()
@@ -289,7 +299,6 @@ class MainActivity :
     }
 
     private fun initMap() {
-
         var location: LatLng = DEFAULT_LOCATION
         location = getMyLocation()
 
@@ -337,7 +346,6 @@ class MainActivity :
     }
 
     fun colorPin(id: Long) {
-
         val marker = viewModel.getMarkerById(id)
         // Toast.makeText(this,"resume dialog"+id.toString(),Toast.LENGTH_SHORT).show()
         marker?.let {

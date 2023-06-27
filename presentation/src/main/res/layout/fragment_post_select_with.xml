@@ -6,18 +6,18 @@
 
         <variable
             name="context"
-            type="com.hearhere.presentation.post.PostSelectWithFragment" />
+            type="com.hearhere.presentation.features.post.PostSelectWithFragment" />
 
         <variable
             name="view"
-            type="com.hearhere.presentation.post.PostSelectOptionViewModel" />
+            type="com.hearhere.presentation.features.post.PostSelectOptionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".post.PostSelectGenreFragment">
+        tools:context=".features.post.PostSelectGenreFragment">
 
         <TextView
             android:id="@+id/title_tv"

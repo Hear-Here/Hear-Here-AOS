@@ -114,25 +114,25 @@
                 android:columnCount="2"
                 android:rowCount="2">
 
-                <com.hearhere.presentation.common.component.EmojiButton
+                <com.hearhere.presentation.common.component.emojiButton.EmojiButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     app:emoji="@{viewModel.uiState.genreType}" />
 
-                <com.hearhere.presentation.common.component.EmojiButton
+                <com.hearhere.presentation.common.component.emojiButton.EmojiButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     app:emoji="@{viewModel.uiState.weatherType}" />
 
-                <com.hearhere.presentation.common.component.EmojiButton
+                <com.hearhere.presentation.common.component.emojiButton.EmojiButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     app:emoji="@{viewModel.uiState.emotionType}" />
 
-                <com.hearhere.presentation.common.component.EmojiButton
+                <com.hearhere.presentation.common.component.emojiButton.EmojiButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"

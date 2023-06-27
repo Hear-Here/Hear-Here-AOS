@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.hearhere.presentation.login.SetNickNameViewModel" />
+            type="com.hearhere.presentation.features.login.SetNickNameViewModel" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
