@@ -5,7 +5,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import com.hearhere.presentation.common.R
 import com.hearhere.presentation.common.databinding.LayoutGenreButtonBinding
 
 class GenreWideButton@JvmOverloads constructor(
@@ -34,24 +36,34 @@ class GenreWideButton@JvmOverloads constructor(
         binding.labelTv.text = text
     }
 
+    fun setSelectedState() {
+        if (isSelected) {
+            binding.labelTv.setTextColor(ContextCompat.getColor(context, R.color.white))
+            binding.iconIv.imageTintList = AppCompatResources.getColorStateList(context, R.color.white)
+        } else {
+            binding.labelTv.setTextColor(ContextCompat.getColor(context, R.color.gray90))
+            binding.iconIv.imageTintList = AppCompatResources.getColorStateList(context, R.color.gray90)
+        }
+    }
+
     companion object {
         @JvmStatic
         @BindingAdapter("android:onClick")
         fun setWideEmojiBtnOnClick(view: GenreWideButton, onClick: (GenreType) -> Unit) {
-            if (view.genre == null) return
-            view.setOnClickListener {
+            view.binding.root.setOnClickListener {
                 onClick(view.genre!!)
                 view.isSelected = !view.isSelected
+                view.setSelectedState()
             }
         }
 
         @JvmStatic
         @BindingAdapter("android:onClick")
         fun setWideEmojiBtnOnClick(view: GenreWideButton, listener: GenreOnClickListener) {
-            if (view.genre == null) return
-            view.setOnClickListener {
+            view.binding.root.setOnClickListener {
                 listener.onClick(view.genre!!)
                 view.isSelected = !view.isSelected
+                view.setSelectedState()
             }
         }
 

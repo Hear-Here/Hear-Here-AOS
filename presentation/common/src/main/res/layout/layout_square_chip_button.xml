@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:gravity="center"
+        android:background="@drawable/square_chip_button_background_unselected"
+        >
+        <ImageView
+            android:id="@+id/chip_iv"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            />
+    </RelativeLayout>
+
+</layout>
