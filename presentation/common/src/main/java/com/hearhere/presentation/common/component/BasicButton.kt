@@ -56,8 +56,8 @@ class BasicButton @JvmOverloads constructor(
         binding.button.setBackgroundResource(background)
     }
 
-    fun setButtonEnabled(isEnabled: Boolean) {
-        binding.button.isEnabled = isEnabled
+    fun setButtonEnabled(_isEnabled: Boolean) {
+        binding.button.isEnabled = _isEnabled
     }
 
     // 함수 작성 시 이름이 기존의 JVM에 있는 것과 동일하게 되지 않도록 주의할 것
@@ -67,12 +67,18 @@ class BasicButton @JvmOverloads constructor(
             it.isSelected = !it.isSelected
         }
     }
+
     @JvmName("basicbutton-listener")
     private fun setButtonClickListener(listener: () -> Unit) {
         binding.button.setOnClickListener {
             listener.invoke()
         }
     }
+
+    interface onClickListener {
+        fun onClickWithText(s: String)
+    }
+
     companion object {
 
         @JvmStatic
@@ -106,9 +112,24 @@ class BasicButton @JvmOverloads constructor(
         }
 
         @JvmStatic
+        @BindingAdapter("onClickWithText")
+        fun setOnClickWithText(button: BasicButton, listener: BasicButton.onClickListener) {
+            button.binding.button.setOnClickListener {
+                listener.onClickWithText(button.binding.button.text.toString())
+                it.isSelected = !it.isSelected
+            }
+        }
+
+        @JvmStatic
         @BindingAdapter("android:enabled")
         fun setEnabled(button: BasicButton, isEnabled: Boolean) {
             button.setButtonEnabled(isEnabled)
+        }
+
+        @JvmStatic
+        @BindingAdapter("isSelected")
+        fun setBasicBtnSelected(button: BasicButton, isSelected: Boolean) {
+            button.binding.button.isSelected = isSelected
         }
     }
 }
