@@ -36,7 +36,7 @@ class GenreWideButton@JvmOverloads constructor(
         binding.labelTv.text = text
     }
 
-    fun setSelectedState() {
+    override fun setSelectedState() {
         if (isSelected) {
             binding.labelTv.setTextColor(ContextCompat.getColor(context, R.color.white))
             binding.iconIv.imageTintList = AppCompatResources.getColorStateList(context, R.color.white)
@@ -75,5 +75,7 @@ class GenreWideButton@JvmOverloads constructor(
             view.setEmojiResource(type.getResource())
             view.setLabelText(type.kor)
         }
+
+
     }
 }
