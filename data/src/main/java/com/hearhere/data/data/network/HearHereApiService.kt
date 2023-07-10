@@ -21,7 +21,7 @@ interface HearHereApiService {
     @POST("")
     suspend fun signup(): ApiResponse<String>
 
-    @POST("/login/kakao")
+    @POST("/user/login/kakao")
     suspend fun login(
         @Body token: AuthRequest
     ): Response<AuthResponse>
