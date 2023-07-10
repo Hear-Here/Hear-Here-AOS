@@ -1,12 +1,10 @@
 package com.hearhere.presentation.features.post
 
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseAdapter
 import com.hearhere.presentation.base.BaseFragment
-import com.hearhere.presentation.common.component.emojiButton.WithType
 import com.hearhere.presentation.databinding.FragmentPostSelectWithBinding
 
 class PostSelectWithFragment : BaseFragment<FragmentPostSelectWithBinding>(R.layout.fragment_post_select_with) {
@@ -16,38 +14,13 @@ class PostSelectWithFragment : BaseFragment<FragmentPostSelectWithBinding>(R.lay
     private lateinit var adapter: BaseAdapter
 
     override fun initView() {
-
         binding.context = this
+        binding.viewModel = viewModel
     }
 
-    val onClickAlone = View.OnClickListener {
-        viewModel.with = WithType.ALONE
-        pageSlide()
-    }
-
-    val onClickFriend = View.OnClickListener {
-        viewModel.with = WithType.FRIEND
-        pageSlide()
-    }
-
-    val onClickCouple = View.OnClickListener {
-        viewModel.with = WithType.COUPLE
-        pageSlide()
-    }
-
-    val onClickFamily = View.OnClickListener {
-        viewModel.with = WithType.FAMILY
-        pageSlide()
-    }
-
-    val onClickPet = View.OnClickListener {
-        viewModel.with = WithType.PET
-        pageSlide()
-    }
-
-    val onClickSomebody = View.OnClickListener {
-        viewModel.with = WithType.SOMEBODY
-        pageSlide()
+    override fun onResume() {
+        super.onResume()
+        binding.root.requestLayout()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

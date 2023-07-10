@@ -11,6 +11,7 @@
         <variable
             name="view"
             type="com.hearhere.presentation.features.post.PostSelectOptionViewModel" />
+
     </data>
 
 
@@ -60,13 +61,15 @@
             android:id="@+id/post_without_message_btn"
             android:layout_width="115dp"
             android:layout_height="48dp"
-            style="@style/button_gray30"
+            style="@style/button_gray_enabled"
             app:layout_constraintTop_toBottomOf="@id/post_message_btn"
             app:layout_constraintEnd_toEndOf="@id/post_message_btn"
             android:layout_marginTop="136dp"
             android:layout_marginBottom="36dp"
             android:text="건너뛰기"
-            android:onClick="@{context.onClickPostWithoutMessage}"/>
+            android:onClick="@{context.onClickPostWithoutMessage}"
+            android:enabled="@{view.postingState.postingEnabled}"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

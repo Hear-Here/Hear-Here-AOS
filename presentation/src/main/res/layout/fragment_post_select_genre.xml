@@ -9,8 +9,9 @@
             name="context"
             type="com.hearhere.presentation.features.post.PostSelectGenreFragment" />
 
+
         <variable
-            name="view"
+            name="viewModel"
             type="com.hearhere.presentation.features.post.PostSelectOptionViewModel" />
     </data>
 
@@ -46,31 +47,35 @@
                 android:id="@+id/ballad_btn"
                 style="@style/button_selector"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickGenreBtn}"
+                android:onClick="@{viewModel.onClickGenreBtn}"
                 emoji="@{GenreType.BALLAD}"
+                isSelected="@{viewModel.genre==null?false:viewModel.genre == GenreType.BALLAD}"
                 />
 
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/dance_btn"
                 style="@style/button_selector"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickGenreBtn}"
+                android:onClick="@{viewModel.onClickGenreBtn}"
                 emoji="@{GenreType.DANCE}"
+                isSelected="@{viewModel.genre==null?false:viewModel.genre == GenreType.DANCE}"
                 />
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/hiphop_btn"
                 style="@style/button_selector"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickGenreBtn}"
+                android:onClick="@{viewModel.onClickGenreBtn}"
                 emoji="@{GenreType.HIPHOP}"
+                isSelected="@{viewModel.genre==null?false:viewModel.genre == GenreType.HIPHOP}"
                 />
 
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/rb_btn"
                 style="@style/button_selector"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickGenreBtn}"
+                android:onClick="@{viewModel.onClickGenreBtn}"
                 emoji="@{GenreType.RB}"
+                isSelected="@{viewModel.genre==null?false:viewModel.genre == GenreType.RB}"
                 />
 
 
@@ -79,31 +84,35 @@
                 android:id="@+id/indie_btn"
                 style="@style/button_selector"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickGenreBtn}"
+                android:onClick="@{viewModel.onClickGenreBtn}"
                 emoji="@{GenreType.INDIE}"
+                isSelected="@{viewModel.genre==null?false:viewModel.genre == GenreType.INDIE}"
                 />
 
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/pop_btn"
                 style="@style/button_selector"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickGenreBtn}"
+                android:onClick="@{viewModel.onClickGenreBtn}"
                 emoji="@{GenreType.POP}"
+                isSelected="@{viewModel.genre==null?false:viewModel.genre == GenreType.POP}"
                 />
 
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/band_btn"
                 style="@style/button_selector"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickGenreBtn}"
+                android:onClick="@{viewModel.onClickGenreBtn}"
                 emoji="@{GenreType.BAND}"
+                isSelected="@{viewModel.genre==null?false:viewModel.genre == GenreType.BAND}"
                 />
             <com.hearhere.presentation.common.component.emojiButton.GenreWideButton
                 android:id="@+id/trot_btn"
                 style="@style/button_selector"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickGenreBtn}"
+                android:onClick="@{viewModel.onClickGenreBtn}"
                 emoji="@{GenreType.TROT}"
+                isSelected="@{viewModel.genre==null?false:viewModel.genre == GenreType.TROT}"
                 />
 
         </GridLayout>

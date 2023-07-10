@@ -1,11 +1,16 @@
 package com.hearhere.presentation.features.post
 
+import android.view.View
+import androidx.lifecycle.MutableLiveData
 import com.hearhere.domain.model.Posting
 import com.hearhere.presentation.base.BaseViewModel
+import com.hearhere.presentation.common.component.BasicButton
 import com.hearhere.presentation.common.component.emojiButton.EmotionType
 import com.hearhere.presentation.common.component.emojiButton.GenreType
+import com.hearhere.presentation.common.component.emojiButton.GenreWideButton
 import com.hearhere.presentation.common.component.emojiButton.WeatherType
 import com.hearhere.presentation.common.component.emojiButton.WithType
+import com.hearhere.presentation.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -17,27 +22,85 @@ class PostSelectOptionViewModel @Inject constructor() : BaseViewModel() {
     var title: String? = null
     var songId: Long? = null
     val temp = 0
-    var genre: GenreType? = null
-    var with: WithType? = null
-    var weather: WeatherType? = null
-    var emotion: EmotionType? = null
+    var genre = MutableLiveData<GenreType?>(null)
+    var with = MutableLiveData<WithType?>(null)
+    var weather = MutableLiveData<WeatherType?>(null)
+    var emotion = MutableLiveData<EmotionType?>(null)
     var message: String? = null
-    var posting: Posting? = null
+    var postingState = MutableLiveData<PostingState>(
+        PostingState(
+            Posting(
+                songId = -1,
+                title = "",
+                artist = "",
+                cover = "",
+                genreType = "",
+                withType = "",
+                temp = temp,
+                weatherType = "",
+                emotionType = "",
+                content = "",
+                longitude = null,
+                latitude = null
+            )
+        )
+    )
+    val posting get() = postingState.value!!.posting
+
+    val navigationSlide = SingleLiveEvent<Unit>()
+    data class PostingState(val posting: Posting) {
+        val postingEnabled = !posting.genreType.isNullOrBlank() &&
+            !posting.withType.isNullOrBlank() &&
+            !posting.weatherType.isNullOrBlank() &&
+            !posting.emotionType.isNullOrBlank()
+    }
 
     fun postPosting() {
-        posting = Posting(
-            songId = songId!!,
-            title = title!!,
-            artist = artist!!,
-            cover = cover,
-            genreType = genre!!.name,
-            withType = with!!.name,
-            temp = temp,
-            weatherType = weather!!.name,
-            emotionType = emotion!!.name,
-            content = message,
-            longitude = null,
-            latitude = null
+        postingState.postValue(
+            postingState.value?.copy(
+                posting = Posting(
+                    songId = songId!!,
+                    title = title!!,
+                    artist = artist!!,
+                    cover = cover,
+                    genreType = genre?.value?.name ?: "",
+                    withType = with?.value?.name ?: "",
+                    temp = temp,
+                    weatherType = weather?.value?.name ?: "",
+                    emotionType = emotion?.value?.name ?: "",
+                    content = message,
+                    longitude = null,
+                    latitude = null
+                )
+            )
         )
+    }
+    val onClickGenreBtn = object : GenreWideButton.GenreOnClickListener {
+        override fun onClick(genreType: GenreType) {
+            genre.postValue(genreType)
+            postingState.postValue(postingState.value?.copy(posting.copy(genreType = genreType.name)))
+            navigationSlide.call()
+        }
+    }
+
+    fun onClickEmotion(view: View, emotionType: EmotionType) {
+        emotion.postValue(emotionType)
+        postingState.postValue(postingState.value?.copy(posting.copy(emotionType = emotionType.name)))
+        navigationSlide.call()
+    }
+
+    fun onClickWeather(weatherType: WeatherType) {
+        weather.postValue(weatherType)
+        postingState.postValue(postingState.value?.copy(posting.copy(weatherType = weatherType.name)))
+        navigationSlide.call()
+    }
+
+    val onClickWith = object : BasicButton.onClickListener {
+        override fun onClickWithText(s: String) {
+            val withType = WithType.values().first { t -> t.kor == s }
+            with.postValue(withType)
+            postingState.postValue(postingState.value?.copy(posting.copy(withType = withType.name)))
+            navigationSlide.call()
+        }
     }
 }

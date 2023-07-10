@@ -55,7 +55,6 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val location = getPostUseCase.myLocation ?: getPostUseCase.getLocation()
             if (location != null) myLocation.postValue(LatLng(location.lat, location.lng))
-            Log.d("hyomk - location", location.toString())
         }
 
         viewModelScope.launch {
@@ -94,8 +93,6 @@ class MainViewModel @Inject constructor(
             if (list.isEmpty()) return@launch
             val newPinList = arrayListOf<PinState>()
             list.forEach { item ->
-                Log.d("hyom item", item.toString())
-
                 val pin = if (item.pin.imageUrl.isNullOrEmpty()) {
                     item
                 } else {

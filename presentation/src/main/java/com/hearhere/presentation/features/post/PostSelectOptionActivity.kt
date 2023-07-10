@@ -20,7 +20,6 @@ class PostSelectOptionActivity : BaseActivity<ActivityPostSelectOptionBinding>(R
     private lateinit var pagerAdapter: PostMusicViewPagerAdapter
 
     override fun onCreateView(savedInstanceState: Bundle?) {
-
         val coverUrl = intent.getStringExtra("music_cover")
         val artist = intent.getStringExtra("music_artist")
         val title = intent.getStringExtra("music_title")
@@ -42,32 +41,30 @@ class PostSelectOptionActivity : BaseActivity<ActivityPostSelectOptionBinding>(R
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
 
     override fun observeViewModel() {
+        viewModel.navigationSlide.observe {
+            slidePage()
+        }
+
+        viewModel.postingState.observe {
+            Log.d("state", it.posting.toString())
+        }
     }
 
     private fun setViewPager() {
         pagerAdapter = PostMusicViewPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
+        binding.viewPager.isNestedScrollingEnabled = false
     }
 
     fun startPostFinish() {
         Intent(this@PostSelectOptionActivity, PostFinishActivity::class.java).also {
-
-            Log.d("옥채연/startPostFinish/message", viewModel.posting!!.content.toString())
-            Log.d("옥채연/startPostFinish", viewModel.posting.toString())
             it.putExtra("music", viewModel.posting)
             startActivity(it)
         }
     }
 
     fun slidePage() {
-
         val current = binding.viewPager.currentItem
-
         binding.viewPager.setCurrentItem(current + 1, false)
-
-        Log.d("옥채연", viewModel.genre.toString())
-        Log.d("옥채연", viewModel.with.toString())
-        Log.d("옥채연", viewModel.weather.toString())
-        Log.d("옥채연", viewModel.emotion.toString())
     }
 }

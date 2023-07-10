@@ -2,6 +2,7 @@ package com.hearhere.presentation.features.post
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hearhere.presentation.R
@@ -44,6 +45,9 @@ class PostActivity : BaseActivity<ActivityPostBinding>(R.layout.activity_post) {
                 intent.putExtra("music_songId", music.songId)
                 startActivity(intent)
             }
+        }
+        viewModel.showErrorToast.observe {
+            Toast.makeText(this,"ManiaDB 접속이 원활하지 않습니다.",Toast.LENGTH_SHORT).show()
         }
     }
 

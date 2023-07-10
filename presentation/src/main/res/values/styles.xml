@@ -29,6 +29,11 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="button_gray_enabled">
+        <item name="android:background">@drawable/basic_button_background_enabled_gray</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheet</item>
         <item name="android:colorBackground">@color/white</item>
