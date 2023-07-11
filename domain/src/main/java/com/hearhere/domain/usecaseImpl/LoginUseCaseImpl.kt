@@ -2,6 +2,7 @@ package com.hearhere.domain.usecaseImpl
 
 import com.hearhere.domain.model.ApiResponse
 import com.hearhere.domain.model.AuthToken
+import com.hearhere.domain.model.UserInfo
 import com.hearhere.domain.repository.AuthRepository
 import com.hearhere.domain.repository.PreferenceRepository
 import com.hearhere.domain.usecase.LoginUseCase
@@ -13,7 +14,7 @@ class LoginUseCaseImpl @Inject constructor(
     private val preferenceRepository: PreferenceRepository
 ) : LoginUseCase {
 
-    override suspend fun login(id: Long, email: String): ApiResponse<AuthToken> {
+    override suspend fun login(id: Long, email: String): ApiResponse<UserInfo> {
         return repository.login(id, email).first()
     }
 

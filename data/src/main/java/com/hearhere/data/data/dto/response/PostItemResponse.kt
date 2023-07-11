@@ -15,6 +15,6 @@ data class PostItemResponse(
     val longitude: Double,
     val latitude: Double,
     val distance: Double,
-    val likeCount: Int,
-    val isLiked: Boolean
+    val heartCount: Int,
+    val isHearted: Boolean
 )

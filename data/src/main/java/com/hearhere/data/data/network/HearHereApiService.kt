@@ -26,17 +26,22 @@ interface HearHereApiService {
         @Body token: AuthRequest
     ): Response<AuthResponse>
 
-    @GET("/post/list")
+// latitude=&longtitude=&genreType=&weatherType=&emotionType=&withType=
+    @GET("/post/list-map")
     suspend fun getPostList(
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
+        @Query("genreType") genreType: String?,
+        @Query("weatherType") weatherType: String?,
+        @Query("withType") withType: String?,
+        @Query("emotionType") emotionType: String?
     ): Response<List<PostItemResponse>>
 
     @GET("/post/{postId}")
     suspend fun getPost(
         @Path("postId") postId: Long,
         @Query("latitude") latitude: Double,
-        @Query("longitude") longitude: Double,
+        @Query("longitude") longitude: Double
     ): Response<PostItemResponse>
 
     @DELETE("/post/{postId}")
@@ -46,7 +51,7 @@ interface HearHereApiService {
 
     @POST("/post/{postId}/heart")
     suspend fun likePost(
-        @Path("postId") postId: Long,
+        @Path("postId") postId: Long
     ): Response<*>
 
     @DELETE("/post/{postId}/heart")
@@ -57,13 +62,13 @@ interface HearHereApiService {
     @GET("/post/heart/list")
     suspend fun getLikePostList(
         @Query("latitude") latitude: Double,
-        @Query("longitude") longitude: Double,
+        @Query("longitude") longitude: Double
     ): Response<List<LikePostItem>>
 
     @GET("/post/my/list")
     suspend fun getMyPostList(
         @Query("latitude") latitude: Double,
-        @Query("longitude") longitude: Double,
+        @Query("longitude") longitude: Double
     ): Response<List<MyPostListResponse>>
 
     @PATCH("/user/nickname/{nickname}")

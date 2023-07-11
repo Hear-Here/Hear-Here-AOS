@@ -6,6 +6,7 @@ import com.hearhere.data.data.dto.response.AuthResponse
 import com.hearhere.data.data.network.ApiHelperImpl
 import com.hearhere.domain.model.ApiResponse
 import com.hearhere.domain.model.AuthToken
+import com.hearhere.domain.model.UserInfo
 import com.hearhere.domain.repository.AuthRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,7 @@ class AuthRepositoryImpl @Inject constructor(
     private val apiHelper: ApiHelperImpl
 ) : BaseRepository(), AuthRepository {
 
-    override suspend fun login(id: Long, email: String): Flow<ApiResponse<AuthToken>> = flow {
+    override suspend fun login(id: Long, email: String): Flow<ApiResponse<UserInfo>> = flow {
         safeApiCall {
             apiHelper.login(AuthRequest(id, email))
         }.collect {
@@ -38,5 +39,5 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    fun AuthResponse.toDomain() = AuthToken(this.accessToken)
+    fun AuthResponse.toDomain() = UserInfo(state = this.authState, auth = AuthToken(this.accessToken))
 }

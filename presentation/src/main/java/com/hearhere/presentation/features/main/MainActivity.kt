@@ -105,7 +105,9 @@ class MainActivity :
 
         mMap?.let {
             val location = postViewModel.myLocation.value ?: getMyLocation()
-            postViewModel.requestPins(location.latitude, location.longitude)
+            // postViewModel.requestPins(location.latitude, location.longitude)
+            filterViewModel.setMyLocation(location)
+            filterViewModel.requestFilterResult(location.latitude, location.longitude)
             initMap()
             // TODO 속도개선
         }
@@ -124,10 +126,10 @@ class MainActivity :
 
         filterViewModel.chipBinders.observe {
             filterAdapter.submitList(it)
-            if (::postFilterDialog.isInitialized && postFilterDialog.isAdded) {
-                postFilterDialog.dismiss()
-            }
+            filterViewModel.getFilterResult()
         }
+
+        filterViewModel.event.flowWithLifecycle(lifecycle).onEach(::handleFilterEvent).launchIn(lifecycleScope)
     }
 
     private fun initAdapter() {
@@ -167,11 +169,33 @@ class MainActivity :
         }
     }
 
+    private fun handleFilterEvent(viewEvents: List<PostFilterViewModel.FilterEvent>) {
+        viewEvents.firstOrNull()?.let { viewEvents ->
+
+            mMap?.let {
+                when (viewEvents) {
+                    is PostFilterViewModel.FilterEvent.OnCompleted -> {
+
+                        Log.d("require filter", viewEvents.list.toString())
+                        postViewModel.requireFetchPins(viewEvents.list)
+                    }
+                    else -> {
+                    }
+                }
+            }
+            filterViewModel.consumeViewEvent(viewEvents)
+        }
+    }
+
     private fun handleEvent(viewEvents: List<MainViewModel.PinEvent>) {
         viewEvents.firstOrNull()?.let { viewEvent ->
             mMap?.let {
                 when (viewEvent) {
                     is MainViewModel.PinEvent.OnCompletedLoad -> {
+                        postViewModel._loading.postValue(false)
+                        if (::postFilterDialog.isInitialized && postFilterDialog.isAdded) {
+                            postFilterDialog.dismiss()
+                        }
                     }
 
                     is MainViewModel.PinEvent.OnChangeSelectedPin -> {
@@ -306,10 +330,11 @@ class MainActivity :
     }
 
     private fun initMap() {
-        var location: LatLng =  getMyLocation()
-
-        postViewModel.requestPins(location.latitude, location.longitude)
+        var location: LatLng = getMyLocation()
         postViewModel.setMyLocation(location)
+        filterViewModel.setMyLocation(location)
+        filterViewModel.requestFilterResult(location.latitude, location.longitude)
+        // postViewModel.requestPins(location.latitude, location.longitude)
 
         binding.mapView.getMapAsync {
             mMap = it

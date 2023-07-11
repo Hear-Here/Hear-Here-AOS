@@ -2,6 +2,11 @@ package com.hearhere.presentation.features.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
+import com.hearhere.domain.model.ApiResponse
+import com.hearhere.domain.model.Pin
+import com.hearhere.domain.model.PostQuery
+import com.hearhere.domain.usecaseImpl.GetPostUseCaseImpl
 import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.component.chipButton.ChipClickListener
@@ -13,10 +18,29 @@ import com.hearhere.presentation.common.component.emojiButton.WeatherType
 import com.hearhere.presentation.common.component.emojiButton.WithType
 import com.hearhere.presentation.common.component.emojiButton.getResource
 import com.hearhere.presentation.features.main.adapter.FilterChipItemBinder
+import com.hearhere.presentation.util.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PostFilterViewModel @Inject constructor() : BaseViewModel() {
+@HiltViewModel
+class PostFilterViewModel @Inject constructor(
+    private val getPostUseCase: GetPostUseCaseImpl
+) : BaseViewModel() {
+
+    private val CITY_HALL = LatLng(37.566667, 126.978427)
+    private val DEFAULT_LOCATION = CITY_HALL
+
+    val _myLocation = MutableLiveData<LatLng>(DEFAULT_LOCATION)
+    val myLocation get() = _myLocation
+
+    private val _events = MutableStateFlow<List<FilterEvent>>(emptyList())
+    val event get() = _events.asStateFlow()
+
+    val callFetchPin = SingleLiveEvent<List<Pin>>()
 
     private val _selectedGenre = MutableLiveData(
         initGenre()
@@ -40,6 +64,13 @@ class PostFilterViewModel @Inject constructor() : BaseViewModel() {
 
     private val _chipBinders = MutableLiveData<List<BaseItemBinder>>()
     val chipBinders get() = _chipBinders
+
+    private val _queryFilter = MutableLiveData<HashMap<String, ArrayList<String>>>()
+    var queryFilter = mutableMapOf<String, ArrayList<String>>()
+
+    fun setMyLocation(location: LatLng) {
+        _myLocation.postValue(location)
+    }
 
     fun initFilterChips() {
         val genres = initGenre()
@@ -139,15 +170,22 @@ class PostFilterViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-    private fun setFilters() {
+    fun requestFilterResult(lat: Double, lng: Double) {
         val filterList = mutableSetOf<FilterChipItemBinder>()
+        val queryfilter = mutableMapOf<String, ArrayList<String>>()
+        val temp = ArrayList<String>()
+
+        _loading.postValue(true)
         selectedGenre.value?.filter { it.isSelected }?.forEach {
             val item = FilterChipItemBinder(onClickDeleteChip)
             item.setChipType(ChipType.GENRE)
             item.setChipTypeName(it.label)
             item.setChipText(GenreType.valueOf(it.label).kor)
             filterList.add(item)
+            temp.add(it.label)
         }
+        queryfilter["genre"] = temp.clone() as ArrayList<String>
+        temp.clear()
 
         selectedWith.value?.filter { it.isSelected }?.forEach {
             val item = FilterChipItemBinder(onClickDeleteChip)
@@ -155,7 +193,12 @@ class PostFilterViewModel @Inject constructor() : BaseViewModel() {
             item.setChipTypeName(it.label)
             item.setChipText(WithType.valueOf(it.label).kor)
             filterList.add(item)
+            temp.add(it.label)
         }
+
+        queryfilter["with"] = temp.clone() as ArrayList<String>
+        temp.clear()
+
         selectedEmotion.value?.filter { it.isSelected }?.forEach {
             val item = FilterChipItemBinder(onClickDeleteChip)
             item.setChipType(ChipType.EMOTION)
@@ -163,7 +206,11 @@ class PostFilterViewModel @Inject constructor() : BaseViewModel() {
             item.setChipText(EmotionType.valueOf(it.label).kor)
             item.setChipEmoji(EmotionType.valueOf(it.label).getResource())
             filterList.add(item)
+            temp.add(it.label)
         }
+        queryfilter["emotion"] = temp.clone() as ArrayList<String>
+        temp.clear()
+
         selectedWeather.value?.filter { it.isSelected }?.forEach {
             val item = FilterChipItemBinder(onClickDeleteChip)
             item.setChipType(ChipType.WEATHER)
@@ -171,16 +218,43 @@ class PostFilterViewModel @Inject constructor() : BaseViewModel() {
             item.setChipText(WeatherType.valueOf(it.label).kor)
             item.setChipEmoji(WeatherType.valueOf(it.label).getResource())
             filterList.add(item)
+            temp.add(it.label)
         }
-        filterList.sortedWith(compareBy { (it as FilterChipItemBinder).chipType.get() })
 
-        viewModelScope.launch {
-        }
+        queryfilter["weather"] = temp.clone() as ArrayList<String>
+        temp.clear()
+
+        queryFilter = queryfilter
+
+        filterList.sortedWith(compareBy { (it as FilterChipItemBinder).chipType.get() })
         _chipBinders.postValue(filterList.toList())
     }
 
+    fun getFilterResult() {
+        // Call API
+        viewModelScope.launch {
+            getPostUseCase.getPostList(
+                PostQuery(
+                    lat = 2.0,
+                    lng = 1.0,
+                    emotionType = queryFilter["emotion"].toString().filterRegex(),
+                    withType = queryFilter["with"].toString().filterRegex(),
+                    genreType = queryFilter["genre"].toString().filterRegex(),
+                    weatherType = queryFilter["weather"].toString().filterRegex()
+                )
+            ).also {
+                when (it) {
+                    is ApiResponse.Success -> {
+                        addEvent(FilterEvent.OnCompleted(it.data!!))
+                    }
+                    else -> {}
+                }
+            }
+        }
+    }
+
     fun onClickApply() {
-        setFilters()
+        this.requestFilterResult(myLocation.value!!.latitude, myLocation.value!!.longitude)
     }
 
     fun onClickClear() {
@@ -223,5 +297,23 @@ class PostFilterViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
+    fun String.filterRegex(): String? {
+        if (this == "[]") return null
+        val regex = Regex("[^A-Za-z0-9,]")
+        return regex.replace(this, "")
+    }
+
+    private fun addEvent(event: FilterEvent) {
+        _events.update { it + event }
+    }
+
+    fun consumeViewEvent(event: FilterEvent) {
+        _events.update { it - event }
+    }
+
     data class ChipState(val label: String, var isSelected: Boolean = false)
+
+    sealed class FilterEvent {
+        data class OnCompleted(val list: List<Pin>) : FilterEvent()
+    }
 }

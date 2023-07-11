@@ -9,12 +9,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.hearhere.domain.model.ApiResponse
 import com.hearhere.domain.model.Pin
+import com.hearhere.domain.model.PostQuery
 import com.hearhere.domain.usecaseImpl.GetPostUseCaseImpl
 import com.hearhere.domain.usecaseImpl.PatchUserInfoUseCaseImpl
 import com.hearhere.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,23 +55,13 @@ class MainViewModel @Inject constructor(
             val location = getPostUseCase.myLocation ?: getPostUseCase.getLocation()
             if (location != null) myLocation.postValue(LatLng(location.lat, location.lng))
         }
-
-        viewModelScope.launch {
-            delay(4000)
-            _loading.postValue(false)
-        }
     }
 
     fun requestPins(lat: Double, lng: Double) {
         if (isFetching != null) isFetching?.cancel()
-        viewModelScope.launch {
-            _loading.postValue(true)
-            delay(3000)
-            _loading.postValue(false)
-        }
         isFetching = viewModelScope.launch {
             _loading.postValue(true)
-            getPostUseCase.getPostList(lat, lng).also {
+            getPostUseCase.getPostList(PostQuery(lat = lat, lng = lng)).also {
                 when (it) {
                     is ApiResponse.Success -> {
                         val tempList = arrayListOf<PinState>()
@@ -88,9 +77,21 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun requireFetchPins(list: List<Pin>) {
+        _loading.postValue(true)
+        viewModelScope.launch {
+            val tempList = arrayListOf<PinState>()
+            list.reversed()?.forEach {
+                tempList.add(PinState(it, null))
+            }
+            fetchPins(tempList)
+            delay(3000)
+        }
+
+    }
+
     private fun fetchPins(list: List<PinState>) {
-        CoroutineScope(Dispatchers.IO).launch {
-            if (list.isEmpty()) return@launch
+        viewModelScope.launch {
             val newPinList = arrayListOf<PinState>()
             list.forEach { item ->
                 val pin = if (item.pin.imageUrl.isNullOrEmpty()) {
@@ -102,7 +103,6 @@ class MainViewModel @Inject constructor(
                 newPinList.add(pin)
             }
             _pinStateList.postValue(newPinList)
-            _loading.postValue(false)
             addEvent(PinEvent.OnCompletedLoad)
         }
     }
