@@ -110,6 +110,9 @@ class MainViewModel @Inject constructor(
         pinStateList.value?.filter { it.pin.postId == postId }
             .also {
                 Log.d("pin state", it.toString())
+                if (it != null) {
+                    if(it.isEmpty())return@also
+                }
                 it?.first()?.let { pin ->
                     _selectedPin.postValue(pin)
                     selectedPin = pin

@@ -20,7 +20,7 @@ class SearchSingerFragment : BaseFragment<FragmentSearchSingerBinding>(R.layout.
         adapter = BaseAdapter.build()
     }
     override fun initView() {
-
+        binding.viewmodel = viewModel
         binding.markerListRv.adapter = adapter
         viewModel.singerBinder.observe(requireActivity()) {
             adapter.submitList(it)

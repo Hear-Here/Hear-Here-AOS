@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="android.view.View"/>
         <variable
             name="viewmodel"
             type="com.hearhere.presentation.features.post.PostViewModel" />
@@ -13,20 +13,50 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".features.post.SearchSingerFragment">
+        tools:context=".features.post.SearchTitleFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="@{viewmodel.isEmptySingerResult ?View.VISIBLE: View.GONE}"
+            >
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/charector"
+                android:layout_width="124dp"
+                android:layout_height="350dp"
+                android:src="@drawable/default_character"
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/empty_result"
+                android:textAlignment="center"
+                style="@style/body"
+                />
+
+        </LinearLayout>
+
 
         <ScrollView
 
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/marker_list_rv"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
         </ScrollView>
+
 
     </FrameLayout>
 </layout>

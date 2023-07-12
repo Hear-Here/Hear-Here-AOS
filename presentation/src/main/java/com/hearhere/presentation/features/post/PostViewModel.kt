@@ -31,18 +31,21 @@ class PostViewModel @Inject constructor(
 
     val showErrorToast = SingleLiveEvent<Unit>()
 
+    val isEmptyTitleResult = MutableLiveData<Boolean>(false)
+    val isEmptySingerResult = MutableLiveData<Boolean>(false)
+
     fun searchMusic(keyword: String) {
         if (keyword.isNullOrBlank()) return
         Log.d("/옥채연", keyword)
         viewModelScope.launch {
             _loading.postValue(true)
             kotlin.runCatching {
-                val res = searchMusicUseCase.searchMusicBySong(keyword, 30)
+                val res = searchMusicUseCase.searchMusicBySong(keyword, 50)
 
                 val binders = arrayListOf<MusicListItemBinder>()
 
-                res.onSuccess {
-                    it.forEach {
+                res.onSuccess {list->
+                    list.forEach {
                         val binder = MusicListItemBinder(::onClickItem)
                         val state = MusicListItemState(
                             it.songId,
@@ -54,8 +57,14 @@ class PostViewModel @Inject constructor(
                         binder.setMusic(state)
                         binders.add(binder)
                     }.also {
+                        if (binders.isEmpty()) {
+                            isEmptyTitleResult.postValue(true)
+                        } else {
+                            isEmptyTitleResult.postValue(false)
+                        }
                         titleBinder.postValue(binders)
                     }
+
                 }
             }.onFailure {
                 showErrorToast.call()
@@ -66,8 +75,8 @@ class PostViewModel @Inject constructor(
 
                 val binders = arrayListOf<MusicListItemBinder>()
 
-                res.onSuccess {
-                    it.forEach {
+                res.onSuccess { list->
+                    list.forEach {
                         val binder = MusicListItemBinder(::onClickItem)
                         val state = MusicListItemState(
                             it.songId,
@@ -80,8 +89,14 @@ class PostViewModel @Inject constructor(
                         binder.setMusic(state)
                         binders.add(binder)
                     }.also {
+                        if (binders.isEmpty()) {
+                            isEmptySingerResult.postValue(true)
+                        } else {
+                            isEmptySingerResult.postValue(false)
+                        }
                         singerBinder.postValue(binders)
                     }
+
                 }
             }.onFailure {
                 showErrorToast.call()

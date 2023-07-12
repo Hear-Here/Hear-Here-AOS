@@ -23,6 +23,7 @@ class SearchTitleFragment :
     }
 
     override fun initView() {
+        binding.viewmodel = viewModel
         binding.markerListRv.adapter = adapter
         viewModel.titleBinder.observe(requireActivity()) {
             adapter.submitList(it)
