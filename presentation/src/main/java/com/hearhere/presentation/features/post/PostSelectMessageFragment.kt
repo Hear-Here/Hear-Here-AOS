@@ -21,19 +21,16 @@ class PostSelectMessageFragment :
     }
 
     val onClickPostMessage = View.OnClickListener {
-        viewModel.message = binding.messageEt.text.toString()
-        Log.d("옥채연", viewModel.message.toString())
-        postSuccess()
+        viewModel.updateMessage(binding.messageEt.text.toString())
+        viewModel.navigationFinish.postValue(viewModel.posting.copy(content = binding.messageEt.text.toString()))
+        //viewModel.navigationFinish.call()
     }
 
     val onClickPostWithoutMessage = View.OnClickListener {
-        viewModel.message = null
+        viewModel.updateMessage(null)
         Log.d("옥채연", viewModel.message.toString())
-        postSuccess()
+        viewModel.navigationFinish.postValue(viewModel.posting.copy(content = null))
+        //viewModel.navigationFinish.call()
     }
 
-    private fun postSuccess() {
-        viewModel.postPosting()
-        (requireActivity() as PostSelectOptionActivity).startPostFinish()
-    }
 }

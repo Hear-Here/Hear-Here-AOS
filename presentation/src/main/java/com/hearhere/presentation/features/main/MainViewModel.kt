@@ -87,7 +87,6 @@ class MainViewModel @Inject constructor(
             fetchPins(tempList)
             delay(3000)
         }
-
     }
 
     private fun fetchPins(list: List<PinState>) {

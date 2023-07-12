@@ -58,12 +58,12 @@
             android:padding="20dp"
             android:paddingTop="0dp"
             >
-            <com.hearhere.presentation.common.component.BasicButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="지도에서 모두 보기"
-                style="@style/button_gray90"
-                />
+<!--            <com.hearhere.presentation.common.component.BasicButton-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="지도에서 모두 보기"-->
+<!--                style="@style/button_gray90"-->
+<!--                />-->
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

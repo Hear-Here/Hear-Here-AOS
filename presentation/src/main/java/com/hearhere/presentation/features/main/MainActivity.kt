@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
+import com.google.android.gms.maps.GoogleMap.OnCameraMoveListener
 import com.google.android.gms.maps.GoogleMap.OnCameraMoveStartedListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -38,8 +39,13 @@ import com.hearhere.presentation.features.main.profile.MarkerMyPostingActivity
 import com.hearhere.presentation.features.post.PostActivity
 import com.hearhere.presentation.util.createDrawableFromView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
@@ -69,6 +75,8 @@ class MainActivity :
     private lateinit var postFilterDialog: PostFilterBottomSheet
 
     private lateinit var filterAdapter: BaseAdapter
+
+    private var cameraMoveJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -103,11 +111,17 @@ class MainActivity :
             markerCreateDialog.dismiss()
         }
 
+        if (::markerCreateDialog.isInitialized && markerCreateDialog.isAdded) {
+            markerCreateDialog.dismiss()
+        }
+
+
         mMap?.let {
             val location = postViewModel.myLocation.value ?: getMyLocation()
             // postViewModel.requestPins(location.latitude, location.longitude)
             filterViewModel.setMyLocation(location)
-            filterViewModel.requestFilterResult(location.latitude, location.longitude)
+            filterViewModel.requestFilterResult()
+
             initMap()
             // TODO 속도개선
         }
@@ -117,16 +131,15 @@ class MainActivity :
     override fun observeViewModel() {
         postViewModel.events.flowWithLifecycle(lifecycle).onEach(::handleEvent).launchIn(lifecycleScope)
         postViewModel.pinStateList.observe { list ->
-            if (list.isNotEmpty()) {
-                mMap?.let {
-                    createMarker(list)
-                }
+            mMap?.let {
+                createMarker(list)
+                postViewModel._loading.postValue(false)
             }
         }
 
         filterViewModel.chipBinders.observe {
             filterAdapter.submitList(it)
-            filterViewModel.getFilterResult()
+            filterViewModel.getFilterResult(filterViewModel.myLocation.value!!.latitude, filterViewModel.myLocation.value!!.longitude)
         }
 
         filterViewModel.event.flowWithLifecycle(lifecycle).onEach(::handleFilterEvent).launchIn(lifecycleScope)
@@ -175,8 +188,8 @@ class MainActivity :
             mMap?.let {
                 when (viewEvents) {
                     is PostFilterViewModel.FilterEvent.OnCompleted -> {
-
                         Log.d("require filter", viewEvents.list.toString())
+                        postViewModel.markerList.value?.forEach { it.remove() }
                         postViewModel.requireFetchPins(viewEvents.list)
                     }
                     else -> {
@@ -192,13 +205,13 @@ class MainActivity :
             mMap?.let {
                 when (viewEvent) {
                     is MainViewModel.PinEvent.OnCompletedLoad -> {
-                        postViewModel._loading.postValue(false)
                         if (::postFilterDialog.isInitialized && postFilterDialog.isAdded) {
                             postFilterDialog.dismiss()
                         }
                     }
 
                     is MainViewModel.PinEvent.OnChangeSelectedPin -> {
+                        setFocusMarker(viewEvent.marker, true)
                     }
 
                     is MainViewModel.PinEvent.OnClickMyLocation -> {
@@ -266,9 +279,9 @@ class MainActivity :
                 }
                 val marker = mMap!!.addMarker(markerOptions)
                 marker?.tag = it.pin.postId
+                if(it.pin.postId == postViewModel.selectedPin?.pin?.postId) setFocusMarker(marker!!,true)
                 markers.add(marker!!)
             }
-
             postViewModel._markerList.postValue(markers)
         } catch (e: Error) {
             Log.e("bitmap error", e.toString())
@@ -307,6 +320,7 @@ class MainActivity :
 
         mMap?.setOnMarkerClickListener(markerClickListener)
         mMap?.setOnCameraMoveStartedListener(cameraListener)
+        mMap?.setOnCameraMoveListener(cameraStop)
     }
 
     private val markerClickListener = OnMarkerClickListener {
@@ -317,6 +331,7 @@ class MainActivity :
         }
         if (it.tag != MYLOCATION_TAG) {
             setFocusMarker(it, true)
+            postViewModel.setSelectedPin(it.tag as Long)
             showMarkerDialog(it.tag as Long)
         }
         mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(it.position, DEFAULT_ZOOM_LEVEL))
@@ -329,11 +344,25 @@ class MainActivity :
         Log.d("zoom", mMap?.cameraPosition?.zoom.toString())
     }
 
+    private val cameraStop = OnCameraMoveListener {
+        val location = mMap?.cameraPosition?.target
+
+        if (cameraMoveJob != null) cameraMoveJob?.cancel()
+        cameraMoveJob = CoroutineScope(Dispatchers.IO).launch {
+            delay(1000)
+            postViewModel._loading.postValue(true)
+            if (location != null) {
+                filterViewModel.getFilterResult(location.latitude, location.longitude)
+            }
+            Log.d("move end", location.toString())
+        }
+    }
+
     private fun initMap() {
         var location: LatLng = getMyLocation()
         postViewModel.setMyLocation(location)
         filterViewModel.setMyLocation(location)
-        filterViewModel.requestFilterResult(location.latitude, location.longitude)
+        filterViewModel.requestFilterResult()
         // postViewModel.requestPins(location.latitude, location.longitude)
 
         binding.mapView.getMapAsync {

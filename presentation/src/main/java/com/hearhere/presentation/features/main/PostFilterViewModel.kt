@@ -170,7 +170,7 @@ class PostFilterViewModel @Inject constructor(
         }
     }
 
-    fun requestFilterResult(lat: Double, lng: Double) {
+    fun requestFilterResult() {
         val filterList = mutableSetOf<FilterChipItemBinder>()
         val queryfilter = mutableMapOf<String, ArrayList<String>>()
         val temp = ArrayList<String>()
@@ -230,13 +230,17 @@ class PostFilterViewModel @Inject constructor(
         _chipBinders.postValue(filterList.toList())
     }
 
-    fun getFilterResult() {
+    fun queryClear() {
+        _queryFilter.postValue(HashMap())
+    }
+
+    fun getFilterResult(lat: Double, lng: Double) {
         // Call API
         viewModelScope.launch {
             getPostUseCase.getPostList(
                 PostQuery(
-                    lat = 2.0,
-                    lng = 1.0,
+                    lat = lat,
+                    lng = lng,
                     emotionType = queryFilter["emotion"].toString().filterRegex(),
                     withType = queryFilter["with"].toString().filterRegex(),
                     genreType = queryFilter["genre"].toString().filterRegex(),
@@ -254,7 +258,7 @@ class PostFilterViewModel @Inject constructor(
     }
 
     fun onClickApply() {
-        this.requestFilterResult(myLocation.value!!.latitude, myLocation.value!!.longitude)
+        this.requestFilterResult()
     }
 
     fun onClickClear() {
@@ -289,10 +293,10 @@ class PostFilterViewModel @Inject constructor(
             }
             val temp = ArrayList<BaseItemBinder>()
             temp.addAll(chipBinders.value ?: emptyList())
-            if (temp.isEmpty()) return
 
             temp.removeIf { (it as FilterChipItemBinder).chipType.get() == type && it.typeName.get() == label }
             temp.sortWith(compareBy { (it as FilterChipItemBinder).chipType.get() })
+            if (temp.isEmpty()) requestFilterResult()
             _chipBinders.postValue(temp)
         }
     }

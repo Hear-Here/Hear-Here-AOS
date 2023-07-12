@@ -2,6 +2,7 @@ package com.hearhere.presentation.features.post
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import com.hearhere.domain.model.Posting
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.component.BasicButton
@@ -15,25 +16,27 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class PostSelectOptionViewModel @Inject constructor() : BaseViewModel() {
+class PostSelectOptionViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel() {
 
-    var cover: String? = null
-    var artist: String? = null
-    var title: String? = null
-    var songId: Long? = null
+    var cover: String? = savedStateHandle.get("music_cover") ?: null
+    var artist: String? = savedStateHandle.get("music_artist") ?: null
+    var title: String? = savedStateHandle.get("music_title") ?: null
+    var songId: Long? = savedStateHandle.get("music_songId") ?: null
     val temp = 0
     var genre = MutableLiveData<GenreType?>(null)
     var with = MutableLiveData<WithType?>(null)
     var weather = MutableLiveData<WeatherType?>(null)
     var emotion = MutableLiveData<EmotionType?>(null)
     var message: String? = null
-    var postingState = MutableLiveData<PostingState>(
+    var postingState = MutableLiveData(
         PostingState(
             Posting(
-                songId = -1,
-                title = "",
-                artist = "",
-                cover = "",
+                songId = songId ?: -1,
+                title = title ?: "",
+                artist = artist ?: "",
+                cover = cover ?: "",
                 genreType = "",
                 withType = "",
                 temp = temp,
@@ -48,6 +51,7 @@ class PostSelectOptionViewModel @Inject constructor() : BaseViewModel() {
     val posting get() = postingState.value!!.posting
 
     val navigationSlide = SingleLiveEvent<Unit>()
+    val navigationFinish = SingleLiveEvent<Posting>()
     data class PostingState(val posting: Posting) {
         val postingEnabled = !posting.genreType.isNullOrBlank() &&
             !posting.withType.isNullOrBlank() &&
@@ -55,26 +59,11 @@ class PostSelectOptionViewModel @Inject constructor() : BaseViewModel() {
             !posting.emotionType.isNullOrBlank()
     }
 
-    fun postPosting() {
-        postingState.postValue(
-            postingState.value?.copy(
-                posting = Posting(
-                    songId = songId!!,
-                    title = title!!,
-                    artist = artist!!,
-                    cover = cover,
-                    genreType = genre?.value?.name ?: "",
-                    withType = with?.value?.name ?: "",
-                    temp = temp,
-                    weatherType = weather?.value?.name ?: "",
-                    emotionType = emotion?.value?.name ?: "",
-                    content = message,
-                    longitude = null,
-                    latitude = null
-                )
-            )
-        )
+    fun updateMessage(msg: String?) {
+        message = msg
+        postingState.postValue(postingState.value?.copy(posting.copy(content = msg)))
     }
+
     val onClickGenreBtn = object : GenreWideButton.GenreOnClickListener {
         override fun onClick(genreType: GenreType) {
             genre.postValue(genreType)

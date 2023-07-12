@@ -1,6 +1,7 @@
 package com.hearhere.presentation.features.post
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import com.hearhere.domain.model.Posting
 import com.hearhere.presentation.R
@@ -18,13 +19,13 @@ class PostFinishActivity : BaseActivity<ActivityPostFinishBinding>(R.layout.acti
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val posting = intent.intentSerializable("music", Posting::class.java)
+        Log.d("my posting",posting.toString())
 
         if (posting == null) {
             finish()
         }
 
         viewModel.getDetail(posting!!)
-        observeViewModel()
         binding.viewModel = viewModel
 
         binding.postFinishBtn.setOnClickListener {
