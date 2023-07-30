@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.hearhere.domain.model.ApiResponse
 import com.hearhere.domain.usecaseImpl.LoginUseCaseImpl
 import com.hearhere.domain.usecaseImpl.SearchMusicUseCaseImpl
+import com.hearhere.presentation.util.SingleLiveEvent
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -28,6 +29,9 @@ class LoginViewModel @Inject constructor(
 
     private val _loginState = MutableLiveData<Boolean?>(null)
     val loginState get() = _loginState
+
+    val navigationToMain = SingleLiveEvent<Unit>()
+    val navigationToOnBoard = SingleLiveEvent<Unit>()
 
     private val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
@@ -77,13 +81,23 @@ class LoginViewModel @Inject constructor(
             Log.d("kakao-hear", res.toString())
             when (res) {
                 is ApiResponse.Success -> {
-                    loginUseCase.updateToken(res.data!!.accessToken)
+                    loginUseCase.updateToken(res.data!!.auth.accessToken)
                     _loginState.postValue(true)
+
+                    when(res.data!!.state){
+                        LOGIN -> navigationToMain.call()
+                        else -> navigationToOnBoard.call()
+                    }
                 }
                 else -> {
                     Log.d("login error", res.message.toString())
                 }
             }
         }
+    }
+
+    companion object{
+        const val LOGIN = "LOGIN"
+        const val JOIN = "JOIN"
     }
 }

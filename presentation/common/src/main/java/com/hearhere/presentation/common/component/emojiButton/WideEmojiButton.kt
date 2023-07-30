@@ -20,22 +20,15 @@ abstract class WideEmojiButton @JvmOverloads constructor(
         view.visibility = if (visible) VISIBLE else GONE
     }
 
+    abstract fun setSelectedState()
+
     companion object {
-//        @JvmStatic
-//        @BindingAdapter("emoji")
-//        fun setEmojiByWithType(view: WideEmojiButton, type: WithType?) {
-//            if (type == null) return
-//            view.setEmojiResource(type.getResource())
-//            view.setLabelText(type.kor)
-//        }
-//
-//        @JvmStatic
-//        @BindingAdapter("emoji")
-//        fun setEmojiByGenreType(view: WideEmojiButton, type: GenreType?) {
-//            if (type == null) return
-//            view.setEmojiResource(type.getResource())
-//            view.setLabelText(type.kor)
-//        }
+        @JvmStatic
+        @BindingAdapter("isSelected")
+        fun setWideEmojiBtnSelected(view: WideEmojiButton, isSelected: Boolean) {
+            view.isSelected = isSelected
+            view.setSelectedState()
+        }
 
         @JvmStatic
         @BindingAdapter("android:onClick")

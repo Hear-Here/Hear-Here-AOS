@@ -3,13 +3,13 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="com.hearhere.presentation.common.component.emojiButton.EmotionType"/>
         <variable
             name="context"
             type="com.hearhere.presentation.features.post.PostSelectEmotionFragment" />
 
         <variable
-            name="view"
+            name="viewModel"
             type="com.hearhere.presentation.features.post.PostSelectOptionViewModel" />
     </data>
 
@@ -42,73 +42,44 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_tv">
 
-            <androidx.appcompat.widget.AppCompatImageButton
+            <com.hearhere.presentation.common.component.SquareButton
                 android:id="@+id/smile_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
                 android:layout_margin="15dp"
-                android:src="@drawable/smile"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:padding="8dp"
-                android:background="@drawable/basic_button_background_selector"
+                emoji = "@{EmotionType.SMILE}"
+                android:onClick="@{v->viewModel.onClickEmotion(v,EmotionType.SMILE)}"
+                isSelected="@{viewModel.emotion==null?false:viewModel.emotion == EmotionType.SMILE}"
                 />
 
-            <androidx.appcompat.widget.AppCompatImageButton
+            <com.hearhere.presentation.common.component.SquareButton
                 android:id="@+id/soso_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
                 android:layout_margin="15dp"
-                android:src="@drawable/soso"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:padding="8dp"
-                android:background="@drawable/basic_button_background_selector"
+                emoji = "@{EmotionType.SOSO}"
+                android:onClick="@{v->viewModel.onClickEmotion(v,EmotionType.SOSO)}"
+                isSelected="@{viewModel.emotion==null?false:viewModel.emotion == EmotionType.SOSO}"
                 />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/sad_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+            <com.hearhere.presentation.common.component.SquareButton
                 android:layout_margin="15dp"
-                android:src="@drawable/sad"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:padding="8dp"
-                android:background="@drawable/basic_button_background_selector"
+                emoji = "@{EmotionType.SAD}"
+                android:onClick="@{v->viewModel.onClickEmotion(v,EmotionType.SAD)}"
+                isSelected="@{viewModel.emotion==null?false:viewModel.emotion == EmotionType.SAD}"
                 />
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/funny_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+            <com.hearhere.presentation.common.component.SquareButton
                 android:layout_margin="15dp"
-                android:src="@drawable/funny"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:padding="8dp"
-                android:background="@drawable/basic_button_background_selector"
+                emoji = "@{EmotionType.FUNNY}"
+                android:onClick="@{v->viewModel.onClickEmotion(v,EmotionType.FUNNY)}"
+                isSelected="@{viewModel.emotion==null?false:viewModel.emotion == EmotionType.FUNNY}"
                 />
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/heart_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+            <com.hearhere.presentation.common.component.SquareButton
                 android:layout_margin="15dp"
-                android:src="@drawable/heart"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:padding="8dp"
-                android:background="@drawable/basic_button_background_selector"
+                emoji = "@{EmotionType.HEART}"
+                android:onClick="@{v->viewModel.onClickEmotion(v,EmotionType.HEART)}"
+                isSelected="@{viewModel.emotion==null?false:viewModel.emotion == EmotionType.HEART}"
                 />
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/angry_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+            <com.hearhere.presentation.common.component.SquareButton
                 android:layout_margin="15dp"
-                android:src="@drawable/angry"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:padding="8dp"
-                android:background="@drawable/basic_button_background_selector"
+                emoji = "@{EmotionType.SAD}"
+                android:onClick="@{v->viewModel.onClickEmotion(v,EmotionType.ANGRY)}"
+                isSelected="@{viewModel.emotion==null?false:viewModel.emotion == EmotionType.ANGRY}"
                 />
 
 

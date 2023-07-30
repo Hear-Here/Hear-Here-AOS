@@ -1,6 +1,5 @@
 package com.hearhere.presentation.features.post
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -10,6 +9,7 @@ import com.hearhere.presentation.base.BaseActivity
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.databinding.ActivityPostFinishBinding
 import com.hearhere.presentation.features.main.MainActivity
+import com.hearhere.presentation.util.intentSerializable
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,18 +18,19 @@ class PostFinishActivity : BaseActivity<ActivityPostFinishBinding>(R.layout.acti
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val posting: Posting = intent.getSerializableExtra("music") as Posting
-        Log.d("옥채연", posting.toString())
+        val posting = intent.intentSerializable("music", Posting::class.java)
+        Log.d("my posting",posting.toString())
 
-        viewModel.getDetail(posting)
-        observeViewModel()
+        if (posting == null) {
+            finish()
+        }
+
+        viewModel.getDetail(posting!!)
         binding.viewModel = viewModel
 
         binding.postFinishBtn.setOnClickListener {
             viewModel.requestPost(posting)
-            Intent(this, MainActivity::class.java).also {
-                startActivity(it)
-            }
+            MainActivity.start(this)
         }
     }
 

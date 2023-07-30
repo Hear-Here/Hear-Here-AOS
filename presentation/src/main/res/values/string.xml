@@ -4,4 +4,5 @@
     <string name="welcome_first">같은 장소에서 다른 사람들은\n어떤 노래를 듣고 있는 지 궁금하신 적 있나요?</string>
     <string name="welcome_second">주변에서 듣고 있는 노래를 찾아보고,\n내가 지금 듣고 있는 노래도 공유해보세요</string>
     <string name="welcome_nickname">닉네임 설정 후\nHEAR HERE를 시작해보세요</string>
+    <string name="empty_result">검색 결과가 없습니다</string>
 </resources>

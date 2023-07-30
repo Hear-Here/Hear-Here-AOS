@@ -1,6 +1,7 @@
 package com.hearhere.data.repositoryImpl
 
 import android.util.Log
+import com.hearhere.data.data.dto.request.PostListRequest
 import com.hearhere.data.data.dto.request.PostRequest
 import com.hearhere.data.data.dto.response.LikePostItem
 import com.hearhere.data.data.dto.response.MyPostListResponse
@@ -11,6 +12,7 @@ import com.hearhere.domain.model.LikeMusicPost
 import com.hearhere.domain.model.MusicPost
 import com.hearhere.domain.model.MyMusicPost
 import com.hearhere.domain.model.Pin
+import com.hearhere.domain.model.PostQuery
 import com.hearhere.domain.model.Posting
 import com.hearhere.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
@@ -21,8 +23,19 @@ class PostRepositoryImpl @Inject constructor(
     private val apiHelper: ApiHelperImpl
 ) : BaseRepository(), PostRepository {
 
-    override suspend fun getPostList(lat: Double, lng: Double) = flow<ApiResponse<List<Pin>>> {
-        safeApiCall { apiHelper.getPostList(lat, lng) }
+    override suspend fun getPostList(query: PostQuery) = flow<ApiResponse<List<Pin>>> {
+        safeApiCall {
+            apiHelper.getPostList(
+                PostListRequest(
+                    lat = query.lat,
+                    lng = query.lng,
+                    withType = query.withType,
+                    weatherType = query.weatherType,
+                    emotionType = query.emotionType,
+                    genreType = query.genreType
+                )
+            )
+        }
             .collect {
                 when (it) {
                     is ApiResponse.Success -> {
@@ -162,6 +175,7 @@ class PostRepositoryImpl @Inject constructor(
         }
         return ApiResponse.Success(temp)
     }
+
     @JvmName("loadMyPostList")
     fun List<MyPostListResponse>.mapToDomain(): ApiResponse<List<MyMusicPost>> {
         val temp = ArrayList<MyMusicPost>()
@@ -172,7 +186,7 @@ class PostRepositoryImpl @Inject constructor(
                 artist = it.artist,
                 title = it.title,
                 distance = it.distance,
-                writer = it.writer,
+                writer = it.writer
             )
             temp.add(post)
         }
@@ -210,8 +224,8 @@ class PostRepositoryImpl @Inject constructor(
             longitude = longitude,
             latitude = latitude,
             distance = distance,
-            likeCount = likeCount,
-            isLike = isLiked
+            likeCount = heartCount,
+            isLike = isHearted
         )
         return ApiResponse.Success(post)
     }

@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="com.hearhere.presentation.common.component.emojiButton.GenreType" />
+
+        <import type="com.hearhere.presentation.common.component.emojiButton.WithType" />
+
+        <import type="com.hearhere.presentation.common.component.emojiButton.WeatherType" />
+
+        <import type="com.hearhere.presentation.common.component.emojiButton.EmotionType" />
+
+        <variable
+            name="viewModel"
+            type="com.hearhere.presentation.features.main.PostFilterViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/marker_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_top_corner">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    style="@style/subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="필터"
+                    android:textFontWeight="700"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp">
+
+                <TextView
+                    style="@style/subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="장르"
+                    android:textFontWeight="700"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:flexWrap="wrap">
+
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{GenreType.BALLAD}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedGenre[0].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{GenreType.DANCE}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedGenre[1].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{GenreType.HIPHOP}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedGenre[2].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{GenreType.RB}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedGenre[3].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{GenreType.INDIE}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedGenre[4].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{GenreType.BAND}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedGenre[5].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{GenreType.POP}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedGenre[6].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{GenreType.TROT}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedGenre[7].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+                </com.google.android.flexbox.FlexboxLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp">
+
+                <TextView
+                    style="@style/subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="함께 듣는 사람"
+                    android:textFontWeight="700"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:flexWrap="wrap">
+
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{WithType.ALONE}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedWith[0].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{WithType.FRIEND}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedWith[1].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{WithType.COUPLE}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedWith[2].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{WithType.FAMILY}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedWith[3].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{WithType.PET}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedWith[4].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+
+                    <com.hearhere.presentation.common.component.chipButton.ChipButton
+                        chip="@{WithType.SOMEBODY}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        isSelected="@{viewModel.selectedWith[5].isSelected}"
+                        android:onClick="@{viewModel.onClickChip}" />
+
+                </com.google.android.flexbox.FlexboxLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp">
+
+                <TextView
+                    style="@style/subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="감정"
+                    android:textFontWeight="700"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.hearhere.presentation.common.component.chipButton.SquareChipButton
+                            chip="@{EmotionType.SMILE}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            isSelected="@{viewModel.selectedEmotion[0].isSelected}"
+                            android:onClick="@{viewModel.onClickChip}" />
+
+                        <com.hearhere.presentation.common.component.chipButton.SquareChipButton
+                            chip="@{EmotionType.SOSO}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            isSelected="@{viewModel.selectedEmotion[1].isSelected}"
+                            android:onClick="@{viewModel.onClickChip}" />
+
+                        <com.hearhere.presentation.common.component.chipButton.SquareChipButton
+                            chip="@{EmotionType.SAD}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            isSelected="@{viewModel.selectedEmotion[2].isSelected}"
+                            android:onClick="@{viewModel.onClickChip}" />
+
+                        <com.hearhere.presentation.common.component.chipButton.SquareChipButton
+                            chip="@{EmotionType.FUNNY}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            isSelected="@{viewModel.selectedEmotion[3].isSelected}"
+                            android:onClick="@{viewModel.onClickChip}" />
+
+
+                        <com.hearhere.presentation.common.component.chipButton.SquareChipButton
+                            chip="@{EmotionType.HEART}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            isSelected="@{viewModel.selectedEmotion[4].isSelected}"
+                            android:onClick="@{viewModel.onClickChip}" />
+
+                        <com.hearhere.presentation.common.component.chipButton.SquareChipButton
+                            chip="@{EmotionType.ANGRY}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            isSelected="@{viewModel.selectedEmotion[5].isSelected}"
+                            android:onClick="@{viewModel.onClickChip}" />
+
+                    </LinearLayout>
+
+
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp">
+
+                <TextView
+                    style="@style/subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="날씨"
+                    android:textFontWeight="700"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:scrollbars="none"
+                    >
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.hearhere.presentation.common.component.chipButton.SquareChipButton
+                            chip="@{WeatherType.SUNNY}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            isSelected="@{viewModel.selectedWeather[0].isSelected}"
+                            android:onClick="@{viewModel.onClickChip}" />
+
+                        <com.hearhere.presentation.common.component.chipButton.SquareChipButton
+                            chip="@{WeatherType.NORMAL}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            isSelected="@{viewModel.selectedWeather[1].isSelected}"
+                            android:onClick="@{viewModel.onClickChip}" />
+
+                        <com.hearhere.presentation.common.component.chipButton.SquareChipButton
+                            chip="@{WeatherType.CLOUDY}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            isSelected="@{viewModel.selectedWeather[2].isSelected}"
+                            android:onClick="@{viewModel.onClickChip}" />
+
+
+                        <com.hearhere.presentation.common.component.chipButton.SquareChipButton
+                            chip="@{WeatherType.RAINY}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            isSelected="@{viewModel.selectedWeather[3].isSelected}"
+                            android:onClick="@{viewModel.onClickChip}" />
+
+
+                        <com.hearhere.presentation.common.component.chipButton.SquareChipButton
+                            chip="@{WeatherType.WINDY}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            isSelected="@{viewModel.selectedWeather[4].isSelected}"
+                            android:onClick="@{viewModel.onClickChip}" />
+
+                        <com.hearhere.presentation.common.component.chipButton.SquareChipButton
+                            chip="@{WeatherType.SNOWY}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            isSelected="@{viewModel.selectedWeather[5].isSelected}"
+                            android:onClick="@{viewModel.onClickChip}" />
+                    </LinearLayout>
+
+
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray50" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="15dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/reset_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/set_btn"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <ImageView
+                        android:id="@+id/reset_iv"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_restart"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        style="@style/subtitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="초기화"
+                        android:onClick="@{_->viewModel.onClickClear()}"
+                        android:textColor="@color/gray90"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/reset_iv"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.hearhere.presentation.common.component.BasicButton
+                    android:id="@+id/set_btn"
+                    style="@style/button_gray90"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="적용하기"
+                    android:onClick="@{viewModel.onClickApply}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/reset_btn" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

@@ -4,13 +4,13 @@
 
 
     <data>
-
+        <import type="com.hearhere.presentation.common.component.emojiButton.WeatherType"/>
         <variable
             name="context"
             type="com.hearhere.presentation.features.post.PostSelectWeatherFragment" />
 
         <variable
-            name="view"
+            name="viewModel"
             type="com.hearhere.presentation.features.post.PostSelectOptionViewModel" />
     </data>
 
@@ -42,74 +42,44 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_tv">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/sunny_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+            <com.hearhere.presentation.common.component.SquareButton
                 android:layout_margin="15dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/basic_button_background_selector"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/sunny" />
+                emoji = "@{WeatherType.SUNNY}"
+                android:onClick="@{_->viewModel.onClickWeather(WeatherType.SUNNY)}"
+                isSelected="@{viewModel.weather==null?false:viewModel.weather == WeatherType.SUNNY}"
+                />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/normal_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+            <com.hearhere.presentation.common.component.SquareButton
                 android:layout_margin="15dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/basic_button_background_selector"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/normal" />
+                emoji = "@{WeatherType.NORMAL}"
+                android:onClick="@{_->viewModel.onClickWeather(WeatherType.NORMAL)}"
+                isSelected="@{viewModel.weather==null?false:viewModel.weather == WeatherType.NORMAL}"
+                />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/cloudy_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+            <com.hearhere.presentation.common.component.SquareButton
                 android:layout_margin="15dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/basic_button_background_selector"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/cloudy" />
-
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/rainy_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                emoji = "@{WeatherType.CLOUDY}"
+                android:onClick="@{_->viewModel.onClickWeather(WeatherType.CLOUDY)}"
+                isSelected="@{viewModel.weather==null?false:viewModel.weather == WeatherType.CLOUDY}"
+                />
+            <com.hearhere.presentation.common.component.SquareButton
                 android:layout_margin="15dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/basic_button_background_selector"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/rainy" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/windy_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                emoji = "@{WeatherType.RAINY}"
+                android:onClick="@{_->viewModel.onClickWeather(WeatherType.RAINY)}"
+                isSelected="@{viewModel.weather==null?false:viewModel.weather == WeatherType.RAINY}"
+                />
+            <com.hearhere.presentation.common.component.SquareButton
                 android:layout_margin="15dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/basic_button_background_selector"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/windy" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/snowy_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                emoji = "@{WeatherType.WINDY}"
+                android:onClick="@{_->viewModel.onClickWeather(WeatherType.WINDY)}"
+                isSelected="@{viewModel.weather==null?false:viewModel.weather == WeatherType.WINDY}"
+                />
+            <com.hearhere.presentation.common.component.SquareButton
                 android:layout_margin="15dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/basic_button_background_selector"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/snowy" />
-
-
+                emoji = "@{WeatherType.SNOWY}"
+                android:onClick="@{_->viewModel.onClickWeather(WeatherType.SNOWY)}"
+                isSelected="@{viewModel.weather==null?false:viewModel.weather == WeatherType.SNOWY}"
+                />
         </GridLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

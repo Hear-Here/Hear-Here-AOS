@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/filter_chip_button_background"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/filter_chip_iv"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:scaleType="centerCrop"
+            />
+
+        <TextView
+            android:id="@+id/filter_chip_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/sub"
+            android:textColor="@color/gray90"
+            />
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/filter_chip_del_btn"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/ic_close"
+            android:layout_marginLeft="4dp"
+            />
+    </LinearLayout>
+</layout>

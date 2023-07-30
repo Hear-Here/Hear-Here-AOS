@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class SearchMusicRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val parsingHelperImpl: ParsingHelperImpl,
+    private val parsingHelperImpl: ParsingHelperImpl
 ) : BaseRepository(), SearchMusicRepository {
 
     private val parser: SearchArtistParser = SearchArtistParser
@@ -26,7 +26,8 @@ class SearchMusicRepositoryImpl @Inject constructor(
     ): Result<List<SearchedMusic>> {
         safeApiCall<SearchBySongResponse> {
             parsingHelperImpl.searchMusicBySong(
-                keyword = keyword, display = display
+                keyword = keyword,
+                display = display
             )
         }.first().let { it ->
             when (it) {
@@ -46,7 +47,8 @@ class SearchMusicRepositoryImpl @Inject constructor(
     override suspend fun searchMusicByArtist(keyword: String, display: Int?): Result<List<SearchedMusic>> {
         safeApiCall<ResponseBody> {
             parsingHelperImpl.searchMusicByArtist(
-                keyword = keyword, display = display
+                keyword = keyword,
+                display = display
             )
         }.first().let { response ->
             when (response) {

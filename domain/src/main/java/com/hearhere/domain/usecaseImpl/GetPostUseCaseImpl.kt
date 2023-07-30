@@ -6,6 +6,7 @@ import com.hearhere.domain.model.Location
 import com.hearhere.domain.model.MusicPost
 import com.hearhere.domain.model.MyMusicPost
 import com.hearhere.domain.model.Pin
+import com.hearhere.domain.model.PostQuery
 import com.hearhere.domain.repository.PostRepository
 import com.hearhere.domain.repository.PreferenceRepository
 import com.hearhere.domain.usecase.GetPostUseCase
@@ -37,8 +38,8 @@ class GetPostUseCaseImpl @Inject constructor(
         } else return myLocation!!
     }
 
-    override suspend fun getPostList(lat: Double, lng: Double): ApiResponse<List<Pin>> {
-        return postRepository.getPostList(lat, lng).first()
+    override suspend fun getPostList(query: PostQuery): ApiResponse<List<Pin>> {
+        return postRepository.getPostList(query).first()
     }
 
     override suspend fun getPost(postId: Long): ApiResponse<MusicPost> {

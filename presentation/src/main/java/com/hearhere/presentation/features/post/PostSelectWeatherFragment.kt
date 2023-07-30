@@ -13,57 +13,15 @@ class PostSelectWeatherFragment :
 
     private val viewModel: PostSelectOptionViewModel by activityViewModels()
 
-    private lateinit var adapter: BaseAdapter
+
 
     override fun initView() {
         binding.context = this
-
-        binding.sunnyBtn.setOnClickListener {
-            it.isSelected = !it.isSelected
-
-            viewModel.weather = WeatherType.SUNNY
-            pageSlide()
-        }
-
-        binding.normalBtn.setOnClickListener {
-            it.isSelected = !it.isSelected
-
-            viewModel.weather = WeatherType.NORMAL
-            pageSlide()
-        }
-        binding.cloudyBtn.setOnClickListener {
-            it.isSelected = !it.isSelected
-
-            viewModel.weather = WeatherType.CLOUDY
-            pageSlide()
-        }
-        binding.rainyBtn.setOnClickListener {
-            it.isSelected = !it.isSelected
-
-            viewModel.weather = WeatherType.RAINY
-            pageSlide()
-        }
-        binding.windyBtn.setOnClickListener {
-            it.isSelected = !it.isSelected
-
-            viewModel.weather = WeatherType.WINDY
-            pageSlide()
-        }
-        binding.snowyBtn.setOnClickListener {
-            it.isSelected = !it.isSelected
-
-            viewModel.weather = WeatherType.SNOWY
-            pageSlide()
-        }
+        binding.viewModel = viewModel
     }
 
-    private fun pageSlide() {
-        (requireActivity() as PostSelectOptionActivity).slidePage()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        adapter = BaseAdapter.build()
     }
 }

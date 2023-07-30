@@ -3,13 +3,13 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="com.hearhere.presentation.common.component.emojiButton.WithType"/>
         <variable
             name="context"
             type="com.hearhere.presentation.features.post.PostSelectWithFragment" />
 
         <variable
-            name="view"
+            name="viewModel"
             type="com.hearhere.presentation.features.post.PostSelectOptionViewModel" />
     </data>
 
@@ -47,7 +47,8 @@
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickAlone}"
+                app:onClickWithText='@{viewModel.onClickWith}'
+                isSelected="@{viewModel.with==null?false:viewModel.with == WithType.ALONE}"
                 android:text="나 혼자" />
 
             <com.hearhere.presentation.common.component.BasicButton
@@ -56,7 +57,8 @@
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickFriend}"
+                app:onClickWithText='@{viewModel.onClickWith}'
+                isSelected="@{viewModel.with==null?false:viewModel.with == WithType.FRIEND}"
                 android:text="친구" />
 
             <com.hearhere.presentation.common.component.BasicButton
@@ -65,7 +67,8 @@
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickCouple}"
+                app:onClickWithText='@{viewModel.onClickWith}'
+                isSelected="@{viewModel.with==null?false:viewModel.with == WithType.COUPLE}"
                 android:text="연인" />
 
             <com.hearhere.presentation.common.component.BasicButton
@@ -74,7 +77,8 @@
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickFamily}"
+                app:onClickWithText='@{viewModel.onClickWith}'
+                isSelected="@{viewModel.with==null?false:viewModel.with == WithType.FAMILY}"
                 android:text="가족" />
 
             <com.hearhere.presentation.common.component.BasicButton
@@ -83,7 +87,8 @@
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickPet}"
+                app:onClickWithText='@{viewModel.onClickWith}'
+                isSelected="@{viewModel.with==null?false:viewModel.with == WithType.PET}"
                 android:text="반려동물" />
 
 
@@ -94,7 +99,8 @@
                 android:layout_width="149dp"
                 android:layout_height="67dp"
                 android:layout_margin="5dp"
-                android:onClick="@{context.onClickSomebody}"
+                app:onClickWithText='@{viewModel.onClickWith}'
+                isSelected="@{viewModel.with==null?false:viewModel.with == WithType.SOMEBODY}"
                 android:text="누군가" />
         </GridLayout>
 

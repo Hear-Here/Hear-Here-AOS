@@ -1,21 +1,19 @@
 package com.hearhere.presentation.features.post
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hearhere.domain.usecaseImpl.SearchMusicUseCaseImpl
-import com.hearhere.domain.usecaseImpl.TestUseCaseImpl
 import com.hearhere.presentation.base.BaseItemBinder
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.features.post.adapter.MusicListItemBinder
+import com.hearhere.presentation.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PostViewModel @Inject constructor(
-    private val testUseCase: TestUseCaseImpl,
     private val searchMusicUseCase: SearchMusicUseCaseImpl
 ) : BaseViewModel() {
 
@@ -31,18 +29,23 @@ class PostViewModel @Inject constructor(
     private val _selectedMusic = MutableLiveData<MusicListItemState?>(null)
     val selectedMusic get() = _selectedMusic
 
+    val showErrorToast = SingleLiveEvent<Unit>()
+
+    val isEmptyTitleResult = MutableLiveData<Boolean>(false)
+    val isEmptySingerResult = MutableLiveData<Boolean>(false)
+
     fun searchMusic(keyword: String) {
         if (keyword.isNullOrBlank()) return
         Log.d("/옥채연", keyword)
         viewModelScope.launch {
             _loading.postValue(true)
             kotlin.runCatching {
-                val res = searchMusicUseCase.searchMusicBySong(keyword, 30)
+                val res = searchMusicUseCase.searchMusicBySong(keyword, 50)
 
                 val binders = arrayListOf<MusicListItemBinder>()
 
-                res.onSuccess {
-                    it.forEach {
+                res.onSuccess {list->
+                    list.forEach {
                         val binder = MusicListItemBinder(::onClickItem)
                         val state = MusicListItemState(
                             it.songId,
@@ -54,13 +57,17 @@ class PostViewModel @Inject constructor(
                         binder.setMusic(state)
                         binders.add(binder)
                     }.also {
+                        if (binders.isEmpty()) {
+                            isEmptyTitleResult.postValue(true)
+                        } else {
+                            isEmptyTitleResult.postValue(false)
+                        }
                         titleBinder.postValue(binders)
                     }
-                }
 
-                Log.d("/옥채연/search Music by song result", res.toString())
+                }
             }.onFailure {
-                Log.d("search Music result fail... ", it.toString())
+                showErrorToast.call()
             }
 
             kotlin.runCatching {
@@ -68,8 +75,8 @@ class PostViewModel @Inject constructor(
 
                 val binders = arrayListOf<MusicListItemBinder>()
 
-                res.onSuccess {
-                    it.forEach {
+                res.onSuccess { list->
+                    list.forEach {
                         val binder = MusicListItemBinder(::onClickItem)
                         val state = MusicListItemState(
                             it.songId,
@@ -82,28 +89,23 @@ class PostViewModel @Inject constructor(
                         binder.setMusic(state)
                         binders.add(binder)
                     }.also {
+                        if (binders.isEmpty()) {
+                            isEmptySingerResult.postValue(true)
+                        } else {
+                            isEmptySingerResult.postValue(false)
+                        }
                         singerBinder.postValue(binders)
                     }
-                }
 
-                Log.d("/옥채연/search Music result", res.toString())
+                }
             }.onFailure {
-                Log.d("search Music result fail... ", it.toString())
+                showErrorToast.call()
             }
             _loading.postValue(false)
         }
     }
-
-    val onClick = View.OnClickListener {
-        Log.d("record", " success ")
-    }
-
-    fun test() {
-    }
-
     fun onClickItem(state: MusicListItemState) {
         // 클릭 이벤트 시 binder 에서 호출됨
-        Log.d("OK music state", state.toString())
         _selectedMusic.postValue(state)
     }
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="binder"
+            type="com.hearhere.presentation.features.main.adapter.FilterChipItemBinder" />
+    </data>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.hearhere.presentation.common.component.chipButton.FilterChipButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            chipType="@{binder.chipType}"
+            text="@{binder.text}"
+            label="@{binder.typeName}"
+            emoji="@{binder.emoji==-1?null:binder.emoji}"
+            android:onClick="@{binder.clickListener}"
+            android:layout_marginRight="4dp"
+            />
+    </RelativeLayout>
+</layout>

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hearhere.domain.model.ApiResponse
+import com.hearhere.domain.model.PostQuery
 import com.hearhere.domain.usecaseImpl.GetPostUseCaseImpl
 import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.features.main.adapter.MarkerListItemBinder
@@ -38,7 +39,12 @@ class MarkerListViewModel @Inject constructor(
             _loading.postValue(true)
             val location = getPostUseCase.myLocation ?: getPostUseCase.getLocation()
             if (location != null) {
-                getPostUseCase.getPostList(location.lat, location.lng).also {
+                getPostUseCase.getPostList(
+                    PostQuery(
+                        lat = location.lat,
+                        lng = location.lng
+                    )
+                ).also {
                     when (it) {
                         is ApiResponse.Success -> {
                             val tempList = arrayListOf<MarkerListItemState>()

@@ -1,6 +1,7 @@
 package com.hearhere.data.data.network
 
 import com.hearhere.data.data.dto.request.AuthRequest
+import com.hearhere.data.data.dto.request.PostListRequest
 import com.hearhere.data.data.dto.request.PostRequest
 import com.hearhere.data.data.dto.response.AuthResponse
 import com.hearhere.data.data.dto.response.LikePostItem
@@ -10,7 +11,7 @@ import retrofit2.Response
 
 interface ApiHelper {
     suspend fun login(token: AuthRequest): Response<AuthResponse>
-    suspend fun getPostList(lat: Double, lng: Double): Response<List<PostItemResponse>>
+    suspend fun getPostList(req: PostListRequest): Response<List<PostItemResponse>>
     suspend fun getPost(postId: Long, lat: Double, lng: Double): Response<PostItemResponse>
     suspend fun deletePost(postId: Long): Response<*>
     suspend fun likePost(postId: Long): Response<*>

@@ -1,6 +1,7 @@
 package com.hearhere.data.data.network
 
 import com.hearhere.data.data.dto.request.AuthRequest
+import com.hearhere.data.data.dto.request.PostListRequest
 import com.hearhere.data.data.dto.request.PostRequest
 import com.hearhere.data.data.dto.response.AuthResponse
 import com.hearhere.data.data.dto.response.LikePostItem
@@ -14,8 +15,15 @@ class ApiHelperImpl @Inject constructor(
     @NetworkModule.api val apiService: HearHereApiService
 ) : ApiHelper {
     override suspend fun login(request: AuthRequest): Response<AuthResponse> = apiService.login(request)
-    override suspend fun getPostList(lat: Double, lng: Double): Response<List<PostItemResponse>> =
-        apiService.getPostList(lat, lng)
+    override suspend fun getPostList(req : PostListRequest): Response<List<PostItemResponse>> =
+        apiService.getPostList(
+            latitude = req.lat,
+            longitude = req.lng,
+            genreType = req.genreType,
+            weatherType = req.weatherType,
+            withType = req.withType,
+            emotionType = req.emotionType
+        )
 
     override suspend fun getPost(postId: Long, lat: Double, lng: Double): Response<PostItemResponse> = apiService.getPost(postId, lat, lng)
     override suspend fun deletePost(postId: Long): Response<*> = apiService.deletePost(postId)

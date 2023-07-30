@@ -19,6 +19,7 @@ class PostMusicViewPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapt
         list.addAll(fragments)
     }
 
+
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> PostSelectGenreFragment()

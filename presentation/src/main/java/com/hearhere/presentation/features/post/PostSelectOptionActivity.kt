@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import com.hearhere.domain.model.Posting
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseActivity
 import com.hearhere.presentation.base.BaseAdapter
@@ -20,21 +21,8 @@ class PostSelectOptionActivity : BaseActivity<ActivityPostSelectOptionBinding>(R
     private lateinit var pagerAdapter: PostMusicViewPagerAdapter
 
     override fun onCreateView(savedInstanceState: Bundle?) {
-
-        val coverUrl = intent.getStringExtra("music_cover")
-        val artist = intent.getStringExtra("music_artist")
-        val title = intent.getStringExtra("music_title")
-        val songId = intent.getLongExtra("music_songId", 0)
-
-        viewModel.cover = coverUrl
-        viewModel.artist = artist
-        viewModel.title = title
-        viewModel.songId = songId
-
-        val uri = Uri.parse(coverUrl)
+        val uri = Uri.parse(intent.getStringExtra("music_cover") ?: "")
         binding.postMusicCoverIv.setImageCover(uri)
-        binding.postTitleTv.text = title
-        binding.postArtistTv.text = artist
 
         setViewPager()
     }
@@ -42,32 +30,31 @@ class PostSelectOptionActivity : BaseActivity<ActivityPostSelectOptionBinding>(R
     override fun registerViewModels(): List<BaseViewModel> = listOf(viewModel)
 
     override fun observeViewModel() {
+        viewModel.navigationSlide.observe {
+            slidePage()
+        }
+
+        viewModel.postingState.observe {
+            Log.d("state", it.posting.toString())
+        }
+        viewModel.navigationFinish.observe { if(it!=null) startPostFinish(it) }
     }
 
     private fun setViewPager() {
         pagerAdapter = PostMusicViewPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
+        binding.viewPager.isNestedScrollingEnabled = false
     }
 
-    fun startPostFinish() {
+    fun startPostFinish(posting: Posting) {
         Intent(this@PostSelectOptionActivity, PostFinishActivity::class.java).also {
-
-            Log.d("옥채연/startPostFinish/message", viewModel.posting!!.content.toString())
-            Log.d("옥채연/startPostFinish", viewModel.posting.toString())
-            it.putExtra("music", viewModel.posting)
+            it.putExtra("music", posting)
             startActivity(it)
         }
     }
 
     fun slidePage() {
-
         val current = binding.viewPager.currentItem
-
         binding.viewPager.setCurrentItem(current + 1, false)
-
-        Log.d("옥채연", viewModel.genre.toString())
-        Log.d("옥채연", viewModel.with.toString())
-        Log.d("옥채연", viewModel.weather.toString())
-        Log.d("옥채연", viewModel.emotion.toString())
     }
 }

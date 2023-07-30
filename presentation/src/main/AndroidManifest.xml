@@ -8,16 +8,23 @@
     <application>
 
         <activity android:name=".test.TestActivity" />
-        <activity android:name=".features.login.LoginActivity" />
-        <activity android:name=".features.login.SplashActivity" />
-        <activity android:name=".features.login.OnBoardingActivity" />
-        <activity android:name=".features.login.SetNickNameActivity" />
+        <activity
+            android:name=".features.login.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".features.login.SplashActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".features.login.OnBoardingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".features.login.SetNickNameActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".features.main.MainActivity"
-            android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
-            />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".features.post.PostFinishActivity"
@@ -39,10 +46,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".features.post.PostActivity"
-            android:exported="true" />
+            android:screenOrientation="portrait"
+         />
         <activity
             android:name=".features.post.PostSelectOptionActivity"
-            android:exported="true" />
+            android:screenOrientation="portrait" />
 
     </application>
 </manifest>

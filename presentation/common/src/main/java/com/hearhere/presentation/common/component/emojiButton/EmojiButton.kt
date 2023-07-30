@@ -58,7 +58,7 @@ class EmojiButton @JvmOverloads constructor(
         @BindingAdapter("emoji")
         fun setEmojiByGenreType(view: EmojiButton, type: GenreType?) {
             if (type == null) return
-            view.setEmojiResource(R.drawable.headphones)
+            view.setEmojiResource(R.drawable.ic_headphone_black)
             view.setLabelText(type.kor)
         }
 
