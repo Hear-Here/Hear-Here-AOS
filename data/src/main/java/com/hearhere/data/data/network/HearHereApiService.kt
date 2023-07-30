@@ -49,23 +49,23 @@ interface HearHereApiService {
         @Path("postId") postId: Long
     ): Response<*>
 
-    @POST("/post/{postId}/heart")
+    @POST("/heart/{postId}")
     suspend fun likePost(
         @Path("postId") postId: Long
     ): Response<*>
 
-    @DELETE("/post/{postId}/heart")
+    @DELETE("/heart/{postId}")
     suspend fun disLikePost(
         @Path("postId") postId: Long
     ): Response<*>
 
-    @GET("/post/heart/list")
+    @GET("/post/list/heart")
     suspend fun getLikePostList(
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double
     ): Response<List<LikePostItem>>
 
-    @GET("/post/my/list")
+    @GET("/post/list/my")
     suspend fun getMyPostList(
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double

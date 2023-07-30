@@ -237,6 +237,7 @@ class PostFilterViewModel @Inject constructor(
     fun getFilterResult(lat: Double, lng: Double) {
         // Call API
         viewModelScope.launch {
+            _loading.postValue(true)
             getPostUseCase.getPostList(
                 PostQuery(
                     lat = lat,
@@ -247,6 +248,7 @@ class PostFilterViewModel @Inject constructor(
                     weatherType = queryFilter["weather"].toString().filterRegex()
                 )
             ).also {
+                _loading.postValue(false)
                 when (it) {
                     is ApiResponse.Success -> {
                         addEvent(FilterEvent.OnCompleted(it.data!!))

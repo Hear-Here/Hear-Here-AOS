@@ -109,7 +109,6 @@ class MainViewModel @Inject constructor(
     fun setSelectedPin(postId: Long?) {
         pinStateList.value?.filter { it.pin.postId == postId }
             .also {
-                Log.d("pin state", it.toString())
                 if (it != null) {
                     if(it.isEmpty())return@also
                 }
