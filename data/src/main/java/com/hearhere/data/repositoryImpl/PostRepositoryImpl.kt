@@ -16,6 +16,7 @@ import com.hearhere.domain.model.PostQuery
 import com.hearhere.domain.model.Posting
 import com.hearhere.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
