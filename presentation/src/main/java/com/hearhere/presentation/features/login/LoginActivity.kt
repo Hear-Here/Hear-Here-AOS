@@ -1,9 +1,11 @@
 package com.hearhere.presentation.features.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import com.hearhere.presentation.R
 import com.hearhere.presentation.base.BaseActivity
 import com.hearhere.presentation.base.BaseViewModel
@@ -35,6 +37,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     intent ->
                 startActivity(intent)
             }
+        }
+    }
+
+    companion object{
+        fun start(context: Context) {
+            val intent = Intent(context, LoginActivity::class.java).apply {
+                //flags = ( Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            ContextCompat.startActivity(context, intent, null)
         }
     }
 }

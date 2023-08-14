@@ -57,26 +57,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun requestPins(lat: Double, lng: Double) {
-        if (isFetching != null) isFetching?.cancel()
-        isFetching = viewModelScope.launch {
-            _loading.postValue(true)
-            getPostUseCase.getPostList(PostQuery(lat = lat, lng = lng)).also {
-                when (it) {
-                    is ApiResponse.Success -> {
-                        val tempList = arrayListOf<PinState>()
-                        it.data?.reversed()?.forEach {
-                            tempList.add(PinState(it, null))
-                        }
-                        fetchPins(tempList)
-                    }
-
-                    is ApiResponse.Error -> {}
-                }
-            }
-        }
-    }
-
     fun requireFetchPins(list: List<Pin>) {
         _loading.postValue(true)
         viewModelScope.launch {

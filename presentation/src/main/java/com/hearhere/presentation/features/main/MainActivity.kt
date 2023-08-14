@@ -34,6 +34,7 @@ import com.hearhere.presentation.base.BaseViewModel
 import com.hearhere.presentation.common.component.emojiButton.GenreType
 import com.hearhere.presentation.common.component.emojiButton.getResource
 import com.hearhere.presentation.databinding.ActivityMainBinding
+import com.hearhere.presentation.features.login.LoginActivity
 import com.hearhere.presentation.features.main.like.MarkerLikeActivity
 import com.hearhere.presentation.features.main.profile.MarkerMyPostingActivity
 import com.hearhere.presentation.features.post.PostActivity
@@ -139,10 +140,18 @@ class MainActivity :
 
         filterViewModel.chipBinders.observe {
             filterAdapter.submitList(it)
+        }
+
+        filterViewModel.queryFilter.observe {
             filterViewModel.getFilterResult(filterViewModel.myLocation.value!!.latitude, filterViewModel.myLocation.value!!.longitude)
         }
 
         filterViewModel.event.flowWithLifecycle(lifecycle).onEach(::handleFilterEvent).launchIn(lifecycleScope)
+
+        filterViewModel.navigateToLogin.observe {
+            Toast.makeText(this, "세션이 만료되었습니다.",Toast.LENGTH_SHORT).show()
+            LoginActivity.start(this)
+        }
     }
 
     private fun initAdapter() {

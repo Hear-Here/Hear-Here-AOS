@@ -1,5 +1,6 @@
 package com.hearhere.presentation.features.main
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
@@ -40,7 +41,7 @@ class PostFilterViewModel @Inject constructor(
     private val _events = MutableStateFlow<List<FilterEvent>>(emptyList())
     val event get() = _events.asStateFlow()
 
-    val callFetchPin = SingleLiveEvent<List<Pin>>()
+    val navigateToLogin = SingleLiveEvent<Unit>()
 
     private val _selectedGenre = MutableLiveData(
         initGenre()
@@ -66,7 +67,7 @@ class PostFilterViewModel @Inject constructor(
     val chipBinders get() = _chipBinders
 
     private val _queryFilter = MutableLiveData<HashMap<String, ArrayList<String>>>()
-    var queryFilter = mutableMapOf<String, ArrayList<String>>()
+    val queryFilter get() = _queryFilter
 
     fun setMyLocation(location: LatLng) {
         _myLocation.postValue(location)
@@ -172,7 +173,7 @@ class PostFilterViewModel @Inject constructor(
 
     fun requestFilterResult() {
         val filterList = mutableSetOf<FilterChipItemBinder>()
-        val queryfilter = mutableMapOf<String, ArrayList<String>>()
+        val queryfilter = hashMapOf<String, ArrayList<String>>()
         val temp = ArrayList<String>()
 
         _loading.postValue(true)
@@ -224,7 +225,7 @@ class PostFilterViewModel @Inject constructor(
         queryfilter["weather"] = temp.clone() as ArrayList<String>
         temp.clear()
 
-        queryFilter = queryfilter
+        _queryFilter.postValue(queryfilter)
 
         filterList.sortedWith(compareBy { (it as FilterChipItemBinder).chipType.get() })
         _chipBinders.postValue(filterList.toList())
@@ -238,22 +239,28 @@ class PostFilterViewModel @Inject constructor(
         // Call API
         viewModelScope.launch {
             _loading.postValue(true)
+            Log.d("queryFilter", queryFilter.value.toString())
+            val query = PostQuery(
+                lat = lat,
+                lng = lng,
+                emotionType = queryFilter.value?.get("emotion").toString().filterRegex(),
+                withType = queryFilter.value?.get("with").toString().filterRegex(),
+                genreType = queryFilter.value?.get("genre").toString().filterRegex(),
+                weatherType = queryFilter.value?.get("weather").toString().filterRegex()
+            )
+            Log.d("query request", query.toString())
             getPostUseCase.getPostList(
-                PostQuery(
-                    lat = lat,
-                    lng = lng,
-                    emotionType = queryFilter["emotion"].toString().filterRegex(),
-                    withType = queryFilter["with"].toString().filterRegex(),
-                    genreType = queryFilter["genre"].toString().filterRegex(),
-                    weatherType = queryFilter["weather"].toString().filterRegex()
-                )
+                query
             ).also {
                 _loading.postValue(false)
                 when (it) {
                     is ApiResponse.Success -> {
                         addEvent(FilterEvent.OnCompleted(it.data!!))
                     }
-                    else -> {}
+                    is ApiResponse.Error -> {
+                        _loading.postValue(false)
+                        navigateToLogin.call()
+                    }
                 }
             }
         }
@@ -272,25 +279,33 @@ class PostFilterViewModel @Inject constructor(
 
     private val onClickDeleteChip = object : FilterChipButton.FilterChipClickListener {
         override fun onClick(type: ChipType, label: String) {
+            // TODO 필터 query에 적용하기
+
+            val query = if (queryFilter.value != null) queryFilter.value!! else hashMapOf()
+            Log.d("delete query before", "${type.name} / ${label}" +query.toString())
             when (type) {
                 ChipType.GENRE -> {
                     selectedGenre.value!!.first { state -> state.label == label }.apply { isSelected = false }
                     _selectedGenre.postValue(selectedGenre.value)
+                    query["genre"] = query?.get("genre")?.filter { it != label } as ArrayList<String>
                 }
 
                 ChipType.WITH -> {
                     selectedWith.value!!.first { state -> state.label == label }.apply { isSelected = false }
                     _selectedWith.postValue(selectedWith.value)
+                    query["with"] = query?.get("with")?.filter { it != label } as ArrayList<String>
                 }
 
                 ChipType.WEATHER -> {
                     selectedWeather.value!!.first { state -> state.label == label }.apply { isSelected = false }
                     _selectedWeather.postValue(selectedWeather.value)
+                    query["weather"] = query?.get("weather")?.filter { it != label } as ArrayList<String>
                 }
 
                 ChipType.EMOTION -> {
                     selectedEmotion.value!!.first { state -> state.label == label }.apply { isSelected = false }
                     _selectedEmotion.postValue(selectedEmotion.value)
+                    query["emotion"] = query?.get("emotion")?.filter { it != label } as ArrayList<String>
                 }
             }
             val temp = ArrayList<BaseItemBinder>()
@@ -298,7 +313,8 @@ class PostFilterViewModel @Inject constructor(
 
             temp.removeIf { (it as FilterChipItemBinder).chipType.get() == type && it.typeName.get() == label }
             temp.sortWith(compareBy { (it as FilterChipItemBinder).chipType.get() })
-            if (temp.isEmpty()) requestFilterResult()
+            Log.d("delete query", query.toString())
+            _queryFilter.postValue(query)
             _chipBinders.postValue(temp)
         }
     }
